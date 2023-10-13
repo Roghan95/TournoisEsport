@@ -3,21 +3,31 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+{% for flash_error in app.flashes('verify_email_error') %}
+<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+{% endfor %}
 
-    <h1>Register</h1>
+<div class="register-form">
+    <em>* Champs obligatoires</em>
+    <h2 class="h2-register">Crée ton compte</h2>
 
     {{ form_errors(registrationForm) }}
 
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
 
-        <button type="submit" class="btn">Register</button>
+    {{ form_row(registrationForm.email) }}
+
+    {{ form_row(registrationForm.pseudo) }}
+
+    {{ form_row(registrationForm.plainPassword) }}
+
+    <div class="agree-terms">
+        {{ form_row(registrationForm.agreeTerms, { label: 'Accepter les conditions d\'utilisation *' }) }}
+    </div>
+
+    <button type="submit" class="btn">Valider</button>
     {{ form_end(registrationForm) }}
+
+    <p>Déjà un compte ? <a href="{{ path('app_login') }}">Connecte-toi</a> !</p>
+</div>
 {% endblock %}
