@@ -23,6 +23,9 @@ class GameMatch
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $screenshot = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $resultat = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class GameMatch
     public function setScreenshot(?string $screenshot): static
     {
         $this->screenshot = $screenshot;
+
+        return $this;
+    }
+
+    public function isResultat(): ?bool
+    {
+        return $this->resultat;
+    }
+
+    public function setResultat(?bool $resultat): static
+    {
+        $this->resultat = $resultat;
 
         return $this;
     }
