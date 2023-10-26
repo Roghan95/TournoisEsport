@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -40,18 +38,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
-
-    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Message::class)]
-    private Collection $messagesEnvoyes;
-
-    #[ORM\OneToMany(mappedBy: 'utilisateur1', targetEntity: Message::class)]
-    private Collection $messageRecus;
-
-    public function __construct()
-    {
-        $this->messagesEnvoyes = new ArrayCollection();
-        $this->messageRecus = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -158,65 +144,4 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, Message>
-     */
-    public function getMessagesEnvoyes(): Collection
-    {
-        return $this->messagesEnvoyes;
-    }
-
-    public function addMessagesEnvoye(Message $messagesEnvoye): static
-    {
-        if (!$this->messagesEnvoyes->contains($messagesEnvoye)) {
-            $this->messagesEnvoyes->add($messagesEnvoye);
-            $messagesEnvoye->setUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessagesEnvoye(Message $messagesEnvoye): static
-    {
-        if ($this->messagesEnvoyes->removeElement($messagesEnvoye)) {
-            // set the owning side to null (unless already changed)
-            if ($messagesEnvoye->getUtilisateur() === $this) {
-                $messagesEnvoye->setUtilisateur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Message>
-     */
-    public function getMessageRecus(): Collection
-    {
-        return $this->messageRecus;
-    }
-
-    public function addMessageRecu(Message $messageRecu): static
-    {
-        if (!$this->messageRecus->contains($messageRecu)) {
-            $this->messageRecus->add($messageRecu);
-            $messageRecu->setUtilisateur1($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessageRecu(Message $messageRecu): static
-    {
-        if ($this->messageRecus->removeElement($messageRecu)) {
-            // set the owning side to null (unless already changed)
-            if ($messageRecu->getUtilisateur1() === $this) {
-                $messageRecu->setUtilisateur1(null);
-            }
-        }
-
-        return $this;
-    }
-
 }
