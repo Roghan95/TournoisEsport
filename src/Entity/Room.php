@@ -48,6 +48,11 @@ class Room
         }
     }
 
+    public function __toString(): string
+    {
+        return $this->lastMessage;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -29,6 +29,11 @@ class Jeu
         $this->tournois = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->nomJeu;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
