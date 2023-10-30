@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -10,6 +12,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -38,6 +41,39 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
+
+    #[ORM\ManyToMany(targetEntity: GameMatch::class, mappedBy: 'utilisateurs')]
+    private Collection $gameMatches;
+
+    #[ORM\ManyToMany(targetEntity: Tournoi::class, mappedBy: 'participants')]
+    private Collection $tournois;
+
+    #[ORM\ManyToMany(targetEntity: Room::class, mappedBy: 'utilisateurs')]
+    private Collection $rooms;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateTimestamps(): void
+    {
+        $this->setUpdatedAt(new \DateTimeImmutable());
+
+        if ($this->getCreatedAt() === null) {
+            $this->setCreatedAt(new \DateTimeImmutable());
+        }
+    }
+
+    public function __construct()
+    {
+        $this->gameMatches = new ArrayCollection();
+        $this->tournois = new ArrayCollection();
+        $this->rooms = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -141,6 +177,111 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoto(?string $photo): static
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GameMatch>
+     */
+    public function getGameMatches(): Collection
+    {
+        return $this->gameMatches;
+    }
+
+    public function addGameMatch(GameMatch $gameMatch): static
+    {
+        if (!$this->gameMatches->contains($gameMatch)) {
+            $this->gameMatches->add($gameMatch);
+            $gameMatch->addUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGameMatch(GameMatch $gameMatch): static
+    {
+        if ($this->gameMatches->removeElement($gameMatch)) {
+            $gameMatch->removeUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tournoi>
+     */
+    public function getTournois(): Collection
+    {
+        return $this->tournois;
+    }
+
+    public function addTournoi(Tournoi $tournoi): static
+    {
+        if (!$this->tournois->contains($tournoi)) {
+            $this->tournois->add($tournoi);
+            $tournoi->addParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTournoi(Tournoi $tournoi): static
+    {
+        if ($this->tournois->removeElement($tournoi)) {
+            $tournoi->removeParticipant($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Room>
+     */
+    public function getRooms(): Collection
+    {
+        return $this->rooms;
+    }
+
+    public function addRoom(Room $room): static
+    {
+        if (!$this->rooms->contains($room)) {
+            $this->rooms->add($room);
+            $room->addUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRoom(Room $room): static
+    {
+        if ($this->rooms->removeElement($room)) {
+            $room->removeUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

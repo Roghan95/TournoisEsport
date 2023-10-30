@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\TournoiRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TournoiRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Tournoi
 {
     #[ORM\Id]
@@ -26,9 +29,6 @@ class Tournoi
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateFin = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $zoneGeo = null;
-
     #[ORM\Column]
     private ?int $nbJoueurMax = null;
 
@@ -40,6 +40,39 @@ class Tournoi
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lienTwitch = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'tournois')]
+    private Collection $participants;
+
+    #[ORM\OneToMany(mappedBy: 'tournoi', targetEntity: GameMatch::class, orphanRemoval: true)]
+    private Collection $gameMatches;
+
+    #[ORM\ManyToOne(inversedBy: 'tournois')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Jeu $jeu = null;
+
+    public function __construct()
+    {
+        $this->participants = new ArrayCollection();
+        $this->gameMatches = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateTimestamps(): void
+    {
+        $this->setUpdatedAt(new \DateTimeImmutable());
+
+        if ($this->getCreatedAt() === null) {
+            $this->setCreatedAt(new \DateTimeImmutable());
+        }
+    }
 
     public function getId(): ?int
     {
@@ -94,18 +127,6 @@ class Tournoi
         return $this;
     }
 
-    public function getZoneGeo(): ?string
-    {
-        return $this->zoneGeo;
-    }
-
-    public function setZoneGeo(string $zoneGeo): static
-    {
-        $this->zoneGeo = $zoneGeo;
-
-        return $this;
-    }
-
     public function getNbJoueurMax(): ?int
     {
         return $this->nbJoueurMax;
@@ -150,6 +171,96 @@ class Tournoi
     public function setLienTwitch(?string $lienTwitch): static
     {
         $this->lienTwitch = $lienTwitch;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Utilisateur>
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(Utilisateur $participant): static
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants->add($participant);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Utilisateur $participant): static
+    {
+        $this->participants->removeElement($participant);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GameMatch>
+     */
+    public function getGameMatches(): Collection
+    {
+        return $this->gameMatches;
+    }
+
+    public function addGameMatch(GameMatch $gameMatch): static
+    {
+        if (!$this->gameMatches->contains($gameMatch)) {
+            $this->gameMatches->add($gameMatch);
+            $gameMatch->setTournoi($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGameMatch(GameMatch $gameMatch): static
+    {
+        if ($this->gameMatches->removeElement($gameMatch)) {
+            // set the owning side to null (unless already changed)
+            if ($gameMatch->getTournoi() === $this) {
+                $gameMatch->setTournoi(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getJeu(): ?Jeu
+    {
+        return $this->jeu;
+    }
+
+    public function setJeu(?Jeu $jeu): static
+    {
+        $this->jeu = $jeu;
 
         return $this;
     }

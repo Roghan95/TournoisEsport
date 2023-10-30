@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\GameMatchRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GameMatchRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class GameMatch
 {
     #[ORM\Id]
@@ -20,11 +23,34 @@ class GameMatch
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateDebut = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $screenshot = null;
+    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'gameMatches')]
+    private Collection $gagnants;
 
-    #[ORM\Column(nullable: true)]
-    private ?bool $resultat = null;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'gameMatches')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Tournoi $tournoi = null;
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateTimestamps(): void
+    {
+        $this->setUpdatedAt(new \DateTimeImmutable());
+
+        if ($this->getCreatedAt() === null) {
+            $this->setCreatedAt(new \DateTimeImmutable());
+        }
+    }
+
+    public function __construct()
+    {
+        $this->gagnants = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -55,26 +81,62 @@ class GameMatch
         return $this;
     }
 
-    public function getScreenshot(): ?string
+    /**
+     * @return Collection<int, Utilisateur>
+     */
+    public function getGagnants(): Collection
     {
-        return $this->screenshot;
+        return $this->gagnants;
     }
 
-    public function setScreenshot(?string $screenshot): static
+    public function addGagnant(Utilisateur $utilisateur): static
     {
-        $this->screenshot = $screenshot;
+        if (!$this->gagnants->contains($utilisateur)) {
+            $this->gagnants->add($utilisateur);
+        }
 
         return $this;
     }
 
-    public function isResultat(): ?bool
+    public function removeGagnant(Utilisateur $utilisateur): static
     {
-        return $this->resultat;
+        $this->gagnants->removeElement($utilisateur);
+
+        return $this;
     }
 
-    public function setResultat(?bool $resultat): static
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        $this->resultat = $resultat;
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getTournoi(): ?Tournoi
+    {
+        return $this->tournoi;
+    }
+
+    public function setTournoi(?Tournoi $tournoi): static
+    {
+        $this->tournoi = $tournoi;
 
         return $this;
     }
