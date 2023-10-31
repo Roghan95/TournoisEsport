@@ -57,6 +57,10 @@ class Tournoi
     #[ORM\JoinColumn(nullable: false)]
     private ?Jeu $jeu = null;
 
+    #[ORM\ManyToOne(inversedBy: 'mesTournois')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateur $organisateur = null;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
@@ -268,5 +272,17 @@ class Tournoi
     public function __toString(): string
     {
         return $this->getNomTournoi();
+    }
+
+    public function getOrganisateur(): ?Utilisateur
+    {
+        return $this->organisateur;
+    }
+
+    public function setOrganisateur(?Utilisateur $organisateur): static
+    {
+        $this->organisateur = $organisateur;
+
+        return $this;
     }
 }

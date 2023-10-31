@@ -18,9 +18,6 @@ class Message
     #[ORM\Column(type: Types::TEXT)]
     private ?string $texteMessage = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dateMessage = null;
-
     #[ORM\ManyToOne(inversedBy: 'messages')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Room $room = null;
@@ -63,18 +60,6 @@ class Message
     public function setTexteMessage(string $texteMessage): static
     {
         $this->texteMessage = $texteMessage;
-
-        return $this;
-    }
-
-    public function getDateMessage(): ?\DateTimeInterface
-    {
-        return $this->dateMessage;
-    }
-
-    public function setDateMessage(\DateTimeInterface $dateMessage): static
-    {
-        $this->dateMessage = $dateMessage;
 
         return $this;
     }

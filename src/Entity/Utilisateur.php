@@ -57,6 +57,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\OneToMany(mappedBy: 'organisateur', targetEntity: Tournoi::class, orphanRemoval: true)]
+    private Collection $mesTournois;
+
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function updateTimestamps(): void
@@ -73,6 +76,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->gameMatches = new ArrayCollection();
         $this->tournois = new ArrayCollection();
         $this->rooms = new ArrayCollection();
+        $this->mesTournois = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -289,5 +293,35 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->pseudo;
+    }
+
+    /**
+     * @return Collection<int, Tournoi>
+     */
+    public function getMesTournois(): Collection
+    {
+        return $this->mesTournois;
+    }
+
+    public function addMesTournoi(Tournoi $mesTournoi): static
+    {
+        if (!$this->mesTournois->contains($mesTournoi)) {
+            $this->mesTournois->add($mesTournoi);
+            $mesTournoi->setOrganisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMesTournoi(Tournoi $mesTournoi): static
+    {
+        if ($this->mesTournois->removeElement($mesTournoi)) {
+            // set the owning side to null (unless already changed)
+            if ($mesTournoi->getOrganisateur() === $this) {
+                $mesTournoi->setOrganisateur(null);
+            }
+        }
+
+        return $this;
     }
 }
