@@ -60,6 +60,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'organisateur', targetEntity: Tournoi::class, orphanRemoval: true)]
     private Collection $mesTournois;
 
+    #[ORM\OneToMany(mappedBy: 'follower', targetEntity: Follow::class)]
+    private Collection $follows;
+
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function updateTimestamps(): void
@@ -77,6 +80,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->tournois = new ArrayCollection();
         $this->rooms = new ArrayCollection();
         $this->mesTournois = new ArrayCollection();
+        $this->follows = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -197,7 +201,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->gameMatches->contains($gameMatch)) {
             $this->gameMatches->add($gameMatch);
-            $gameMatch->addUtilisateur($this);
+            $gameMatch->addGagnant($this);
         }
 
         return $this;
@@ -206,7 +210,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeGameMatch(GameMatch $gameMatch): static
     {
         if ($this->gameMatches->removeElement($gameMatch)) {
-            $gameMatch->removeUtilisateur($this);
+            $gameMatch->removeGagnant($this);
         }
 
         return $this;
@@ -319,6 +323,36 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($mesTournoi->getOrganisateur() === $this) {
                 $mesTournoi->setOrganisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Follow>
+     */
+    public function getFollows(): Collection
+    {
+        return $this->follows;
+    }
+
+    public function addFollow(Follow $follow): static
+    {
+        if (!$this->follows->contains($follow)) {
+            $this->follows->add($follow);
+            $follow->setFollower($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollow(Follow $follow): static
+    {
+        if ($this->follows->removeElement($follow)) {
+            // set the owning side to null (unless already changed)
+            if ($follow->getFollower() === $this) {
+                $follow->setFollower(null);
             }
         }
 
