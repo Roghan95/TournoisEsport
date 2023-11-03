@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -42,12 +41,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
 
-    #[ORM\ManyToMany(targetEntity: GameMatch::class, mappedBy: 'utilisateurs')]
-    private Collection $gameMatches;
-
-    #[ORM\ManyToMany(targetEntity: Tournoi::class, mappedBy: 'participants')]
-    private Collection $tournois;
-
     #[ORM\ManyToMany(targetEntity: Room::class, mappedBy: 'utilisateurs')]
     private Collection $rooms;
 
@@ -63,6 +56,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'follower', targetEntity: Follow::class)]
     private Collection $follows;
 
+    #[ORM\OneToMany(mappedBy: 'proprietaire', targetEntity: Equipe::class)]
+    private Collection $equipes;
+
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function updateTimestamps(): void
@@ -76,11 +72,10 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->gameMatches = new ArrayCollection();
-        $this->tournois = new ArrayCollection();
         $this->rooms = new ArrayCollection();
         $this->mesTournois = new ArrayCollection();
         $this->follows = new ArrayCollection();
+        $this->equipes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -185,60 +180,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoto(?string $photo): static
     {
         $this->photo = $photo;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, GameMatch>
-     */
-    public function getGameMatches(): Collection
-    {
-        return $this->gameMatches;
-    }
-
-    public function addGameMatch(GameMatch $gameMatch): static
-    {
-        if (!$this->gameMatches->contains($gameMatch)) {
-            $this->gameMatches->add($gameMatch);
-            $gameMatch->addGagnant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGameMatch(GameMatch $gameMatch): static
-    {
-        if ($this->gameMatches->removeElement($gameMatch)) {
-            $gameMatch->removeGagnant($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Tournoi>
-     */
-    public function getTournois(): Collection
-    {
-        return $this->tournois;
-    }
-
-    public function addTournoi(Tournoi $tournoi): static
-    {
-        if (!$this->tournois->contains($tournoi)) {
-            $this->tournois->add($tournoi);
-            $tournoi->addParticipant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTournoi(Tournoi $tournoi): static
-    {
-        if ($this->tournois->removeElement($tournoi)) {
-            $tournoi->removeParticipant($this);
-        }
 
         return $this;
     }
@@ -353,6 +294,36 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($follow->getFollower() === $this) {
                 $follow->setFollower(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Equipe>
+     */
+    public function getEquipes(): Collection
+    {
+        return $this->equipes;
+    }
+
+    public function addEquipe(Equipe $equipe): static
+    {
+        if (!$this->equipes->contains($equipe)) {
+            $this->equipes->add($equipe);
+            $equipe->setProprietaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipe(Equipe $equipe): static
+    {
+        if ($this->equipes->removeElement($equipe)) {
+            // set the owning side to null (unless already changed)
+            if ($equipe->getProprietaire() === $this) {
+                $equipe->setProprietaire(null);
             }
         }
 

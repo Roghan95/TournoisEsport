@@ -60,7 +60,7 @@ class AppFixtures extends Fixture
             $manager->persist($tournoi);
 
              // Génération de données fictives pour GameMatch
-            for ($i = 0; $i < 5; $i++) {
+            for ($j = 0; $j < 5; $j++) {
                 $gameMatch = new GameMatch();
                 $gameMatch->setStatut($faker->boolean);
                 $gameMatch->setDateDebut($faker->dateTimeThisMonth);
@@ -80,11 +80,11 @@ class AppFixtures extends Fixture
             $manager->persist($room);
 
             // Génération de données fictives pour Message
-            for ($i = 0; $i < 20; $i++) {
+            for ($j = 0; $j < 20; $j++) {
                 $message = new Message();
                 $message->setTexteMessage($faker->paragraph);
                 $message->setRoom($room);
-                $message->setExpediteur($usersList[$i]);
+                $message->setExpediteur($usersList[$j]);
 
                 // Assurez-vous que le destinataire est différent de l'expéditeur
                 do {

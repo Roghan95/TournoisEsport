@@ -17,10 +17,10 @@ class JeuController extends AbstractController
     #[Route('/jeu', name: 'app_jeu')]
     public function index(): Response
     {
-        $jeux = $this->jeuRepository->findAll();
+        $jeu = $this->jeuRepository->findAll(orderBy: ['nomJeu' => 'ASC']);
 
         return $this->render('jeu/index.html.twig', [
-            'jeux' => $jeux,
+            'jeu' => $jeu,
 
         ]);
     }

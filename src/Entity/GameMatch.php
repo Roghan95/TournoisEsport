@@ -23,9 +23,6 @@ class GameMatch
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateDebut = null;
 
-    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'gameMatches')]
-    private Collection $gagnants;
-
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -36,6 +33,14 @@ class GameMatch
     #[ORM\JoinColumn(nullable: false)]
     private ?Tournoi $tournoi = null;
 
+    #[ORM\OneToMany(mappedBy: 'gameMatch', targetEntity: Participant::class, orphanRemoval: true)]
+    private Collection $participants;
+
+    public function __construct()
+    {
+        $this->participants = new ArrayCollection();
+    }
+
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function updateTimestamps(): void
@@ -45,11 +50,6 @@ class GameMatch
         if ($this->getCreatedAt() === null) {
             $this->setCreatedAt(new \DateTimeImmutable());
         }
-    }
-
-    public function __construct()
-    {
-        $this->gagnants = new ArrayCollection();
     }
     
     public function getId(): ?int
@@ -77,30 +77,6 @@ class GameMatch
     public function setDateDebut(\DateTimeInterface $dateDebut): static
     {
         $this->dateDebut = $dateDebut;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Utilisateur>
-     */
-    public function getGagnants(): Collection
-    {
-        return $this->gagnants;
-    }
-
-    public function addGagnant(Utilisateur $utilisateur): static
-    {
-        if (!$this->gagnants->contains($utilisateur)) {
-            $this->gagnants->add($utilisateur);
-        }
-
-        return $this;
-    }
-
-    public function removeGagnant(Utilisateur $utilisateur): static
-    {
-        $this->gagnants->removeElement($utilisateur);
 
         return $this;
     }
@@ -137,6 +113,36 @@ class GameMatch
     public function setTournoi(?Tournoi $tournoi): static
     {
         $this->tournoi = $tournoi;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Participant>
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(Participant $participant): static
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants->add($participant);
+            $participant->setGameMatch($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participant $participant): static
+    {
+        if ($this->participants->removeElement($participant)) {
+            // set the owning side to null (unless already changed)
+            if ($participant->getGameMatch() === $this) {
+                $participant->setGameMatch(null);
+            }
+        }
 
         return $this;
     }

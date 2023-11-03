@@ -23,11 +23,11 @@ class Tournoi
     #[ORM\Column(length: 100)]
     private ?string $nomOrganisation = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $dateDebut = null;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $dateDebut = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $dateFin = null;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $dateFin = null;
 
     #[ORM\Column]
     private ?int $nbJoueurMax = null;
@@ -47,9 +47,6 @@ class Tournoi
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'tournois')]
-    private Collection $participants;
-
     #[ORM\OneToMany(mappedBy: 'tournoi', targetEntity: GameMatch::class, orphanRemoval: true)]
     private Collection $gameMatches;
 
@@ -63,7 +60,6 @@ class Tournoi
 
     public function __construct()
     {
-        $this->participants = new ArrayCollection();
         $this->gameMatches = new ArrayCollection();
     }
 
@@ -107,24 +103,24 @@ class Tournoi
         return $this;
     }
 
-    public function getDateDebut(): ?\DateTimeInterface
+    public function getDateDebut(): ?\DateTimeImmutable
     {
         return $this->dateDebut;
     }
 
-    public function setDateDebut(\DateTimeInterface $dateDebut): static
+    public function setDateDebut(\DateTimeImmutable $dateDebut): static
     {
         $this->dateDebut = $dateDebut;
 
         return $this;
     }
 
-    public function getDateFin(): ?\DateTimeInterface
+    public function getDateFin(): ?\DateTimeImmutable
     {
         return $this->dateFin;
     }
 
-    public function setDateFin(\DateTimeInterface $dateFin): static
+    public function setDateFin(\DateTimeImmutable $dateFin): static
     {
         $this->dateFin = $dateFin;
 
@@ -199,30 +195,6 @@ class Tournoi
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Utilisateur>
-     */
-    public function getParticipants(): Collection
-    {
-        return $this->participants;
-    }
-
-    public function addParticipant(Utilisateur $participant): static
-    {
-        if (!$this->participants->contains($participant)) {
-            $this->participants->add($participant);
-        }
-
-        return $this;
-    }
-
-    public function removeParticipant(Utilisateur $participant): static
-    {
-        $this->participants->removeElement($participant);
 
         return $this;
     }
