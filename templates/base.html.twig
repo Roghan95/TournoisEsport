@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-        {% block stylesheets %}
-        {% endblock %}
-    </head>
-    <body>
-        <div id="main-container">
-            <div id="sidebar">
-                <img class="logo" src="img/logo.png" alt="Logo victoryforge">
-                <a href="{{ path('app_home') }}">Accueil</a>
-                <a href="#">Profil</a>
-                <a href="#">Organiser un tournoi
-                    {# <span class="material-symbols-outlined">
-                        chevron_right
-                    </span> #}
-                </a>
-                <a href="#">Tournois rejoint</a>
-                <a href="#">Crée une équipe</a>
-            </div>
 
-            <div>
+<head>
+	<meta charset="UTF-8" />
+	<title>
+		{% block title %}Welcome!
+		{% endblock %}
+	</title>
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" /> {%
+	block stylesheets %}{% endblock %}
+</head>
 
-            </div>
-            <div id="content"> 
-                {% block body %}
-                {% endblock %}
-            </div>
-        </div>
-        {% block javascripts %}
-        <script src="js/script.js"></script> 
-        {% endblock %}
-    </body>
+<body>
+	<div id="main-container">
+		<div id="sidebar">
+			<img class="logo" src="{{ asset('img/logo.png') }}" alt="Logo victoryforge" />
+			<a href="{{ path('app_home') }}">Accueil</a>
+			<a href="#">Profil</a>
+			<a href="{{ path('app_tournoi_new') }}">Organiser un tournoi</a>
+			<a href="">Tournois rejoint</a>
+			<a href="#">Crée une équipe</a>
+
+			<a href="{{ path('app_login') }}">Se connecter</a>
+			<a href="{{ path('app_register') }}">S'enregistrer</a>
+		</div>
+
+		<div id="content"> {% block body %}{% endblock %}
+		</div>
+	</div>
+	{% block javascripts %}
+	<script src="{{ asset('js/script.js') }}"></script>
+	{% endblock %}
+</body>
+
 </html>

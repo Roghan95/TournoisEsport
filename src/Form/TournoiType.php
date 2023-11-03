@@ -20,11 +20,7 @@ class TournoiType extends AbstractType
             ->add('description')
             ->add('banniereTr')
             ->add('lienTwitch')
-            ->add('createdAt')
-            ->add('updatedAt')
-            ->add('participants')
-            ->add('jeu')
-        ;
+            ->add('jeu');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

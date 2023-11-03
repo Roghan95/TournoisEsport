@@ -21,6 +21,12 @@ class TournoiRepository extends ServiceEntityRepository
         parent::__construct($registry, Tournoi::class);
     }
 
+
+    public function findAll(): array
+    {
+        return $this->findBy([], ['createdAt' => 'DESC']);
+    }   
+
 //    /**
 //     * @return Tournoi[] Returns an array of Tournoi objects
 //     */

@@ -94,14 +94,20 @@ body {
 }
 
 .tournament-item {
-  display: grid;
-  border: 1px solid #2c3147;
-  width: fit-content;
-  padding: 10px;
+  border: 1px solid #2c31472b;
+  width: 350px;
+  height: 350px;
+  gap: 10px;
 }
 
-.tournament-time {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: rgba(0, 0, 0, 0.299) 1px solid;
+.tournois-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.tournoi-img {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
 }

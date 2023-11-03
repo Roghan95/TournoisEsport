@@ -14,13 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/tournoi')]
 class TournoiController extends AbstractController
 {
-    #[Route('/', name: 'app_tournoi_index', methods: ['GET'])]
-    public function index(TournoiRepository $tournoiRepository): Response
-    {
-        return $this->render('tournoi/index.html.twig', [
-            'tournois' => $tournoiRepository->findAll(),
-        ]);
-    }
+    // #[Route('/', name: 'app_tournoi_index', methods: ['GET'])]
+    // public function index(TournoiRepository $tournoiRepository): Response
+    // {
+    //     return $this->render('tournoi/index.html.twig', [
+    //         'tournois' => $tournoiRepository->findAll(),
+    //     ]);
+    // }
 
     #[Route('/new', name: 'app_tournoi_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -30,10 +30,11 @@ class TournoiController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $tournoi->setOrganisateur($this->getUser());
             $entityManager->persist($tournoi);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_tournoi_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('tournoi/new.html.twig', [
@@ -59,7 +60,7 @@ class TournoiController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_tournoi_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('tournoi/edit.html.twig', [
@@ -76,6 +77,6 @@ class TournoiController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_tournoi_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
     }
 }
