@@ -4,40 +4,39 @@
 
 
 {% block body %}
-
 	<div class="dropdown">
 		<button onclick="showDropdown()" class="dropbtn" id="selectGameButton">
 			Sélectionnez votre jeu
 		</button>
 		<div id="myDropdown" class="dropdown-content">
 			{% for jeu in jeux %}
-				<a href="#" onclick="selectGame('{{ jeu.id }}' , '{{ jeu.nomJeu }}' )">{{
-      jeu.nomJeu
-    }}</a>
+			<a href="#" onclick="selectGame('{{ jeu.id }}' , '{{ jeu.nomJeu }}' )">{{
+				jeu.nomJeu
+				}}</a>
 			{% endfor %}
 		</div>
 	</div>
 
 	<div class="tournois-list">
 		{% for tournoi in tournois %}
-			<div class="tournament-item">
-				<div class="tr-container">
-					<div>
-						<img class="tournoi-img" src="{{ tournoi.banniereTr }}" alt="Bannière tournoi"/>
-						<p>{{ tournoi.nomTournoi }}</p>
-						<p>{{ tournoi.nomOrganisation }}</p>
-					</div>
+		<div class="tournament-item">
+			<div class="tr-container">
+				<div>
+					<img class="tournoi-img" src="{{ tournoi.banniereTr }}" alt="Bannière tournoi" />
+					<p>{{ tournoi.nomTournoi }}</p>
+					<p>{{ tournoi.nomOrganisation }}</p>
+				</div>
 
-					<div class="tournament-time">
-						<p>
-							{{ tournoi.dateDebut | format_datetime(locale='fr',pattern="EE dd MMM") }}
-						</p>
-						<p>
-							{{ tournoi.dateDebut | format_datetime('none', 'short', locale='fr') }}
-						</p>
-					</div>
+				<div class="tournament-time">
+					<p>
+						{{ tournoi.dateDebut | format_datetime(locale='fr',pattern="EE dd MMM") }}
+					</p>
+					<p>
+						{{ tournoi.dateDebut | format_datetime('none', 'short', locale='fr') }}
+					</p>
 				</div>
 			</div>
+		</div>
 		{% endfor %}
 	</div>
 {% endblock %}

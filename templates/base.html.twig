@@ -17,15 +17,22 @@
 	<div id="main-container">
 		<div id="sidebar">
 			<img class="logo" src="{{ asset('img/logo.png') }}" alt="Logo victoryforge" />
+			<hr>
 			<a href="{{ path('app_home') }}">Accueil</a>
 			<a href="#">Profil</a>
 			<a href="{{ path('app_tournoi_new') }}">Organiser un tournoi</a>
 			<a href="">Tournois rejoint</a>
 			<a href="#">Crée une équipe</a>
-
+			{% if app.user == null %}
 			<a href="{{ path('app_login') }}">Se connecter</a>
+			{% endif %}
 			<a href="{{ path('app_register') }}">S'enregistrer</a>
+
+			<div class="profil-container">
+				{# <img src="{{ asset('img/lol.jpg') }}" alt="Photo de profil"> #}
+			</div>
 		</div>
+
 
 		<div id="content"> {% block body %}{% endblock %}
 		</div>
