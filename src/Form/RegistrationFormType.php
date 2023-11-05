@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -41,19 +42,25 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                'type' => PasswordType::class,
                'invalid_message' => 'Les champs du mot de passe doivent correspondre.',
-                'options' => ['attr' => ['class' => 'password-field']],
+                'options' => ['attr' => ['class' => 'password-field form-control']],
                 'required' => true,
+                'first_options'  => ['label' => 'Mot de passe *'],
                 'second_options' => ['label' => 'Confirme ton mot de passe *'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Entrez un mot de passe',
                     ]),
                     new Length([
-                        'min' => 6,
-                        'minMessage' => 'Votre mot de passe doit avoir minimum {{ limit }} charactères',
+                        'min' => 10,
+                        'minMessage' => 'Votre mot de passe doit avoir minimum 10 charactères',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
+                    new Regex([
+                        'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{10,}$/',
+                        'message' => 'Votre mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial'
+
+                    ])
                 ],
             ])
 
@@ -62,9 +69,10 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You should agree to our terms.',
+                        'message' => 'Vous devez accepter les conditions générales d\'utilisation.',
                     ]),
                 ],
+                'label' => 'J\'accepte les conditions générales d\'utilisation *',
             ])
             
         ;
