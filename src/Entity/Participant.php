@@ -24,6 +24,9 @@ class Participant
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private ?bool $isWin = false;
 
+    #[ORM\ManyToOne]
+    private ?Equipe $equipe = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +64,18 @@ class Participant
     public function setIsWin(bool $isWin): static
     {
         $this->isWin = $isWin;
+
+        return $this;
+    }
+
+    public function getEquipe(): ?Equipe
+    {
+        return $this->equipe;
+    }
+
+    public function setEquipe(?Equipe $equipe): static
+    {
+        $this->equipe = $equipe;
 
         return $this;
     }

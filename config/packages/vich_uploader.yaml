@@ -1,0 +1,15 @@
+vich_uploader:
+    db_driver: orm
+    metadata:
+        type: attribute
+
+    mappings:
+       equipe_image:
+           uri_prefix: /uploads/equipes
+           upload_destination: '%kernel.project_dir%/public/uploads/equipes'
+           namer: Vich\UploaderBundle\Naming\UniqidNamer
+
+        # tournoi_image:
+        #     uri_prefix: /uploads/tournois
+        #     upload_destination: '%kernel.project_dir%/public/uploads/tournois'
+        #     namer: Vich\UploaderBundle\Naming\UniqidNamer

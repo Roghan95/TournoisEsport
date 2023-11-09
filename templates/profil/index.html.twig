@@ -19,7 +19,18 @@
 
 <h1>{{ app.user.pseudo }}</h1>
 
-<a href=""></a>
+{% if equipe is null %}
+<a href="{{ path('new_equipe')}}">Crée une équipe</a>
+{% endif %}
 
+{% if equipe is not null %}
+
+<h2>{{ equipe.nomEquipe }}</h2>
+<p>{{ equipe.description }}</p>
+{% if equipe.logo is not empty %}
+<img src="{{vich_uploader_asset(equipe, 'imageFile')}}" alt="Image de l'équipe {{ equipe.nomEquipe }}">
+{% endif %}
+
+{% endif %}
 
 {% endblock %}
