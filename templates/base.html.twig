@@ -23,11 +23,14 @@
 			<a href="{{ path('app_profil') }}">Profil</a>
 			<a href="{{ path('app_tournoi_new') }}">Organiser un tournoi</a>
 			<a href="">Tournois rejoint</a>
-			<a href="#">Crée une équipe</a>
+			<a href="{{ path('new_equipe') }}">Crée une équipe</a>
 			{% if app.user == null %}
 			<a href="{{ path('app_login') }}">Se connecter</a>
-			{% endif %}
 			<a href="{{ path('app_register') }}">S'enregistrer</a>
+			{% else %}
+			<a href="{{ path('app_logout') }}">Se déconnecter</a>
+			{% endif %}
+
 		</div>
 		{% endblock %}
 

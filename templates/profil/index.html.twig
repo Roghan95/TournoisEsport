@@ -1,36 +1,34 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Profil{% endblock %}
-
-{% block sidebar %}
+{% extends 'base.html.twig' %} {% block title %}Profil{% endblock %} {% block
+sidebar %}
 <div id="sidebar">
-    <img class="logo" src="{{ asset('img/logo.png') }}" alt="Logo victoryforge" />
-    <hr>
-    <a href="{{ path('app_home') }}">Accueil</a>
-    <a href="{{ path('app_profil') }}">Profil</a>
-    <a href="{{ path('app_tournoi_new') }}">Organiser un tournoi</a>
-    <a href="">Paramètres du compte</a>
-    <a href="{{ path('app_logout') }}">Se déconnecter</a>
+  <img class="logo" src="{{ asset('img/logo.png') }}" alt="Logo victoryforge" />
+  <hr />
+  <a href="{{ path('app_home') }}">Accueil</a>
+  <a href="{{ path('app_profil') }}">Profil</a>
+  <a href="{{ path('app_tournoi_new') }}">Organiser un tournoi</a>
+  <a href="">Paramètres du compte</a>
+  <a href="{{ path('app_logout') }}">Se déconnecter</a>
 </div>
 
-{% endblock %}
-
-{% block body %}
+{% endblock %} {% block body %}
 
 <h1>{{ app.user.pseudo }}</h1>
 
-{% if equipe is null %}
-<a href="{{ path('new_equipe')}}">Crée une équipe</a>
-{% endif %}
+<a href="{{ path('new_equipe') }}">Crée une équipe</a>
 
 {% if equipe is not null %}
 
+<h2>Mes équipes</h2>
+
+{% for equipe in equipes %}
+
 <h2>{{ equipe.nomEquipe }}</h2>
-<p>{{ equipe.description }}</p>
+
 {% if equipe.logo is not empty %}
-<img src="{{vich_uploader_asset(equipe, 'imageFile')}}" alt="Image de l'équipe {{ equipe.nomEquipe }}">
-{% endif %}
-
-{% endif %}
-
-{% endblock %}
+<img
+  src="{{ vich_uploader_asset(equipe, 'imageFile') }}"
+  alt="Image de l'équipe {{ equipe.nomEquipe }}"
+/>
+<p>Membre depuis le {{ equipe.createdAt|format_date('full', locale='fr') }}</p>
+<a href="{{ path('equipe_quitter', { id: equipe.id }) }}">Quitter</a>
+{% endif %} {% endfor %} {% endif %} {% endblock %}

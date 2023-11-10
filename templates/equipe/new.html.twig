@@ -16,8 +16,8 @@
 
 {% block body %}
 <h1>Créer une équipe</h1>
-
 {{ form_start(form) }}
+{{ form_row(form.jeu) }}
 {{ form_row(form.nomEquipe) }}
 {{ form_row(form.description) }}
 {{ form_row(form.imageFile) }}
