@@ -14,21 +14,39 @@ sidebar %}
 
 <h1>{{ app.user.pseudo }}</h1>
 
-<a href="{{ path('new_equipe') }}">Crée une équipe</a>
+<div class="titre-equipe">
+  <h2>Mes équipes</h2>
+  <a href="{{ path('new_equipe') }}">Crée une équipe</a>
+</div>
+{% if equipes is empty %}
+<div class="no-equipe">
+  <p>Vous n'avez pas d'équipe</p>
+</div>
+{% else %}
+<div class="container-equipe">
+  {% for equipe in equipes %}
+  <div class="box-equipe">
+    {% if equipe.logo is not empty %}
+    <img
+      src="{{ vich_uploader_asset(equipe, 'imageFile') }}"
+      alt="Logo de l'équipe {{ equipe.nomEquipe }}"
+    />
+    <h2>{{ equipe.nomEquipe }}</h2>
+    <p>
+      Membre depuis le {{ equipe.createdAt|format_date('full', locale='fr') }}
+    </p>
+    <a href="{{ path('equipe_quitter', { id: equipe.id }) }}">Quitter</a>
+    {% endif %} {% endfor %}
+  </div>
+</div>
+{% endif %}
 
-{% if equipe is not null %}
+<h2>Mes tournois</h2>
 
-<h2>Mes équipes</h2>
-
-{% for equipe in equipes %}
-
-<h2>{{ equipe.nomEquipe }}</h2>
-
-{% if equipe.logo is not empty %}
+{% for tournoi in tournois %}
 <img
-  src="{{ vich_uploader_asset(equipe, 'imageFile') }}"
-  alt="Image de l'équipe {{ equipe.nomEquipe }}"
+  src="{{ vich_uploader_asset(tournoi, 'imageFile') }}"
+  alt="Logo d'un tournoi"
 />
-<p>Membre depuis le {{ equipe.createdAt|format_date('full', locale='fr') }}</p>
-<a href="{{ path('equipe_quitter', { id: equipe.id }) }}">Quitter</a>
-{% endif %} {% endfor %} {% endif %} {% endblock %}
+<p></p>
+{% endfor %} {% endblock %}

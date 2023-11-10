@@ -7,9 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Entity\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TournoiRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[Vich\Uploadable]
 class Tournoi
 {
     #[ORM\Id]
@@ -18,18 +22,27 @@ class Tournoi
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank (message: "Le nom du tournoi ne peut pas être vide")]
     private ?string $nomTournoi = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank (message: "Le nom de l'organisation ne peut pas être vide")]
     private ?string $nomOrganisation = null;
 
+    #[Vich\UploadableField(mapping: 'tournoi_image', fileNameProperty: 'logoTournoi')]
+    #[Assert\NotBlank (message: "Le logo du tournoi ne peut pas être vide")]
+    private ?File $imageFile = null;  
+
     #[ORM\Column]
+    #[Assert\NotBlank (message: "Vous devez renseigner la date de début")]
     private ?\DateTimeImmutable $dateDebut = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank (message: "Vous devez renseigner la date de fin")]
     private ?\DateTimeImmutable $dateFin = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank (message: "Vous devez renseigner le nombre de joueurs maximum")]
     private ?int $nbJoueurMax = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -58,9 +71,31 @@ class Tournoi
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $organisateur = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $logoTournoi = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $reglement = null;
+
     public function __construct()
     {
         $this->gameMatches = new ArrayCollection();
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
     }
 
     #[ORM\PrePersist]
@@ -254,6 +289,30 @@ class Tournoi
     public function setOrganisateur(?Utilisateur $organisateur): static
     {
         $this->organisateur = $organisateur;
+
+        return $this;
+    }
+
+    public function getLogoTournoi(): ?string
+    {
+        return $this->logoTournoi;
+    }
+
+    public function setLogoTournoi(?string $logoTournoi): static
+    {
+        $this->logoTournoi = $logoTournoi;
+
+        return $this;
+    }
+
+    public function getReglement(): ?string
+    {
+        return $this->reglement;
+    }
+
+    public function setReglement(?string $reglement): static
+    {
+        $this->reglement = $reglement;
 
         return $this;
     }

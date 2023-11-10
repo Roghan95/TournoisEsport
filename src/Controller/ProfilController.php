@@ -20,10 +20,13 @@ class ProfilController extends AbstractController
     public function index(EquipeRepository $equipeRepo): Response
     {
         $equipes = $equipeRepo->findBy(['proprietaire' => $this->getUser()]);
-
+        /** @var Utilisateur $user */
+        $user = $this->getUser();
+        $tournois = $user->getMesTournois();
         return $this->render('profil/index.html.twig', [
             'user' => $this->getUser(),
-            'equipes' => $equipes
+            'equipes' => $equipes,
+            'tournois' => $tournois
         ]);
     }
 

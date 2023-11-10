@@ -30,8 +30,12 @@
 			{% else %}
 			<a href="{{ path('app_logout') }}">Se déconnecter</a>
 			{% endif %}
-
+		<div>
+			{% if app.user %}
+			<p><img src="{{ vich_uploader_asset(equipe, 'imageFile') }}" alt=""> {{ app.user.pseudo }}</p>
+			{% endif %}
 		</div>
+	</div>
 		{% endblock %}
 
 
