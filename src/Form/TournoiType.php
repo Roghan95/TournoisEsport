@@ -14,7 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 // use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Date;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class TournoiType extends AbstractType
@@ -31,10 +30,12 @@ class TournoiType extends AbstractType
                 'required' => true
             ])
             ->add('dateDebut', DateType::class, [
+                'input' => 'datetime_immutable',
                 'label' => 'Date de début',
                 'required' => true
             ])
             ->add('dateFin', DateType::class, [
+                'input' => 'datetime_immutable',
                 'label' => 'Date de fin',
                 'required' => true
             ])
@@ -46,11 +47,12 @@ class TournoiType extends AbstractType
                 'label' => 'Description',
                 'required' => false
             ])
-            ->add('logoTournoi', VichImageType::class, [
+            ->add('logoFile', VichImageType::class, [
                 'label' => 'Logo du tournoi',
                 'required' => true,
+
             ])
-            ->add('banniereTr', VichImageType::class, [
+            ->add('banniereTrFile', VichImageType::class, [
                 'label' => 'Bannière',
                 'required' => true
             ])

@@ -27,7 +27,7 @@ class RegistrationFormType extends AbstractType
             'required' => true,
             'attr' => [
                 'class' => 'form-control'
-            ]
+            ] 
         ])
             ->add('pseudo', TextType::class, 
             [
@@ -49,6 +49,7 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Entrez un mot de passe',
+
                     ]),
                     new Length([
                         'min' => 10,

@@ -32,12 +32,11 @@
 			{% endif %}
 		<div>
 			{% if app.user %}
-			<p><img src="{{ vich_uploader_asset(equipe, 'imageFile') }}" alt=""> {{ app.user.pseudo }}</p>
+			{# <p><img src="{{ vich_uploader_asset(equipe, 'imageFile') }}" alt="Photo de profil"> {{ app.user.pseudo }}</p> #}
 			{% endif %}
 		</div>
 	</div>
 		{% endblock %}
-
 
 		<div id="content"> {% block body %}{% endblock %}
 		</div>

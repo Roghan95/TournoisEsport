@@ -22,7 +22,7 @@
 		<div class="tournament-item">
 			<div class="tr-container">
 				<div>
-					<img class="tournoi-img" src="{{ tournoi.banniereTr }}" alt="Bannière tournoi" />
+					<img class="tournoi-img" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière tournoi" />
 					<p>{{ tournoi.nomTournoi }}</p>
 					<p>{{ tournoi.nomOrganisation }}</p>
 				</div>

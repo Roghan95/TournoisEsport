@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (storedGameName) {
         document.getElementById('selectGameButton').textContent = storedGameName;
     }
-
-    console.log('test');
  });
 // Fonction pour sélectionner un jeu
 function selectGame(id, nomJeu) {

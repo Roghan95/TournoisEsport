@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Vich\UploaderBundle\Entity\File;
+use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,8 +30,10 @@ class Tournoi
     private ?string $nomOrganisation = null;
 
     #[Vich\UploadableField(mapping: 'tournoi_image', fileNameProperty: 'logoTournoi')]
-    #[Assert\NotBlank (message: "Le logo du tournoi ne peut pas être vide")]
-    private ?File $imageFile = null;  
+    private ?File $logoFile = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $logoTournoi = null;
 
     #[ORM\Column]
     #[Assert\NotBlank (message: "Vous devez renseigner la date de début")]
@@ -48,11 +50,18 @@ class Tournoi
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+    #[Vich\UploadableField(mapping: 'tournoi_image', fileNameProperty: 'banniereTr')]
+    private ?File $banniereTrFile = null;
+
     #[ORM\Column(length: 255)]
     private ?string $banniereTr = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lienTwitch = null;
+    
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $reglement = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -71,32 +80,45 @@ class Tournoi
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $organisateur = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $logoTournoi = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $reglement = null;
 
     public function __construct()
     {
         $this->gameMatches = new ArrayCollection();
     }
 
-    public function getImageFile(): ?File
+    public function getLogoFile(): ?File
     {
-        return $this->imageFile;
+        return $this->logoFile;
     }
 
-    public function setImageFile(?File $imageFile = null): void
+    public function setLogoFile(?File $logoFile = null): void
     {
-        $this->imageFile = $imageFile;
+        $this->logoFile = $logoFile;
 
-        if (null !== $imageFile) {
+        if (null !== $logoFile) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
         }
     }
+
+    public function setBanniereTrFile(?File $banniereTrFile = null): void
+    {
+        $this->banniereTrFile = $banniereTrFile;
+
+        if (null !== $banniereTrFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getBanniereTrFile(): ?File
+    {
+        return $this->banniereTrFile;
+    }
+
+
 
     #[ORM\PrePersist]
     #[ORM\PreUpdate]

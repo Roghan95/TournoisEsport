@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\EquipeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Utilisateur;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use App\Repository\EquipeRepository;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EquipeRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -21,6 +23,7 @@ class Equipe
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank (message: "Le nom de l'équipe ne peut pas être vide")]
     private ?string $nomEquipe = null;
 
     #[Vich\UploadableField(mapping: 'equipe_image', fileNameProperty: 'logo')]
@@ -191,11 +194,7 @@ class Equipe
         return $this;
     }
 
-    public function __toString(): string
-    {
-        return $this->getNomEquipe();
-    }
-
+    
     public function getJeu(): ?Jeu
     {
         return $this->jeu;
@@ -204,7 +203,19 @@ class Equipe
     public function setJeu(?Jeu $jeu): static
     {
         $this->jeu = $jeu;
-
+        
         return $this;
     }
+    
+    public function getLogoPath(): ?string
+    {
+        return 'uploads/equipes/' . $this->getLogo();
+    }
+    
+    
+    public function __toString(): string
+    {
+        return $this->getNomEquipe();
+    }
+    
 }
