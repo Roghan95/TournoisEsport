@@ -1,0 +1,26 @@
+<div id="sidebar">
+	<div class="top-menu">
+		<img class="logo" src="{{ asset('img/logo.png') }}" alt="Logo victoryforge"/>
+		<hr>
+		<a href="{{ path('app_home') }}">Accueil</a>
+		<a href="{{ path('app_profil') }}">Profil</a>
+		<a href="{{ path('app_tournoi_new') }}">Organiser un tournoi</a>
+		<a href="">Tournois rejoint</a>
+		<a href="{{ path('new_equipe') }}">Crée une équipe</a>
+		{% if app.user == null %}
+			<a href="{{ path('app_login') }}">Se connecter</a>
+			<a href="{{ path('app_register') }}">S'enregistrer</a>
+		{% else %}
+			<a href="{{ path('app_logout') }}">Se déconnecter</a>
+		{% endif %}
+	</div>
+	<div class="profil-menu">
+		{% if app.user and app.user.photo %}
+			<img src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">
+			<p>{{ app.user.pseudo }}</p>
+		{% elseif app.user %}
+			<img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
+			<p>{{ app.user.pseudo }}</p>
+		{% endif %}
+	</div>
+</div>

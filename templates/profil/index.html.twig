@@ -1,52 +1,52 @@
-{% extends 'base.html.twig' %} {% block title %}Profil{% endblock %} {% block
-sidebar %}
-<div id="sidebar">
-  <img class="logo" src="{{ asset('img/logo.png') }}" alt="Logo victoryforge" />
-  <hr />
-  <a href="{{ path('app_home') }}">Accueil</a>
-  <a href="{{ path('app_profil') }}">Profil</a>
-  <a href="{{ path('app_tournoi_new') }}">Organiser un tournoi</a>
-  <a href="">Paramètres du compte</a>
-  <a href="{{ path('app_logout') }}">Se déconnecter</a>
-</div>
+{% extends 'base.html.twig' %}
+{% block title %}Profil
+{% endblock %}
+{% block sidebar %}
+	<div id="sidebar">
+		<img class="logo" src="{{ asset('img/logo.png') }}" alt="Logo victoryforge"/>
+		<hr/>
+		<a href="{{ path('app_home') }}">Accueil</a>
+		<a href="{{ path('app_profil') }}">Profil</a>
+		<a href="{{ path('app_tournoi_new') }}">Organiser un tournoi</a>
+		<a href="">Paramètres du compte</a>
+		<a href="{{ path('app_logout') }}">Se déconnecter</a>
+	</div>
 
-{% endblock %} {% block body %}
+{% endblock %}
+{% block body %}
 
-<h1>{{ app.user.pseudo }}</h1>
+	<h1>{{ app.user.pseudo }}</h1>
 
-<div class="titre-equipe">
-  <h2>Mes équipes</h2>
-  <a href="{{ path('new_equipe') }}">Crée une équipe</a>
-</div>
-{% if equipes is empty %}
-<div class="no-equipe">
-  <p>Vous n'avez pas d'équipe</p>
-</div>
-{% else %}
-<div class="container-equipe">
-  {% for equipe in equipes %}
-  <div class="box-equipe">
-    {% if equipe.logo is not empty %}
-    <img
-      src="{{ vich_uploader_asset(equipe, 'imageFile') }}"
-      alt="Logo de l'équipe {{ equipe.nomEquipe }}"
-    />
-    <h2>{{ equipe.nomEquipe }}</h2>
-    <p>
-      Membre depuis le {{ equipe.createdAt|format_date('full', locale='fr') }}
-    </p>
-    <a href="{{ path('equipe_quitter', { id: equipe.id }) }}">Quitter</a>
-    {% endif %} {% endfor %}
-  </div>
-</div>
-{% endif %}
+	<div class="titre-equipe">
+		<h2>Mes équipes</h2>
+		<a href="{{ path('new_equipe') }}">Crée une équipe</a>
+	</div>
+	{% if equipes is empty %}
+		<div class="no-equipe">
+			<p>Vous n'avez pas d'équipe</p>
+		</div>
+	{% else %}
+		<div class="container-equipe">
+			{% for equipe in equipes %}
+				<div class="box-equipe">
+					{% if equipe.logo is not empty %}
+						<img src="{{ vich_uploader_asset(equipe, 'imageFile') }}" alt="Logo de l'équipe {{ equipe.nomEquipe }}"/>
+						<h2>{{ equipe.nomEquipe }}</h2>
+						<p>
+							Membre depuis le
+							{{ equipe.createdAt|format_date('full', locale='fr') }}
+						</p>
+						<a href="{{ path('equipe_quitter', { id: equipe.id }) }}">Quitter</a>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
 
-<h2>Mes tournois</h2>
+	<h2>Mes tournois</h2>
 
-{% for tournoi in tournois %}
-<img
-  src="{{ vich_uploader_asset(tournoi, 'imageFile') }}"
-  alt="Logo d'un tournoi"
-/>
-<p></p>
-{% endfor %} {% endblock %}
+	{% for tournoi in tournois %}
+		<img src="{{ vich_uploader_asset(tournoi, 'imageFile') }}" alt="Logo d'un tournoi"/>
+		<p></p>
+	{% endfor %}
+{% endblock %}

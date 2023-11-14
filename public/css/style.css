@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 * {
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 html {
@@ -25,6 +25,7 @@ body {
   width: 15%;
   vertical-align: top;
   background-color: #2c3147;
+  position: relative;
 }
 
 #sidebar a {
@@ -51,6 +52,22 @@ body {
   display: block;
   margin: 20px auto;
   width: 90%;
+}
+
+.profil-menu img {
+  width: 80px;
+  border-radius: 50%;
+}
+
+.profil-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
 }
 
 /* ------------------------------ */
