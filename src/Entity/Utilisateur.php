@@ -11,7 +11,6 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -66,6 +65,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'proprietaire', targetEntity: Equipe::class)]
     private Collection $equipes;
 
+    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: ParticipantTournoi::class, orphanRemoval: true)]
+    private Collection $participantTournois;
+
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function updateTimestamps(): void
@@ -83,6 +85,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->mesTournois = new ArrayCollection();
         $this->follows = new ArrayCollection();
         $this->equipes = new ArrayCollection();
+        $this->participantTournois = new ArrayCollection();
     }
 
     // VichUploader
@@ -349,6 +352,36 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($equipe->getProprietaire() === $this) {
                 $equipe->setProprietaire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParticipantTournoi>
+     */
+    public function getParticipantTournois(): Collection
+    {
+        return $this->participantTournois;
+    }
+
+    public function addParticipantTournoi(ParticipantTournoi $participantTournoi): static
+    {
+        if (!$this->participantTournois->contains($participantTournoi)) {
+            $this->participantTournois->add($participantTournoi);
+            $participantTournoi->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipantTournoi(ParticipantTournoi $participantTournoi): static
+    {
+        if ($this->participantTournois->removeElement($participantTournoi)) {
+            // set the owning side to null (unless already changed)
+            if ($participantTournoi->getUtilisateur() === $this) {
+                $participantTournoi->setUtilisateur(null);
             }
         }
 

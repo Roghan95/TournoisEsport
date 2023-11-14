@@ -80,10 +80,14 @@ class Tournoi
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $organisateur = null;
 
+    #[ORM\OneToMany(mappedBy: 'tournoi', targetEntity: ParticipantTournoi::class, orphanRemoval: true)]
+    private Collection $participantTournois;
+
 
     public function __construct()
     {
         $this->gameMatches = new ArrayCollection();
+        $this->participantTournois = new ArrayCollection();
     }
 
     public function getLogoFile(): ?File
@@ -335,6 +339,36 @@ class Tournoi
     public function setReglement(?string $reglement): static
     {
         $this->reglement = $reglement;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParticipantTournoi>
+     */
+    public function getParticipantTournois(): Collection
+    {
+        return $this->participantTournois;
+    }
+
+    public function addParticipantTournoi(ParticipantTournoi $participantTournoi): static
+    {
+        if (!$this->participantTournois->contains($participantTournoi)) {
+            $this->participantTournois->add($participantTournoi);
+            $participantTournoi->setTournoi($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipantTournoi(ParticipantTournoi $participantTournoi): static
+    {
+        if ($this->participantTournois->removeElement($participantTournoi)) {
+            // set the owning side to null (unless already changed)
+            if ($participantTournoi->getTournoi() === $this) {
+                $participantTournoi->setTournoi(null);
+            }
+        }
 
         return $this;
     }
