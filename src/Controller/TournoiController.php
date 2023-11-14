@@ -50,7 +50,7 @@ class TournoiController extends AbstractController
             'tournoi' => $tournoi,
         ]);
     }
-
+    
     #[Route('/{id}/edit', name: 'app_tournoi_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Tournoi $tournoi, EntityManagerInterface $entityManager): Response
     {
