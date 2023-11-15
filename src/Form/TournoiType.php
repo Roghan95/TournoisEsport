@@ -20,45 +20,46 @@ class TournoiType extends AbstractType
     {
         $builder
             ->add('nomTournoi', TextType::class, [
-                'label' => 'Nom du tournoi',
+                'label' => 'Titre * ',
                 'required' => true
             ])
             ->add('nomOrganisation', TextType::class, [
-                'label' => 'Nom de l\'organisation',
+                'label' => 'Nom de l\'organisation * ',
                 'required' => true
             ])
             ->add('dateDebut', DateType::class, [
                 'input' => 'datetime_immutable',
-                'label' => 'Date de début',
+                'label' => 'Date de début * ',
                 'required' => true
             ])
             ->add('dateFin', DateType::class, [
                 'input' => 'datetime_immutable',
-                'label' => 'Date de fin',
+                'label' => 'Date de fin * ',
                 'required' => true
             ])
             ->add('nbJoueurMax', IntegerType::class, [
-                'label' => 'Nombre de joueurs maximum',
+                'label' => 'Nombre de joueurs max *',
                 'required' => true
             ])
-            ->add('description', CKEditorType::class, [
-                // 'label' => 'Description',
-                // 'required' => false
-                'config' => array(
-                    'uiColor' => '#ffffff',
-                ),
-            ])
+            ->add(
+                'description',
+                CKEditorType::class,
+                [
+                    'label' => 'Description *: ',
+                    'required' => true
+                ]
+            )
             ->add('logoFile', VichImageType::class, [
-                'label' => 'Logo du tournoi',
+                'label' => 'Logo du tournoi *: ',
                 'required' => true,
 
             ])
             ->add('banniereTrFile', VichImageType::class, [
-                'label' => 'Bannière',
+                'label' => 'Bannière *: ',
                 'required' => true
             ])
             ->add('lienTwitch', TextType::class, [
-                'label' => 'Lien Twitch',
+                'label' => 'Lien Twitch : ',
                 'required' => false
             ])
 
@@ -66,7 +67,7 @@ class TournoiType extends AbstractType
                 'class' => Jeu::class,
                 'choice_label' => 'nomJeu',
                 'label' => 'Jeu',
-                'placeholder' => 'Choisir un jeu'
+                'placeholder' => 'Choisir un jeu *: '
             ]);
     }
 

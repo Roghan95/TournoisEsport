@@ -48,5 +48,8 @@ function openTab(tabName) {
     document.getElementById(tabName).style.display = "block";
     event.currentTarget.className += " tab-active";
 }
+
+// Active le premier tab par défaut
+document.getElementById("tab-regles").click();
 // --------------------------------------------------
 
