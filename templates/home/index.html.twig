@@ -12,29 +12,28 @@
 		</button>
 		<div id="myDropdown" class="dropdown-content">
 			{% for jeu in jeux %}
-				<a href="#" onclick="selectGame('{{ jeu.id }}' , '{{ jeu.nomJeu }}' )">{{
-				jeu.nomJeu
-				}}</a>
+				<a href="#" onclick="selectGame('{{ jeu.id }}' , '{{ jeu.nomJeu }}' )">{{ jeu.nomJeu }}</a>
 			{% endfor %}
 		</div>
 	</div>
-
 	{% for tournoi in tournois %}
-		<a href="{{ path('app_tournoi_show', {'id' : tournoi.id }) }}" class="tournois-list">
-			<div class="tournament-item">
-				<div class="tr-container">
-					<div>
-						<img class="tournoi-img" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière tournoi"/>
-						<p>{{ tournoi.nomTournoi }}</p>
-						<p>{{ tournoi.nomOrganisation }}</p>
-					</div>
+		<div class="tournois-list">
+			<a href="{{ path('app_tournoi_show', {'id' : tournoi.id }) }}">
+				<div class="tournament-item">
+					<div class="tr-container">
+						<div>
+							<img class="tournoi-img" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière tournoi"/>
+							<p>{{ tournoi.nomTournoi }}</p>
+							<p>{{ tournoi.nomOrganisation }}</p>
+						</div>
 
-					<div class="tournament-time">
-						<p>{{ tournoi.dateDebut | format_datetime(locale='fr',pattern="EE dd MMM") }}</p>
-						<p>{{ tournoi.dateDebut | format_datetime('none', 'short', locale='fr') }}</p>
+						<div class="tournament-time">
+							<p>{{ tournoi.dateDebut | format_datetime(locale='fr',pattern="EE dd MMM") }}</p>
+							<p>{{ tournoi.dateDebut | format_datetime('none', 'short', locale='fr') }}</p>
+						</div>
 					</div>
 				</div>
-			</div>
-		</a>
+			</a>
+		</div>
 	{% endfor %}
 {% endblock %}

@@ -4,56 +4,37 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Tournoi</h1>
+	<div class="head-trd">
+		<img class="logo-trd" src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo du tournoi"/>
+		<div class="follow-trd">
+			<a href="">Valorant EU Daily by MEST.gg</a>
+			<div class="head-flw">
+				<a href="">Follow</a>
+				<p>10 Follower</p>
+			</div>
+		</div>
+	</div>
 
-	{# <table class="table">
-														        <tbody>
-														            <tr>
-														                <th>Id</th>
-														                <td>{{ tournoi.id }}</td>
-														            </tr>
-														            <tr>
-														                <th>NomTournoi</th>
-														                <td>{{ tournoi.nomTournoi }}</td>
-														            </tr>
-														            <tr>
-														                <th>NomOrganisation</th>
-														                <td>{{ tournoi.nomOrganisation }}</td>
-														            </tr>
-														            <tr>
-														                <th>DateDebut</th>
-														                <td>{{ tournoi.dateDebut ? tournoi.dateDebut|date('Y-m-d') : '' }}</td>
-														            </tr>
-														            <tr>
-														                <th>DateFin</th>
-														                <td>{{ tournoi.dateFin ? tournoi.dateFin|date('Y-m-d') : '' }}</td>
-														            </tr>
-														            <tr>
-														                <th>NbJoueurMax</th>
-														                <td>{{ tournoi.nbJoueurMax }}</td>
-														            </tr>
-														            <tr>
-														                <th>Description</th>
-														                <td>{{ tournoi.description }}</td>
-														            </tr>
-														            <tr>
-														                <th>BanniereTr</th>
-														                <td>{{ tournoi.banniereTr }}</td>
-														            </tr>
-														            <tr>
-														                <th>LienTwitch</th>
-														                <td>{{ tournoi.lienTwitch }}</td>
-														            </tr>
-														            <tr>
-														                <th>CreatedAt</th>
-														                <td>{{ tournoi.createdAt ? tournoi.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-														            </tr>
-														            <tr>
-														                <th>UpdatedAt</th>
-														                <td>{{ tournoi.updatedAt ? tournoi.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-														            </tr>
-														        </tbody>
-														    </table> #}
+	<h2>{{ tournoi.nomOrganisation }}</h2>
+
+	<div class="tab-bar">
+		<div class="tab-container">
+			<div class="tab" onclick="openTab('regles')">REGLES</div>
+			<div class="tab" onclick="openTab('participants')">PARTICIPANTS</div>
+			<div class="tab" onclick="openTab('matchs')">MATCHS</div>
+			<!-- Plus de tabs si nécessaire -->
+		</div>
+	</div>
+
+	<div id="regles" class="content">
+		{{ tournoi.description | raw}}
+	</div>
+	<div id="participants" class="content" style="display:none;">
+		<p>Participants</p>
+	</div>
+	<div id="matchs" class="content" style="display:none;">
+		<p>Matchs</p>
+	</div>
 
 
 	{% if tournoi.organisateur.id == app.user.id %}

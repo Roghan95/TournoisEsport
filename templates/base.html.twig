@@ -8,22 +8,26 @@
 			{% endblock %}
 		</title>
 		<link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/> {%
-	block stylesheets %}{% endblock %}
-		</head>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
+		{%
+	block stylesheets %}
+			{# {{ encore_entry_link_tags('app') }} #}
+		{% endblock %}
+	</head>
 
-		<body>
-			<div id="main-container">
-				{% block sidebar %}
-					{{ include ('include/sidebar.html.twig') }}
-				{% endblock %}
+	<body>
+		<div id="main-container">
+			{% block sidebar %}
+				{{ include ('include/sidebar.html.twig') }}
+			{% endblock %}
 
-				<div id="content"> {% block body %}{% endblock %}
-					</div>
+			<div id="content"> {% block body %}{% endblock %}
 				</div>
-				{% block javascripts %}
-					<script src="{{ asset('js/script.js') }}"></script>
-				{% endblock %}
-			</body>
+			</div>
+			{% block javascripts %}
+				{{ encore_entry_script_tags('app') }}
+				<script src="{{ asset('js/script.js') }}"></script>
+			{% endblock %}
+		</body>
 
-		</html>
+	</html>

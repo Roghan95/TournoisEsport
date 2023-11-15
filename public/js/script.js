@@ -1,10 +1,10 @@
 // Vérifier si un jeu est déjà sélectionné dans le localStorage
-document.addEventListener('DOMContentLoaded', function() { 
+document.addEventListener('DOMContentLoaded', function () {
     var storedGameName = localStorage.getItem('selectedGameName');
     if (storedGameName) {
         document.getElementById('selectGameButton').textContent = storedGameName;
     }
- });
+});
 // Fonction pour sélectionner un jeu
 function selectGame(id, nomJeu) {
     localStorage.setItem('selectedGameId', id); // Stocker l'id du jeu dans le localStorage
@@ -19,7 +19,7 @@ function showDropdown() {
 }
 
 // Gérer la fermeture de la liste déroulante lorsque l'utilisateur clique en dehors
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (!event.target.matches('.dropbtn')) {
         var dropdowns = document.getElementsByClassName("dropdown-content");
         var i;
@@ -31,3 +31,22 @@ window.onclick = function(event) {
         }
     }
 }
+
+//? TAB BAR REGLES PARTICIPANTS MATCHS D'UN TOURNOI
+function openTab(tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    tablinks = document.getElementsByClassName("tab");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" tab-active", "");
+    }
+
+    document.getElementById(tabName).style.display = "block";
+    event.currentTarget.className += " tab-active";
+}
+// --------------------------------------------------
+

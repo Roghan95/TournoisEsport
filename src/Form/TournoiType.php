@@ -4,17 +4,15 @@ namespace App\Form;
 
 use App\Entity\Jeu;
 use App\Entity\Tournoi;
-use Faker\Provider\ar_EG\Text;
-use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-// use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 class TournoiType extends AbstractType
 {
@@ -43,9 +41,12 @@ class TournoiType extends AbstractType
                 'label' => 'Nombre de joueurs maximum',
                 'required' => true
             ])
-            ->add('description', TextType::class, [
-                'label' => 'Description',
-                'required' => false
+            ->add('description', CKEditorType::class, [
+                // 'label' => 'Description',
+                // 'required' => false
+                'config' => array(
+                    'uiColor' => '#ffffff',
+                ),
             ])
             ->add('logoFile', VichImageType::class, [
                 'label' => 'Logo du tournoi',

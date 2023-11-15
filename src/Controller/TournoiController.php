@@ -50,7 +50,7 @@ class TournoiController extends AbstractController
             'tournoi' => $tournoi,
         ]);
     }
-    
+
     #[Route('/{id}/edit', name: 'app_tournoi_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Tournoi $tournoi, EntityManagerInterface $entityManager): Response
     {
@@ -72,7 +72,7 @@ class TournoiController extends AbstractController
     #[Route('/{id}', name: 'app_tournoi_delete', methods: ['POST'])]
     public function delete(Request $request, Tournoi $tournoi, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$tournoi->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $tournoi->getId(), $request->request->get('_token'))) {
             $entityManager->remove($tournoi);
             $entityManager->flush();
         }
