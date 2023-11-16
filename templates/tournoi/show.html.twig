@@ -59,6 +59,6 @@
 		<a href="{{ path('new_match', {'id' : tournoi.id}) }}">Ajouter un match</a>
 		{{ include('tournoi/_delete_form.html.twig') }}
 	{% else %}
-		<button id="btnParticiper">Participer</button>
+		<button data-tournoi-id={{tournoi.id}} id="btnParticiper">Participer</button>
 	{% endif %}
 {% endblock %}

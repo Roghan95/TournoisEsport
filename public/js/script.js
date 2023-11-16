@@ -56,18 +56,25 @@ document.getElementById("tab-regles").click();
 // Function qui intércèpte le formulaire qui permet de rejoindre un tournoi
 document.addEventListener('DOMContentLoaded', function () {
     let btnParticiper = document.getElementById("btnParticiper");
+    let tournoiId = btnParticiper.dataset.tournoiId;
+    console.log('tournoiId', tournoiId);
     btnParticiper.addEventListener('click', function (e) {
         e.preventDefault();
 
         fetch('join-tournoi', {
             method: 'POST',
-            // body: {
-            //     "keyTest": "valueTest"
-            // }
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "tournoiId": tournoiId
+            })
         })
             .then(response => response.json())
             .then(data => {
                 console.log('reponse:', data);
+                let result = data.success;
+                console.log('result', result);
                 // Traiter la réponse
             })
             .catch(error => console.error('Error:', error));

@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\ParticipantTournoi;
 use App\Entity\Tournoi;
 use App\Form\TournoiType;
+use App\Repository\TournoiRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +16,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/tournoi')]
 class TournoiController extends AbstractController
 {
+
+    public function __construct(
+        private EntityManagerInterface $em
+    ) {
+    }
     // #[Route('/', name: 'app_tournoi_index', methods: ['GET'])]
     // public function index(TournoiRepository $tournoiRepository): Response
     // {
@@ -23,7 +30,7 @@ class TournoiController extends AbstractController
     // }
 
     #[Route('/new', name: 'app_tournoi_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request): Response
     {
         $tournoi = new Tournoi();
         $form = $this->createForm(TournoiType::class, $tournoi);
@@ -31,8 +38,8 @@ class TournoiController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $tournoi->setOrganisateur($this->getUser());
-            $entityManager->persist($tournoi);
-            $entityManager->flush();
+            $this->em->persist($tournoi);
+            $this->em->flush();
 
             return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
@@ -44,12 +51,30 @@ class TournoiController extends AbstractController
     }
 
     #[Route('/join-tournoi', name: 'join_tournoi', methods: ['POST'])]
-    public function joinTournoi(Request $request, EntityManagerInterface $em): Response
+    public function joinTournoi(Request $request, TournoiRepository $tournoiRepo): Response
     {
-        return $this->json(['success' => true]);
-        
-        // Gérer les erreurs éventuelles
-        // return new JsonResponse(['success' => false, 'error' => 'Erreur de formulaire']);
+        try {
+            $data = json_decode($request->getContent(), true);
+
+            $tournoiId = $data['tournoiId'];
+            // return $this->json(['success' => true, 'tournoiId' => $data], 200);
+            $tournoi = $tournoiRepo->find($tournoiId);
+
+            $participantTournoi = new ParticipantTournoi();
+            $participantTournoi->setTournoi($tournoi);
+            $participantTournoi->setUtilisateur($this->getUser());
+            $participantTournoi->setInGamePseudo('Bays');
+
+            // $tournoi->addParticipantTournoi($participantTournoi);
+
+            $this->em->persist($participantTournoi);
+            $this->em->flush();
+
+            return $this->json(['success' => true], 200);
+        } catch (\Throwable $th) {
+            // Gérer les erreurs éventuelles
+            return new JsonResponse(['success' => false, 'error' => $th->getMessage()]);
+        }
     }
 
     #[Route('/{id}', name: 'app_tournoi_show', methods: ['GET'])]
@@ -88,6 +113,4 @@ class TournoiController extends AbstractController
 
         return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
     }
-
-    
 }

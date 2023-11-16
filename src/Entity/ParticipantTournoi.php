@@ -25,7 +25,7 @@ class ParticipantTournoi
     #[ORM\Column(length: 100)]
     private ?string $inGamePseudo = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     private ?string $nomDiscord = null;
 
     #[ORM\Column]
