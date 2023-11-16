@@ -28,19 +28,37 @@
 		</div>
 
 		<div id="regles" class="content">
+			<img class="banner-tr" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière du tournoi">
+			<hr>
+			<p>A PROPOS DE CE TOURNOI</p>
+
 			{{ tournoi.description | raw}}
 			{{ tournoi.jeu }}
-			{{  }}
 		</div>
 		<div id="participants" class="content" style="display:none;">
-			<p>Participants</p>
+			<p>Joueurs ({{ tournoi.participantTournois | length }})</p>
+			{% for joueur in tournoi.participantTournois %}
+				{{ joueur.pseudo }}
+			{% endfor %}
 		</div>
 		<div id="matchs" class="content" style="display:none;">
 			<p>Matchs</p>
+			<ul>
+				{% for index, match in tournoi.getGameMatches %}
+					<li>{{ index + 1 }}:
+						{{ match.dateDebut | format_datetime('short', 'short', locale='fr') }}</li>
+				{% endfor %}
+			</ul>
+
 		</div>
 	</div>
+
+
 	{% if tournoi.organisateur.id == app.user.id %}
 		<a href="{{ path('app_tournoi_edit', {'id' : tournoi.id}) }}">edit</a>
+		<a href="{{ path('new_match', {'id' : tournoi.id}) }}">Ajouter un match</a>
 		{{ include('tournoi/_delete_form.html.twig') }}
+	{% else %}
+		<button id="btnParticiper">Participer</button>
 	{% endif %}
 {% endblock %}

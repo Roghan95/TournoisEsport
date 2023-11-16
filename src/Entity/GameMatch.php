@@ -36,6 +36,12 @@ class GameMatch
     #[ORM\OneToMany(mappedBy: 'gameMatch', targetEntity: Participant::class, orphanRemoval: true)]
     private Collection $participants;
 
+    #[ORM\Column(length: 255)]
+    private ?string $typeMatch = null;
+
+    #[ORM\Column]
+    private ?int $nbJoueursMax = null;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
@@ -143,6 +149,30 @@ class GameMatch
                 $participant->setGameMatch(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTypeMatch(): ?string
+    {
+        return $this->typeMatch;
+    }
+
+    public function setTypeMatch(string $typeMatch): static
+    {
+        $this->typeMatch = $typeMatch;
+
+        return $this;
+    }
+
+    public function getNbJoueursMax(): ?int
+    {
+        return $this->nbJoueursMax;
+    }
+
+    public function setNbJoueursMax(int $nbJoueursMax): static
+    {
+        $this->nbJoueursMax = $nbJoueursMax;
 
         return $this;
     }

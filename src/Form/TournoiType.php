@@ -37,10 +37,6 @@ class TournoiType extends AbstractType
                 'label' => 'Date de fin * ',
                 'required' => true
             ])
-            ->add('nbJoueurMax', IntegerType::class, [
-                'label' => 'Nombre de joueurs max *',
-                'required' => true
-            ])
             ->add(
                 'description',
                 CKEditorType::class,

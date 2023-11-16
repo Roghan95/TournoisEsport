@@ -4,12 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Tournoi;
 use App\Form\TournoiType;
-use App\Repository\TournoiRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/tournoi')]
 class TournoiController extends AbstractController
@@ -41,6 +41,15 @@ class TournoiController extends AbstractController
             'tournoi' => $tournoi,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/join-tournoi', name: 'join_tournoi', methods: ['POST'])]
+    public function joinTournoi(Request $request, EntityManagerInterface $em): Response
+    {
+        return $this->json(['success' => true]);
+        
+        // Gérer les erreurs éventuelles
+        // return new JsonResponse(['success' => false, 'error' => 'Erreur de formulaire']);
     }
 
     #[Route('/{id}', name: 'app_tournoi_show', methods: ['GET'])]
@@ -79,4 +88,6 @@ class TournoiController extends AbstractController
 
         return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
     }
+
+    
 }

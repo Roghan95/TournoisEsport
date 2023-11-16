@@ -192,5 +192,11 @@ body {
 
 
 .main-content {
-  width: 60%;
+  width: 900px;
+  justify-content: center;
+}
+
+.banner-tr {
+  width: 900px;
+  height: 350px;
 }

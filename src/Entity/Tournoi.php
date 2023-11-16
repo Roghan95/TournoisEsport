@@ -22,11 +22,11 @@ class Tournoi
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank (message: "Le nom du tournoi ne peut pas être vide")]
+    #[Assert\NotBlank(message: "Le nom du tournoi ne peut pas être vide")]
     private ?string $nomTournoi = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank (message: "Le nom de l'organisation ne peut pas être vide")]
+    #[Assert\NotBlank(message: "Le nom de l'organisation ne peut pas être vide")]
     private ?string $nomOrganisation = null;
 
     #[Vich\UploadableField(mapping: 'tournoi_image', fileNameProperty: 'logoTournoi')]
@@ -36,16 +36,12 @@ class Tournoi
     private ?string $logoTournoi = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank (message: "Vous devez renseigner la date de début")]
+    #[Assert\NotBlank(message: "Vous devez renseigner la date de début")]
     private ?\DateTimeImmutable $dateDebut = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank (message: "Vous devez renseigner la date de fin")]
+    #[Assert\NotBlank(message: "Vous devez renseigner la date de fin")]
     private ?\DateTimeImmutable $dateFin = null;
-
-    #[ORM\Column]
-    #[Assert\NotBlank (message: "Vous devez renseigner le nombre de joueurs maximum")]
-    private ?int $nbJoueurMax = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
@@ -58,7 +54,7 @@ class Tournoi
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lienTwitch = null;
-    
+
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $reglement = null;
@@ -184,18 +180,6 @@ class Tournoi
     public function setDateFin(\DateTimeImmutable $dateFin): static
     {
         $this->dateFin = $dateFin;
-
-        return $this;
-    }
-
-    public function getNbJoueurMax(): ?int
-    {
-        return $this->nbJoueurMax;
-    }
-
-    public function setNbJoueurMax(int $nbJoueurMax): static
-    {
-        $this->nbJoueurMax = $nbJoueurMax;
 
         return $this;
     }
