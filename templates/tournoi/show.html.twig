@@ -59,6 +59,26 @@
 		<a href="{{ path('app_tournoi_edit', {'id' : tournoi.id}) }}">edit</a>
 		{{ include('tournoi/_delete_form.html.twig') }}
 	{% else %}
-		<button data-tournoi-id={{tournoi.id}} id="btnParticiper">Participer</button>
+		<!-- Bouton pour ouvrir la modale -->
+		{% set isParticipant = false %}
+		{% for participant in tournoi.participantTournois %}
+			{% if participant.utilisateur.id == app.user.id %}
+				{% set isParticipant = true %}
+			{% endif %}
+		{% endfor %}
+		{% if not isParticipant %}
+			<button id="btnParticiper" data-tournoi-id="{{ tournoi.id }}" data-jeu-id="{{ tournoi.jeu.id }}">Participer</button>
+		{% endif %}
+
+
+		<!-- Modale -->
+		<div id="pseudoModal" class="modal">
+			<div class="modal-content">
+				<span class="close-btn">&times;</span>
+				<h2>Entrez votre pseudo</h2>
+				<input type="text" id="pseudo" name="pseudo">
+				<button id="btnSubmitPseudo">Envoyer</button>
+			</div>
+		</div>
 	{% endif %}
 {% endblock %}

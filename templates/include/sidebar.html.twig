@@ -9,7 +9,7 @@
 		<a href="{{ path('new_equipe') }}">Crée une équipe</a>
 		{% if app.user == null %}
 			<a href="{{ path('app_login') }}">Se connecter</a>
-			<a href="{{ path('app_register') }}">S'enregistrer</a>  
+			<a href="{{ path('app_register') }}">S'enregistrer</a>
 		{% else %}
 			<a href="{{ path('app_logout') }}">Se déconnecter</a>
 		{% endif %}

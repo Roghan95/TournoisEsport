@@ -200,3 +200,39 @@ body {
   width: 900px;
   height: 350px;
 }
+
+.modal {
+  display: none; /* Caché par défaut */
+  position: fixed; /* Reste en place même lors du défilement */
+  z-index: 1; /* Se situe au-dessus des autres éléments */
+  left: 0;
+  top: 0;
+  width: 100%; /* Largeur complète */
+  height: 100%; /* Hauteur complète */
+  overflow: auto; /* Gérer le défilement si nécessaire */
+  background-color: rgb(0,0,0); /* Couleur de fond */
+  background-color: rgba(0,0,0,0.4); /* Fond noir avec opacité */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% du haut et centré horizontalement */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Peut être ajusté */
+}
+
+.close-btn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+

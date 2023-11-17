@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('selectGameButton').textContent = storedGameName;
     }
 });
+
 // Fonction pour sélectionner un jeu
 function selectGame(id, nomJeu) {
     localStorage.setItem('selectedGameId', id); // Stocker l'id du jeu dans le localStorage
@@ -54,13 +55,73 @@ document.getElementById("tab-regles").click();
 // --------------------------------------------------
 
 // Function qui intércèpte le formulaire qui permet de rejoindre un tournoi
+// document.addEventListener('DOMContentLoaded', function () {
+//     let btnParticiper = document.getElementById("btnParticiper");
+//     let tournoiId = btnParticiper.dataset.tournoiId;
+//     console.log('tournoiId', tournoiId);
+//     btnParticiper.addEventListener('click', function (e) {
+//         e.preventDefault();
+
+//         fetch('join-tournoi', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({
+//                 "tournoiId": tournoiId
+//             })
+//         })
+//             .then(response => response.json())
+//             .then(data => {
+//                 console.log('reponse:', data);
+//                 let result = data.success;
+//                 console.log('result', result);
+//                 // Traiter la réponse
+//             })
+//             .catch(error => console.error('Error:', error));
+//     });
+// });
+// ---------------------------------------------------------------------------
+
+
 document.addEventListener('DOMContentLoaded', function () {
+
     let btnParticiper = document.getElementById("btnParticiper");
+    let jeuId = btnParticiper.dataset.jeuId;
     let tournoiId = btnParticiper.dataset.tournoiId;
-    console.log('tournoiId', tournoiId);
+    // Ouvrir la modale
     btnParticiper.addEventListener('click', function (e) {
         e.preventDefault();
+        fetch(`check-pseudo/${jeuId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('reponse:', data);
+                let result = data.success;
+                console.log('result', result);
+                if (result == false) {
+                    document.getElementById('pseudoModal').style.display = 'block';
+                }
+                else {
+                    addUserTournoi();
+                }
+            })
+            .catch(error => console.error('Error:', error));
 
+    });
+
+    // Fermer la modale
+    document.querySelector('.close-btn').addEventListener('click', function () {
+        document.getElementById('pseudoModal').style.display = 'none';
+    });
+
+
+    // Ajouter l'utilisateur dans le tournoi
+    function addUserTournoi() {
         fetch('join-tournoi', {
             method: 'POST',
             headers: {
@@ -78,6 +139,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Traiter la réponse
             })
             .catch(error => console.error('Error:', error));
-    });
-});
+    }
 
+    async function saveNewPseudo(pseudo) {
+        let response = await fetch('save-new-pseudo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "pseudo": pseudo,
+                "jeuId": jeuId
+            })
+        });
+        let data = await response.json();
+        console.log('data', data);
+        let result = data.success;
+        console.log('result', result);
+        return result;
+
+    }
+
+    let btnSubmitPseudo = document.getElementById("btnSubmitPseudo");
+
+    btnSubmitPseudo.addEventListener('click', async function (e) {
+        e.preventDefault();
+        let pseudo = document.getElementById("pseudo").value;
+        await saveNewPseudo(pseudo);
+        addUserTournoi();
+
+        document.getElementById('pseudoModal').style.display = 'none';
+    });
+
+});

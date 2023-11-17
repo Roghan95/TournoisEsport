@@ -6,6 +6,7 @@ use App\Repository\ParticipantTournoiRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParticipantTournoiRepository::class)]
+#[ORM\UniqueConstraint(name: 'tournoi_participant', columns: ['utilisateur_id', 'tournoi_id'])]
 #[ORM\HasLifecycleCallbacks]
 class ParticipantTournoi
 {
