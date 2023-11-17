@@ -58,7 +58,7 @@ class TournoiController extends AbstractController
 
     // Fonction permettant de rejoindre un tournoi
     #[Route('/join-tournoi', name: 'join_tournoi', methods: ['POST'])]
-    public function joinTournoi(Request $request): Response
+    public function joinTournoi(Request $request, PseudoEnJeuRepository $pseudoEnJeuRepo): Response
     {
         try {
             $data = json_decode($request->getContent(), true);
@@ -66,11 +66,11 @@ class TournoiController extends AbstractController
             $tournoiId = $data['tournoiId'];
             // return $this->json(['success' => true, 'tournoiId' => $data], 200);
             $tournoi = $this->tournoiRepo->find($tournoiId);
-
+            $pseudoEnJeu = $pseudoEnJeuRepo->findOneBy(['utilisateur' => $this->getUser(), 'jeu' => $tournoi->getJeu()->getId()]);
             $participantTournoi = new ParticipantTournoi();
             $participantTournoi->setTournoi($tournoi);
             $participantTournoi->setUtilisateur($this->getUser());
-            $participantTournoi->setInGamePseudo('Bays');
+            $participantTournoi->setInGamePseudo($pseudoEnJeu->getPseudo());
 
             // $tournoi->addParticipantTournoi($participantTournoi);
 
@@ -84,6 +84,7 @@ class TournoiController extends AbstractController
         }
     }
 
+    // Fonction permettant de vérifier si un utilisateur est déjà inscrit à un tournoi
     #[Route('/check-pseudo/{jeuId}', name: 'check_pseudo', methods: ['GET'])]
     public function checkPseudo($jeuId, PseudoEnJeuRepository $pseudoEnJeuRepo): Response
     {
@@ -101,6 +102,7 @@ class TournoiController extends AbstractController
         }
     }
 
+    // Fonction permettant de sauvegarder un nouveau pseudo
     #[Route('/save-new-pseudo', name: 'save_new_pseudo', methods: ['POST'])]
     public function savePseudo(Request $request, JeuRepository $jeuRepo): Response
     {
