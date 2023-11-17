@@ -40,7 +40,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
-    
+
     #[Vich\UploadableField(mapping: 'utilisateur_photo', fileNameProperty: 'photo')]
     private ?File $photoFile = null;
 
@@ -68,6 +68,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: ParticipantTournoi::class, orphanRemoval: true)]
     private Collection $participantTournois;
 
+    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: PseudoEnJeu::class, orphanRemoval: true)]
+    private Collection $pseudosEnJeux;
+
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function updateTimestamps(): void
@@ -86,6 +89,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->follows = new ArrayCollection();
         $this->equipes = new ArrayCollection();
         $this->participantTournois = new ArrayCollection();
+        $this->pseudosEnJeux = new ArrayCollection();
     }
 
     // VichUploader
@@ -382,6 +386,36 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($participantTournoi->getUtilisateur() === $this) {
                 $participantTournoi->setUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PseudoEnJeu>
+     */
+    public function getPseudosEnJeux(): Collection
+    {
+        return $this->pseudosEnJeux;
+    }
+
+    public function addPseudoEnJeu(PseudoEnJeu $pseudosEnJeux): static
+    {
+        if (!$this->pseudosEnJeux->contains($pseudosEnJeux)) {
+            $this->pseudosEnJeux->add($pseudosEnJeux);
+            $pseudosEnJeux->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removePseudoEnJeu(PseudoEnJeu $pseudosEnJeux): static
+    {
+        if ($this->pseudosEnJeux->removeElement($pseudosEnJeux)) {
+            // set the owning side to null (unless already changed)
+            if ($pseudosEnJeux->getUtilisateur() === $this) {
+                $pseudosEnJeux->setUtilisateur(null);
             }
         }
 
