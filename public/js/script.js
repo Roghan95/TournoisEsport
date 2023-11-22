@@ -1,19 +1,3 @@
-// Vérifier si un jeu est déjà sélectionné dans le localStorage
-document.addEventListener('DOMContentLoaded', function () {
-    var storedGameName = localStorage.getItem('selectedGameName');
-    if (storedGameName) {
-        document.getElementById('selectGameButton').textContent = storedGameName;
-    }
-});
-
-// Fonction pour sélectionner un jeu
-function selectGame(id, nomJeu) {
-    localStorage.setItem('selectedGameId', id); // Stocker l'id du jeu dans le localStorage
-    localStorage.setItem('selectedGameName', nomJeu); // Stocker le jeu dans le localStorage
-    document.getElementById('selectGameButton').textContent = nomJeu; // Mettre à jour le bouton
-    document.getElementById("myDropdown").classList.remove("show"); // Fermer la liste déroulante
-}
-
 // Toggle pour afficher/cacher la liste déroulante
 function showDropdown() {
     document.getElementById("myDropdown").classList.toggle("show");
@@ -54,33 +38,7 @@ function openTab(tabName) {
 document.getElementById("tab-regles").click();
 // --------------------------------------------------
 
-// Function qui intércèpte le formulaire qui permet de rejoindre un tournoi
-// document.addEventListener('DOMContentLoaded', function () {
-//     let btnParticiper = document.getElementById("btnParticiper");
-//     let tournoiId = btnParticiper.dataset.tournoiId;
-//     console.log('tournoiId', tournoiId);
-//     btnParticiper.addEventListener('click', function (e) {
-//         e.preventDefault();
 
-//         fetch('join-tournoi', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({
-//                 "tournoiId": tournoiId
-//             })
-//         })
-//             .then(response => response.json())
-//             .then(data => {
-//                 console.log('reponse:', data);
-//                 let result = data.success;
-//                 console.log('result', result);
-//                 // Traiter la réponse
-//             })
-//             .catch(error => console.error('Error:', error));
-//     });
-// });
 // ---------------------------------------------------------------------------
 
 
@@ -141,6 +99,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error:', error));
     }
 
+    // Fonction asynchrone pour sauvegarder le nouveau pseudo
+
     async function saveNewPseudo(pseudo) {
         let response = await fetch('save-new-pseudo', {
             method: 'POST',
@@ -160,8 +120,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
+    // récupère le bouton submit de la modale
     let btnSubmitPseudo = document.getElementById("btnSubmitPseudo");
 
+    // écoute le click sur le bouton
     btnSubmitPseudo.addEventListener('click', async function (e) {
         e.preventDefault();
         let pseudo = document.getElementById("pseudo").value;

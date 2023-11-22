@@ -6,23 +6,19 @@
 
 
 {% block body %}
-	<div class="dropdown">
-		<button onclick="showDropdown()" class="dropbtn" id="selectGameButton">
-			Sélectionnez un jeu
-		</button>
-		<div id="myDropdown" class="dropdown-content">
-			{% for jeu in jeux %}
-				<a href="#" onclick="selectGame('{{ jeu.id }}' , '{{ jeu.nomJeu }}' )">{{ jeu.nomJeu }}</a>
-			{% endfor %}
-		</div>
-	</div>
+	<select id="jeu-select">
+	    <option value="">Sélectionnez un jeu</option>
+		{% for jeu in jeux %}
+			<option value="{{ jeu.id }}" {% if jeu.id == jeuSelectionne %}selected{% endif %}>{{ jeu.nomJeu }}</option>
+		{% endfor %}
+	</select>
 	{% for tournoi in tournois %}
 		<div class="tournois-list">
 			<a href="{{ path('app_tournoi_show', {'id' : tournoi.id }) }}">
 				<div class="tournament-item">
 					<div class="tr-container">
 						<div>
-							<img class="tournoi-img" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière tournoi"/>
+						<img class="tournoi-img" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière tournoi"/>
 							<p>{{ tournoi.nomTournoi }}</p>
 							<p>{{ tournoi.nomOrganisation }}</p>
 						</div>
@@ -36,4 +32,11 @@
 			</a>
 		</div>
 	{% endfor %}
+
+	
+{% endblock %}
+
+{% block javascripts %}
+{# {{ encore_entry_script_tags('app') }} #}
+	<script src="{{ asset('js/select_jeu.js') }}"></script>
 {% endblock %}
