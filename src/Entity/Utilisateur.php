@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
@@ -21,6 +22,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('message')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
@@ -36,6 +38,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups('message')]
     private ?string $pseudo = null;
 
     #[ORM\Column(type: 'boolean')]
@@ -45,6 +48,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private ?File $photoFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('message')]
     private ?string $photo = null;
 
     #[ORM\ManyToMany(targetEntity: Room::class, mappedBy: 'utilisateurs')]

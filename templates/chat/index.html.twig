@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RoomController!
+{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block body %}
+	<div id="chat" data-user-id="{{ app.user.id }}">
+		<div class="rooms">
+			{% for room in rooms %}
+				<div class="room-item" data-room-id={{room.id}}>
+					{% for utilisateur in room.utilisateurs %}
+						{% if utilisateur.id != app.user.id %}
+							<p>{{utilisateur.pseudo}}</p>
+						{% endif %}
+					{% endfor %}
+
+					<p>{{room.lastMessage}}</p>
+				</div>
+
+				<hr>
+
+			{% endfor %}
+		</div>
+		<div class="message-container">
+			<div id="messages"></div>
+			<div class="message-form">
+				<form id="send-message-form">
+					<input type="text" id="message-text" placeholder="Écrivez un message...">
+					<button type="submit">Envoyer</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	{# {{ parent() }} #}
+	<script src="{{ asset('js/chat.js') }}"></script>
+{% endblock %}
+{# 
+<form action="">
+            <input type="text" id="message" placeholder="Message">
+            <button type="submit">Envoyer</button>
+        </form> #}

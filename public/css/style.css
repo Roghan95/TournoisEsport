@@ -237,3 +237,37 @@ body {
 }
 
 
+/* CHAT */
+#chat{
+  display: flex;
+  height: 100%;
+}
+
+.rooms {
+  width: 15%;
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+  height: 100%;
+}
+
+.message-form {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+}
+
+.message-sent {
+  text-align: right;
+}
+
+.message-received {
+  text-align: left;
+}
+
+#send-message-form input {
+padding: 20px;  
+}

@@ -28,7 +28,6 @@ class EquipeController extends AbstractController
     #[Route('/equipe/new', name: 'new_equipe')]
     public function ajouter(Request $request): Response
     { 
-
         $equipe = new Equipe();
         $form = $this->createForm(EquipeType::class, $equipe);
         $form->handleRequest($request);
