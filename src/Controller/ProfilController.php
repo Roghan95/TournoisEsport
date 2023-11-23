@@ -30,6 +30,14 @@ class ProfilController extends AbstractController
         ]);
     }
 
+    #[Route('/profil/param', name: 'app_profil_param')]
+    public function profilParam(): Response
+    {
+        return $this->render('profil/param_acc.html.twig', [
+            
+        ]);
+    }
+
     // Fonction pour qui permet de quitter une équipe
     #[Route('/equipe/quitter/{id}', name: 'equipe_quitter')]
     public function leaveTeam(Equipe $equipe): Response

@@ -1,0 +1,32 @@
+<div id="sidebar">
+	<img class="logo" src="{{ asset('img/logo.png') }}" alt="Logo victoryforge"/>
+	<hr/>
+	{% if app.user and app.user.photo %}
+		<a href="{{ path('app_profil', {'id' : utilisateur.id}) }}">
+			<img src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">
+		</a>
+	{% elseif app.user %}
+		<a
+			href="{{ path('app_profil') }}">
+			{# <img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil"> #}
+			<a href="">Personnaliser</a>
+		</a>
+	{% endif %}
+
+	<div class="profil-menu">
+		<ul style="list-style:none;">
+			<li>
+				<a href="{{ path('app_home') }}">Accueil</a>
+			</li>
+			<li>
+				<a href="{{ path('app_profil') }}">Profil</a>
+			</li>
+			<li>
+				<a href="{{ path('app_profil_param') }}">Paramètres du compte</a>
+			</li>
+			<li>
+				<a href="app_logout">Se déconnecter</a>
+			</li>
+		</ul>
+	</div>
+</div>

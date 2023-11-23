@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'Content-Type': 'application/json'
             },
+            // On envoie le pseudo et l'id du jeu et on encode en JSON
             body: JSON.stringify({
                 "pseudo": pseudo,
                 "jeuId": jeuId

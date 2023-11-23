@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // séléctionner le jeu
+    // récupère le jeu sélectionné 
     let jeuSelect = document.getElementById("jeu-select");
 
     jeuSelect.addEventListener('change', function () {
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-
+// Sélectionner le jeu
 function selectJeu(jeuId) {
     fetch('/', {
         method: 'POST',
@@ -20,6 +20,7 @@ function selectJeu(jeuId) {
         body: JSON.stringify({
             "jeuId": jeuId
         })
+        // une fois un jeu sélectionné, rechargez la page
     }).then(response => {
         // Rechargez la page après que la requête a été envoyée
         console.log('response', response);
