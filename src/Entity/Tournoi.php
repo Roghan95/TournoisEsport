@@ -79,6 +79,9 @@ class Tournoi
     #[ORM\OneToMany(mappedBy: 'tournoi', targetEntity: ParticipantTournoi::class, orphanRemoval: true)]
     private Collection $participantTournois;
 
+    #[ORM\Column(length: 50)]
+    private ?string $region = null;
+
 
     public function __construct()
     {
@@ -353,6 +356,18 @@ class Tournoi
                 $participantTournoi->setTournoi(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRegion(): ?string
+    {
+        return $this->region;
+    }
+
+    public function setRegion(string $region): static
+    {
+        $this->region = $region;
 
         return $this;
     }

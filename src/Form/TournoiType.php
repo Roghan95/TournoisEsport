@@ -54,16 +54,27 @@ class TournoiType extends AbstractType
                 'label' => 'Bannière *: ',
                 'required' => true
             ])
+            ->add('region', TextType::class, [
+                'label' => 'Région *: ',
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Ex: Europe, Amérique du Nord, ...'
+                ]
+            ])
+
             ->add('lienTwitch', TextType::class, [
                 'label' => 'Lien Twitch : ',
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Ex: https://www.twitch.tv/...'
+                ]
             ])
 
             ->add('jeu', EntityType::class, [
                 'class' => Jeu::class,
                 'choice_label' => 'nomJeu',
                 'label' => 'Jeu',
-                'placeholder' => 'Choisir un jeu *: '
+                'placeholder' => 'Choisissez un jeu *: '
             ]);
     }
 
