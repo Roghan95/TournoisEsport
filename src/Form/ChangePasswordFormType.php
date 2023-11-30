@@ -28,10 +28,14 @@ class ChangePasswordFormType extends AbstractType
                             'message' => 'Veuillez saisir un mot de passe',
                         ]),
                         new Length([
-                            'min' => 6,
+                            'min' => 10,
                             'minMessage' => 'Votre mot de passe doît avoir minimum {{ limit }} caractères',
-                            // max length allowed by Symfony for security reasons
+                        //     // max length allowed by Symfony for security reasons
                             'max' => 4096,
+                        ]),
+                        new Regex([
+                            'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{10,}$/',
+                            'message' => 'Votre mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial'
                         ]),
                     ],
                     'label' => 'Nouveau mot de passe',

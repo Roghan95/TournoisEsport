@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231130104551 extends AbstractMigration
+final class Version20231130185557 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -29,6 +29,7 @@ final class Version20231130104551 extends AbstractMigration
         $this->addSql('CREATE TABLE participant (id INT AUTO_INCREMENT NOT NULL, game_match_id INT NOT NULL, utilisateur_id INT NOT NULL, equipe_id INT DEFAULT NULL, is_win TINYINT(1) DEFAULT 0 NOT NULL, INDEX IDX_D79F6B1181FA53F0 (game_match_id), INDEX IDX_D79F6B11FB88E14F (utilisateur_id), INDEX IDX_D79F6B116D861B89 (equipe_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE participant_tournoi (id INT AUTO_INCREMENT NOT NULL, tournoi_id INT NOT NULL, utilisateur_id INT NOT NULL, in_game_pseudo VARCHAR(100) NOT NULL, nom_discord VARCHAR(100) DEFAULT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', updated_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_82A216D7F607770A (tournoi_id), INDEX IDX_82A216D7FB88E14F (utilisateur_id), UNIQUE INDEX tournoi_participant (utilisateur_id, tournoi_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE pseudo_en_jeu (id INT AUTO_INCREMENT NOT NULL, utilisateur_id INT NOT NULL, jeu_id INT NOT NULL, pseudo VARCHAR(50) NOT NULL, INDEX IDX_9A9EFAD3FB88E14F (utilisateur_id), INDEX IDX_9A9EFAD38C9E392E (jeu_id), UNIQUE INDEX pseudo_unique (utilisateur_id, jeu_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE reset_password_request (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, selector VARCHAR(20) NOT NULL, hashed_token VARCHAR(100) NOT NULL, requested_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', expires_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_7CE748AA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE room (id INT AUTO_INCREMENT NOT NULL, last_message VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', updated_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE room_utilisateur (room_id INT NOT NULL, utilisateur_id INT NOT NULL, INDEX IDX_929CD8C54177093 (room_id), INDEX IDX_929CD8CFB88E14F (utilisateur_id), PRIMARY KEY(room_id, utilisateur_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE tournoi (id INT AUTO_INCREMENT NOT NULL, jeu_id INT NOT NULL, organisateur_id INT NOT NULL, nom_tournoi VARCHAR(100) NOT NULL, nom_organisation VARCHAR(100) NOT NULL, logo_tournoi VARCHAR(255) DEFAULT NULL, date_debut DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', date_fin DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', description LONGTEXT NOT NULL, banniere_tr VARCHAR(255) NOT NULL, lien_twitch VARCHAR(255) DEFAULT NULL, reglement LONGTEXT DEFAULT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', updated_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', region VARCHAR(50) NOT NULL, INDEX IDX_18AFD9DF8C9E392E (jeu_id), INDEX IDX_18AFD9DFD936B2FA (organisateur_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -51,6 +52,7 @@ final class Version20231130104551 extends AbstractMigration
         $this->addSql('ALTER TABLE participant_tournoi ADD CONSTRAINT FK_82A216D7FB88E14F FOREIGN KEY (utilisateur_id) REFERENCES utilisateur (id)');
         $this->addSql('ALTER TABLE pseudo_en_jeu ADD CONSTRAINT FK_9A9EFAD3FB88E14F FOREIGN KEY (utilisateur_id) REFERENCES utilisateur (id)');
         $this->addSql('ALTER TABLE pseudo_en_jeu ADD CONSTRAINT FK_9A9EFAD38C9E392E FOREIGN KEY (jeu_id) REFERENCES jeu (id)');
+        $this->addSql('ALTER TABLE reset_password_request ADD CONSTRAINT FK_7CE748AA76ED395 FOREIGN KEY (user_id) REFERENCES utilisateur (id)');
         $this->addSql('ALTER TABLE room_utilisateur ADD CONSTRAINT FK_929CD8C54177093 FOREIGN KEY (room_id) REFERENCES room (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE room_utilisateur ADD CONSTRAINT FK_929CD8CFB88E14F FOREIGN KEY (utilisateur_id) REFERENCES utilisateur (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE tournoi ADD CONSTRAINT FK_18AFD9DF8C9E392E FOREIGN KEY (jeu_id) REFERENCES jeu (id)');
@@ -77,6 +79,7 @@ final class Version20231130104551 extends AbstractMigration
         $this->addSql('ALTER TABLE participant_tournoi DROP FOREIGN KEY FK_82A216D7FB88E14F');
         $this->addSql('ALTER TABLE pseudo_en_jeu DROP FOREIGN KEY FK_9A9EFAD3FB88E14F');
         $this->addSql('ALTER TABLE pseudo_en_jeu DROP FOREIGN KEY FK_9A9EFAD38C9E392E');
+        $this->addSql('ALTER TABLE reset_password_request DROP FOREIGN KEY FK_7CE748AA76ED395');
         $this->addSql('ALTER TABLE room_utilisateur DROP FOREIGN KEY FK_929CD8C54177093');
         $this->addSql('ALTER TABLE room_utilisateur DROP FOREIGN KEY FK_929CD8CFB88E14F');
         $this->addSql('ALTER TABLE tournoi DROP FOREIGN KEY FK_18AFD9DF8C9E392E');
@@ -90,6 +93,7 @@ final class Version20231130104551 extends AbstractMigration
         $this->addSql('DROP TABLE participant');
         $this->addSql('DROP TABLE participant_tournoi');
         $this->addSql('DROP TABLE pseudo_en_jeu');
+        $this->addSql('DROP TABLE reset_password_request');
         $this->addSql('DROP TABLE room');
         $this->addSql('DROP TABLE room_utilisateur');
         $this->addSql('DROP TABLE tournoi');
