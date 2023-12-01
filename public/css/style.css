@@ -240,36 +240,119 @@ body {
 /* CHAT */
 #chat{
   display: flex;
-  height: 100%;
+  height: 600px;
 }
 
 .rooms {
   width: 15%;
 }
 
-.message-container {
+.last-message {
+  overflow: hidden; 
+  text-overflow: ellipsis;
+}
+
+.messages {
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
-  width: 85%;
-  height: 100%;
 }
 
-.message-form {
-  position: absolute;
-  bottom: 10px;
-  width: 100%;
+.message-right {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  margin: 5px 10px 5px 10px;
 }
 
-.message-sent {
-  text-align: right;
-  display: block;
-}
-
-.message-received {
-  text-align: left;
-  display: block;
+.message-left {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin: 5px 10px 5px 10px;
 }
 
 #send-message-form input {
-padding: 20px;  
+  padding: 20px;
+  width: 500px;
+  height: 80px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+}
+
+#send-message-form {
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-send {
+  text-align: center;
+  display: inline-block;
+  align-items: center;
+  font-size: 16px;
+  position: relative;
+  right: 60px;
+  z-index: 0;
+  border: none;
+  background: none;
+}
+
+.sender-pseudo {
+  border: none;
+  color: #fff;
+  font-size: 12px;
+  align-items: flex-end;
+}
+
+.receiver-pseudo {
+  border: none;
+  color:#000;
+  font-size: 12px;
+  width: fit-content;
+  align-items: flex-start;
+}
+
+
+#messages {
+  overflow-y: scroll;
+  height: 100%;
+  width: 900px;
+}
+.material-symbols-outlined {
+  color: rgba(0, 0, 0, 0.467);
+  margin: 0 10px 0 10px;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+}
+
+.message-sent {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  max-width: 70%;
+  background-color: #248bf5;
+
+}
+
+.message-received {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+  background-color: #e5e5ea;
+  color: #000;
+  padding: 10px;
+}
+
+.hide-form{
+  display: none;
+}
+
+.show-form{
+  display: block;
 }

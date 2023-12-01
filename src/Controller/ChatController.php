@@ -71,6 +71,8 @@ class ChatController extends AbstractController
             $message->setExpediteur($expediteur);
             $message->setDestinataire($destinataire);
 
+            $room->setLastMessage($text);
+
             $this->em->persist($message);
             $this->em->flush();
 

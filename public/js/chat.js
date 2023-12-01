@@ -8,7 +8,9 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             const roomId = this.dataset.roomId;
 
-            document.getElementById('send-message-form').setAttribute('data-room-id', roomId);
+            let messageForm = document.getElementById('send-message-form');
+            messageForm.setAttribute('data-room-id', roomId);
+            messageForm.classList.add('show-form');
 
             let messages = await getMessages(roomId)
 
@@ -16,24 +18,46 @@ document.addEventListener('DOMContentLoaded', function () {
             let messagesDiv = document.getElementById('messages');
             messagesDiv.innerHTML = '';
             messages.forEach(message => {
-                let messageDiv = document.createElement('div');
+                let messageContentDiv = document.createElement('div');
                 let messageContent = document.createElement('span');
-                let senderPseudo = document.createElement('span');
+                let pseudo = document.createElement('span');
+                let messageRightDiv = document.createElement('div');
+                let messageLeftDiv = document.createElement('div');
+                let messageDate = document.createElement('span');
 
                 messageContent.textContent = message.texteMessage;
-                senderPseudo.textContent = message.expediteur.pseudo;
+                pseudo.textContent = message.expediteur.pseudo;
                 // console.log("message.expediteur.id", message.expediteur.id);
                 // console.log("userId", userId);
                 if (message.expediteur.id == userId) {
-                    messageDiv.classList.add('message-sent');
-                    senderPseudo.classList.add('message-sent', 'sender-pseudo');
+                    messageContentDiv.classList.add('message-sent');
+                    pseudo.classList.add('sender-pseudo');
+                    pseudo.classList.add('sender-pseudo');
+
+                    messageDate.textContent = message.createdAt;
+
+                    messageContentDiv.appendChild(pseudo);
+                    messageContentDiv.appendChild(messageContent);
+                    messageContentDiv.appendChild(messageDate);
+
+                    messageRightDiv.classList.add('message-right');
+                    messageRightDiv.appendChild(messageContentDiv);
+                    messagesDiv.appendChild(messageRightDiv);
                 } else {
-                    messageDiv.classList.add('message-received');
-                    senderPseudo.classList.add('message-received', 'receiver-pseudo');
+                    messageContentDiv.classList.add('message-received');
+                    pseudo.classList.add('receiver-pseudo');
+                    messageDate.textContent = message.createdAt;
+                    // messageLeftDate.classList.add('receiver-date');
+
+                    messageContentDiv.appendChild(pseudo);
+                    messageContentDiv.appendChild(messageContent);
+                    messageContentDiv.appendChild(messageDate);
+
+                    messageLeftDiv.classList.add('message-left');
+                    messageLeftDiv.appendChild(messageContentDiv);
+
+                    messagesDiv.appendChild(messageLeftDiv);
                 }
-                messageDiv.appendChild(senderPseudo);
-                messageDiv.appendChild(messageContent);
-                messagesDiv.appendChild(messageDiv);
             });
         });
     });
@@ -47,30 +71,64 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('message-text').value = '';
         // Envoyer le message au serveur
         // Afficher le message
-        sendMessage(roomId, messageText);
-        let messages = await getMessages(roomId)
-        let messagesDiv = document.getElementById('messages');
-        messagesDiv.innerHTML = '';
-        messages.forEach(message => {
-            let messageDiv = document.createElement('div');
-            let messageContent = document.createElement('span');
-            let senderPseudo = document.createElement('span');
+        let newMessage = await sendMessage(roomId, messageText);
+        console.log("newMessage.texteMessage", newMessage.texteMessage);
+        console.log("newMessage.expediteur.pseudo", newMessage.expediteur.pseudo);
 
-            messageContent.textContent = message.texteMessage;
-            senderPseudo.textContent = message.expediteur.pseudo;
-            // console.log("message.expediteur.id", message.expediteur.id);
-            // console.log("userId", userId);
-            if (message.expediteur.id == userId) {
-                messageDiv.classList.add('message-sent');
-                senderPseudo.classList.add('pseudo-sent');
-            } else {
-                messageDiv.classList.add('message-received');
-                senderPseudo.classList.add('pseudo-received');
-            }
-            messageDiv.appendChild(senderPseudo);
-            messageDiv.appendChild(messageContent);
-            messagesDiv.appendChild(messageDiv);
-        });
+        let messageRightDiv = document.createElement('div');
+        let messageSentDiv = document.createElement('div');
+        let spanPseudo = document.createElement('span');
+        let spanMessage = document.createElement('span');
+
+        messageRightDiv.classList.add('message-right');
+        messageSentDiv.classList.add('message-sent');
+        spanPseudo.classList.add('sender-pseudo');
+
+        spanPseudo.textContent = newMessage.expediteur.pseudo;
+        spanMessage.textContent = newMessage.texteMessage;
+
+        messageSentDiv.appendChild(spanPseudo);
+        messageSentDiv.appendChild(spanMessage);
+
+        messageRightDiv.appendChild(messageSentDiv);
+
+
+        let messagesDiv = document.getElementById('messages');
+        messagesDiv.appendChild(messageRightDiv);
+
+        // scroll to bottom
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+        // update last message
+        let lastMessageDiv = document.getElementById(`last-message-${roomId}`);
+        lastMessageDiv.textContent = newMessage.texteMessage;
+
+
+
+
+        // let messages = await getMessages(roomId)
+        // let messagesDiv = document.getElementById('messages');
+        // messagesDiv.innerHTML = '';
+        // messages.forEach(message => {
+        //     let messageDiv = document.createElement('div');
+        //     let messageContent = document.createElement('span');
+        //     let senderPseudo = document.createElement('span');
+
+        //     messageContent.textContent = message.texteMessage;
+        //     senderPseudo.textContent = message.expediteur.pseudo;
+        //     // console.log("message.expediteur.id", message.expediteur.id);
+        //     // console.log("userId", userId);
+        //     if (message.expediteur.id == userId) {
+        //         messageDiv.classList.add('message-sent');
+        //         senderPseudo.classList.add('pseudo-sent');
+        //     } else {
+        //         messageDiv.classList.add('message-received');
+        //         senderPseudo.classList.add('pseudo-received');
+        //     }
+        //     messageDiv.appendChild(senderPseudo);
+        //     messageDiv.appendChild(messageContent);
+        //     messagesDiv.appendChild(messageDiv);
+        // });
     });
 });
 
@@ -88,6 +146,13 @@ async function getMessages(roomId) {
 }
 
 async function sendMessage(roomId, message) {
+    if (!roomId || !message) {
+        return;
+    }
+
+    if (message.trim() === '') {
+        return;
+    }
     try {
         console.log("roomId", roomId);
         console.log("message", message);
@@ -103,35 +168,9 @@ async function sendMessage(roomId, message) {
 
         });
         const result = await response.json();
-        console.log(result);
+        console.log("result", result);
         return result;
     } catch (error) {
         console.log("error", error);
     }
 }
-
-
-// formulaire pour envoyer un message
-// let form = document.getElementById('form-message');
-// form.addEventListener('submit', function (e) {
-//     e.preventDefault();
-//     let message = document.getElementById('message').value;
-//     fetch('chat/send-message', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({
-//             "roomId": roomId,
-//             "message": message
-//         })
-//     })
-//         .then(response => response.json())
-//         .then(data => {
-//             console.log('reponse:', data);
-//             let result = data.success;
-//             console.log('result', result);
-//             // Traiter la réponse
-//         })
-//         .catch(error => console.error('Error:', error));
-// });
