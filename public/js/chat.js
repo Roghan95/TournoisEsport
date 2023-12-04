@@ -27,14 +27,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 messageContent.textContent = message.texteMessage;
                 pseudo.textContent = message.expediteur.pseudo;
+
+                const date = new Date(message.createdAt)
+                const dateFormatted = date.toLocaleDateString("fr") + " " + date.toLocaleTimeString(["fr"], { hour: '2-digit', minute: '2-digit' });
+                messageDate.textContent = dateFormatted;
                 // console.log("message.expediteur.id", message.expediteur.id);
                 // console.log("userId", userId);
                 if (message.expediteur.id == userId) {
                     messageContentDiv.classList.add('message-sent');
                     pseudo.classList.add('sender-pseudo');
                     pseudo.classList.add('sender-pseudo');
-
-                    messageDate.textContent = message.createdAt;
 
                     messageContentDiv.appendChild(pseudo);
                     messageContentDiv.appendChild(messageContent);
@@ -43,10 +45,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     messageRightDiv.classList.add('message-right');
                     messageRightDiv.appendChild(messageContentDiv);
                     messagesDiv.appendChild(messageRightDiv);
+                    messageDate.classList.add('sender-date');
                 } else {
                     messageContentDiv.classList.add('message-received');
                     pseudo.classList.add('receiver-pseudo');
-                    messageDate.textContent = message.createdAt;
+                    messageDate.classList.add('receiver-date');
                     // messageLeftDate.classList.add('receiver-date');
 
                     messageContentDiv.appendChild(pseudo);

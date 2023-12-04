@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
 * {
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
@@ -183,7 +184,8 @@ body {
 }
 
 .tab-active {
-  border-bottom: 2px solid rgb(255, 0, 0); /* ou tout autre style de votre choix */
+  border-bottom: 2px solid rgb(255, 0, 0);
+  /* ou tout autre style de votre choix */
 }
 
 .tab:hover {
@@ -202,24 +204,34 @@ body {
 }
 
 .modal {
-  display: none; /* Caché par défaut */
-  position: fixed; /* Reste en place même lors du défilement */
-  z-index: 1; /* Se situe au-dessus des autres éléments */
+  display: none;
+  /* Caché par défaut */
+  position: fixed;
+  /* Reste en place même lors du défilement */
+  z-index: 1;
+  /* Se situe au-dessus des autres éléments */
   left: 0;
   top: 0;
-  width: 100%; /* Largeur complète */
-  height: 100%; /* Hauteur complète */
-  overflow: auto; /* Gérer le défilement si nécessaire */
-  background-color: rgb(0,0,0); /* Couleur de fond */
-  background-color: rgba(0,0,0,0.4); /* Fond noir avec opacité */
+  width: 100%;
+  /* Largeur complète */
+  height: 100%;
+  /* Hauteur complète */
+  overflow: auto;
+  /* Gérer le défilement si nécessaire */
+  background-color: rgb(0, 0, 0);
+  /* Couleur de fond */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Fond noir avec opacité */
 }
 
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% du haut et centré horizontalement */
+  margin: 15% auto;
+  /* 15% du haut et centré horizontalement */
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; /* Peut être ajusté */
+  width: 80%;
+  /* Peut être ajusté */
 }
 
 .close-btn {
@@ -238,7 +250,7 @@ body {
 
 
 /* CHAT */
-#chat{
+#chat {
   display: flex;
   height: 600px;
 }
@@ -248,7 +260,7 @@ body {
 }
 
 .last-message {
-  overflow: hidden; 
+  overflow: hidden;
   text-overflow: ellipsis;
 }
 
@@ -309,7 +321,7 @@ body {
 
 .receiver-pseudo {
   border: none;
-  color:#000;
+  color: #000;
   font-size: 12px;
   width: fit-content;
   align-items: flex-start;
@@ -321,6 +333,7 @@ body {
   height: 100%;
   width: 900px;
 }
+
 .material-symbols-outlined {
   color: rgba(0, 0, 0, 0.467);
   margin: 0 10px 0 10px;
@@ -349,10 +362,22 @@ body {
   padding: 10px;
 }
 
-.hide-form{
+.hide-form {
   display: none;
 }
 
-.show-form{
+.show-form {
   display: block;
+}
+
+.sender-date {
+  align-self: flex-end;
+  font-size: 12px;
+  color: #ffffff88;
+}
+
+.receiver-date {
+  align-self: flex-start;
+  font-size: 12px;
+  color: #00000088;
 }
