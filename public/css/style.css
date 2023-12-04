@@ -370,6 +370,7 @@ body {
   display: block;
 }
 
+/* Chat -> Date */
 .sender-date {
   align-self: flex-end;
   font-size: 12px;
@@ -380,4 +381,13 @@ body {
   align-self: flex-start;
   font-size: 12px;
   color: #00000088;
+}
+
+.room-item {
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.room-item-active {
+  background-color: #248bf5;
 }

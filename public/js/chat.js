@@ -5,8 +5,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     roomItems.forEach(room => {
         room.addEventListener('click', async function (e) {
+
             e.preventDefault();
             const roomId = this.dataset.roomId;
+
+            // Remove class active from all rooms
+            roomItems.forEach(room => {
+                if (room.classList.contains('room-item-active')) {
+                    room.classList.remove('room-item-active');
+                }
+            });
+
+            // Add class active to the clicked room
+            this.classList.add('room-item-active');
 
             let messageForm = document.getElementById('send-message-form');
             messageForm.setAttribute('data-room-id', roomId);
@@ -16,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Afficher les messages
             let messagesDiv = document.getElementById('messages');
+
             messagesDiv.innerHTML = '';
             messages.forEach(message => {
                 let messageContentDiv = document.createElement('div');
@@ -62,6 +74,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     messagesDiv.appendChild(messageLeftDiv);
                 }
             });
+
+            // scroll to bottom
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         });
     });
 
@@ -82,16 +97,23 @@ document.addEventListener('DOMContentLoaded', function () {
         let messageSentDiv = document.createElement('div');
         let spanPseudo = document.createElement('span');
         let spanMessage = document.createElement('span');
+        let spanDate = document.createElement('span');
 
         messageRightDiv.classList.add('message-right');
         messageSentDiv.classList.add('message-sent');
         spanPseudo.classList.add('sender-pseudo');
+        spanDate.classList.add('sender-date');
+        // spanDate.classList.add('sender-date');
 
         spanPseudo.textContent = newMessage.expediteur.pseudo;
         spanMessage.textContent = newMessage.texteMessage;
+        const date = new Date(newMessage.createdAt)
+        const dateFormatted = date.toLocaleDateString("fr") + " " + date.toLocaleTimeString(["fr"], { hour: '2-digit', minute: '2-digit' });
+        spanDate.textContent = dateFormatted;
 
         messageSentDiv.appendChild(spanPseudo);
         messageSentDiv.appendChild(spanMessage);
+        messageSentDiv.appendChild(spanDate);
 
         messageRightDiv.appendChild(messageSentDiv);
 
