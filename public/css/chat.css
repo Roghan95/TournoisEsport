@@ -95,7 +95,9 @@
 .message-sent {
     background-color: #2c3147;
     align-self: flex-end;
-    max-width: fit-content;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 70%;
     padding: 10px;
     border-radius: 10px;
     color: white;
@@ -106,7 +108,9 @@
 .message-received {
     background-color: #606060;
     align-self: flex-start;
-    max-width: fit-content;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 70%;
     padding: 10px;
     border-radius: 10px;
     color: white;
@@ -140,11 +144,32 @@
     display: flex;
 }
 
-#message-text {
+/* #message-text {
     flex-grow: 1;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
+} */
+
+#message-text {
+    width: calc(100% - 50px);
+    /* Adapt this value to fit the send button next to it */
+    height: 50px;
+    /* Set a fixed height */
+    padding: 10px;
+    margin: 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: inherit;
+    /* Make fonts consistent with the rest of your design */
+    font-size: 1em;
+    /* Adjust as needed */
+    line-height: 1.4;
+    /* Adjust for vertical centering of text */
+    resize: none;
+    /* Disable resizing of textarea */
+    overflow: auto;
+    /* Allow scrolling inside the textarea */
 }
 
 .btn-send {
