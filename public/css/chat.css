@@ -1,0 +1,176 @@
+/* Style général du chat */
+
+
+#chat {
+    display: flex;
+    max-width: 800px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#chat a {
+    text-decoration: none;
+    color: white;
+}
+
+/* Style des salons de discussion */
+.rooms {
+    width: 30%;
+    border-right: 1px solid #ffffff4c;
+    overflow-y: auto;
+}
+
+.room-date {
+    font-size: 12px;
+    color: #878787;
+    padding-top: 5px;
+}
+
+.room-item {
+    padding: 10px;
+    border-bottom: 1px solid #ffffff4c;
+    cursor: pointer;
+}
+
+.room-item img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.room-item-active {
+    background-color: #2c3147;
+    color: white;
+}
+
+
+.room-item:hover {
+    background-color: #2c3147;
+    color: white;
+    transition: all 0.2s ease-in-out;
+
+}
+
+/* Style du conteneur de messages */
+.message-container {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    /* height: 500px; */
+    height: 95vh;
+    /* Hauteur fixe pour le conteneur de messages */
+}
+
+.last-message {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+}
+
+#messages {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    height: calc(100% - 60px);
+    /* Hauteur ajustée pour laisser de la place au formulaire */
+}
+
+/* Style des messages */
+
+.message-right {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+.message-left {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.message-sent {
+    background-color: #2c3147;
+    align-self: flex-end;
+    max-width: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    flex-direction: column;
+    display: flex;
+}
+
+.message-received {
+    background-color: #606060;
+    align-self: flex-start;
+    max-width: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    flex-direction: column;
+    display: flex;
+}
+
+/* Style des pseudo et des dates des messages */
+.sender-pseudo,
+.receiver-pseudo {
+    font-weight: bold;
+    display: block;
+    padding-bottom: 5px;
+}
+
+.sender-date,
+.receiver-date {
+    font-size: 0.8em;
+    color: #aaa;
+    padding-top: 5px;
+}
+
+/* Style du formulaire d'envoi de message */
+.message-form {
+    padding: 10px;
+    background: #f7f7f7;
+    border-top: 1px solid #ddd;
+}
+
+#send-message-form {
+    display: flex;
+}
+
+#message-text {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.btn-send {
+    background: #2c3147;
+    color: white;
+    border: none;
+    padding: 0 15px;
+    margin-left: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-send:hover {
+    background-color: #3b5a7d;
+}
+
+/* Style des icônes */
+.material-symbols-outlined {
+    vertical-align: middle;
+}
+
+.room-avatar p {
+    font-weight: bold;
+}
+
+.room-avatar {
+    display: flex;
+    align-items: center;
+}

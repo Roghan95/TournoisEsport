@@ -1,9 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RoomController!
+{% block title %}Chat
 {% endblock %}
 
-{% block sidebar %}{% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/chat.css') }}">
+{% endblock %}
+
+{# {% block sidebar %}{% endblock %} #}
 
 {% block body %}
 	<div id="chat" data-user-id="{{ app.user.id }}">
@@ -12,14 +17,21 @@
 				<div class="room-item" data-room-id={{room.id}}>
 					{% for utilisateur in room.utilisateurs %}
 						{% if utilisateur.id != app.user.id %}
-							<p>{{utilisateur.pseudo}}</p>
+							<div class="room-avatar">
+								{% if utilisateur.photo is not null %}
+									<img src="{{ vich_uploader_asset(utilisateur, 'photoFile') }}" alt="Photo de profil">
+								{% else %}
+									<img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
+								{% endif %}
+								<a class="room-pseudo" href="{{ path('app_profil', {'id' : utilisateur.id}) }}">
+									<p>{{utilisateur.pseudo}}</p>
+								</a>
+							</div>
 						{% endif %}
 					{% endfor %}
 					<p class="last-message" id="last-message-{{room.id}}">{{ room.lastMessage }}</p>
-					<p>{{ room.createdAt|format_datetime('short', 'short', locale='fr') }}</p>
+					<p class="room-date">{{ room.createdAt|format_datetime('short', 'short', locale='fr') }}</p>
 				</div>
-
-				<hr>
 
 			{% endfor %}
 		</div>
@@ -27,7 +39,7 @@
 			<div id="messages"></div>
 			<div class="message-form">
 				<form class="hide-form" id="send-message-form">
-					<textarea id="message-text" placeholder="Écrivez un message..."></textarea>
+					<input type="text" id="message-text" placeholder="Écrivez un message...">
 					<button class="btn-send" type="submit">
 						<span class="material-symbols-outlined">
 							send
