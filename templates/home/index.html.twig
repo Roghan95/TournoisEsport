@@ -12,26 +12,39 @@
 			<option value="{{ jeu.id }}" {% if jeu.id == jeuSelectionne %} selected {% endif %}>{{ jeu.nomJeu }}</option>
 		{% endfor %}
 	</select>
-	{% for tournoi in tournois %}
-		<div class="tournois-list">
+	<div class="tournois-list">
+		{% for tournoi in tournois %}
 			<a href="{{ path('app_tournoi_show', {'id' : tournoi.id }) }}">
 				<div class="tournament-item">
 					<div class="tr-container">
-						<div>
+						<div class="tr-banner">
 							<img class="tournoi-img" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière tournoi"/>
 							<p>{{ tournoi.nomTournoi }}</p>
-							<p>{{ tournoi.nomOrganisation }}</p>
 						</div>
-
 						<div class="tournament-time">
-							<p>{{ tournoi.dateDebut | format_datetime(locale='fr',pattern="EE dd MMM") }}</p>
-							<p>{{ tournoi.dateDebut | format_datetime('none', 'short', locale='fr') }}</p>
+							<p class="tr-calendar">
+								<span class="material-symbols-outlined">calendar_month</span>
+								{{ tournoi.dateDebut | format_datetime(locale='fr', pattern="EE dd MMM") }}
+							</p>
+							<p class="tr-schedule">
+								<span class="material-symbols-outlined">schedule</span>
+								{{ tournoi.dateDebut | format_datetime('none', 'short', locale='fr') }}
+							</p>
+						</div>
+						<div class="tr-item-line"></div>
+						<div class="tr-region">
+							<p>{{tournoi.region}}</p>
+						</div>
+						<div class="tr-item-line"></div>
+						<div class="organisateur-info">
+							<img class="logo-organisateur" src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo organisateur">
+							<p>{{ tournoi.nomOrganisation }}</p>
 						</div>
 					</div>
 				</div>
 			</a>
-		</div>
-	{% endfor %}
+		{% endfor %}
+	</div>
 
 
 {% endblock %}
@@ -39,4 +52,11 @@
 {% block javascripts %}
 	{# {{ encore_entry_script_tags('app') }} #}
 	<script src="{{ asset('js/select_jeu.js') }}"></script>
+	{# <script>
+		const eventSource = new EventSource("{{ mercure('https://example.com/rooms/1')|escape('js') }}");
+		eventSource.onmessage = event => {
+		const data = JSON.parse(event.data);
+		console.log(data);
+		};
+	</script> #}
 {% endblock %}

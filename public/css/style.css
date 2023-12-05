@@ -3,6 +3,7 @@
 * {
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
+  text-decoration: none;
 }
 
 html {
@@ -73,11 +74,12 @@ body {
 }
 
 
+
 #content {
   display: table-cell;
   width: 85%;
   vertical-align: top;
-  padding: 20px 0 0 10px;
+  padding: 20px;
 }
 
 .logo {
@@ -161,23 +163,101 @@ body {
   display: block;
 }
 
+.tournament-time {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 0 5px 0 5px;
+}
+
+.tr-banner p {
+  margin: 5px 0 5px 5px;
+}
+
 .tournament-item {
   border: 1px solid rgb(255, 255, 255);
-  width: 400px;
+  width: 300px;
   height: auto;
   gap: 10px;
+  background-color: #3329AE;
+  color: white;
 }
+
+/* Tournoi Heure & Date */
+.tr-schedule,
+.tr-calendar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  font-size: 12px;
+  margin: 5px 0 5px 0;
+}
+
+
+.material-symbols-outlined {
+  color: rgba(255, 255, 255, 0.434);
+}
+
+/* --------------------------- */
+
 
 .tournois-list {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+  width: 960px;
+  justify-content: center;
+
+}
+
+.tr-region p {
+  margin: 5px 0px 5px 0px;
+  font-size: 12px;
 }
 
 .tournoi-img {
   width: 100%;
-  height: 200px;
+  height: 150px;
   background-size: cover;
   background-position: center;
+}
+
+.logo-organisateur {
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background-position: center;
+}
+
+.organisateur-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0 10px 5px;
+}
+
+.organisateur-info p {
+  margin: 0px;
+}
+
+.tr-item-line-bot {
+  width: 100%;
+  height: 1px;
+  border: 1px solid rgba(255, 255, 255, 0.248);
+  margin-bottom: 20px;
+}
+
+.tr-item-line {
+  width: 100%;
+  height: 1px;
+  border: 1px solid rgba(255, 255, 255, 0.248);
+}
+
+.tr-region {
+  margin-left: 5px;
 }
 
 body {

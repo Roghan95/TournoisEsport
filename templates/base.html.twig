@@ -9,8 +9,9 @@
 		</title>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
 		{% block stylesheets %}
-			<link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
-			{# {{ encore_entry_link_tags('app') }} #}
+			<link
+			rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+		{# {{ encore_entry_link_tags('app') }} #}
 		{% endblock %}
 	</head>
 
@@ -26,6 +27,8 @@
 			{% block javascripts %}
 				{# {{ encore_entry_script_tags('app') }} #}
 				<script src="{{ asset('js/script.js') }}"></script>
+				<script src="/tarteaucitron/tarteaucitron.js"></script>
+
 			{% endblock %}
 		</body>
 

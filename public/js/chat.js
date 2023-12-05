@@ -207,7 +207,7 @@
 // }
 
 
-// Code Optimisé 
+//* Code Optimisé 
 document.addEventListener('DOMContentLoaded', function () {
     const chat = document.getElementById('chat');
     const userId = chat.dataset.userId;
@@ -227,6 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    //* Envoyer un message dans la room active
     async function handleSubmit(e) {
         e.preventDefault();
         const roomId = sendMessageForm.dataset.roomId;
@@ -241,16 +242,17 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } catch (error) {
             console.error("Error sending message:", error);
-            // Afficher un message d'erreur à l'utilisateur
+            //* Afficher un message d'erreur à l'utilisateur
         }
     }
 
+    //* Changer la room active
     async function handleRoomClick(e) {
         e.preventDefault();
         const roomId = this.dataset.roomId;
         setActiveRoom(roomId);
         const messages = await getMessages(roomId);
-        displayMessages(messages, userId);  
+        displayMessages(messages, userId);
     }
 
     function setActiveRoom(roomId) {
@@ -267,6 +269,7 @@ document.addEventListener('DOMContentLoaded', function () {
         scrollToBottom();
     }
 
+    //* Afficher un message dans la room active
     function appendMessage(message, userId) {
         let messageWrapperDiv = document.createElement('div');
         let messageContentDiv = document.createElement('div');
@@ -279,13 +282,13 @@ document.addEventListener('DOMContentLoaded', function () {
         dateSpan.textContent = new Date(message.createdAt).toLocaleDateString("fr", { hour: '2-digit', minute: '2-digit' });
 
         if (message.expediteur.id == userId) {
-            // Message envoyé par l'utilisateur actuel
+            //* Message envoyé par l'utilisateur actuel
             messageWrapperDiv.classList.add('message-right');
             messageContentDiv.classList.add('message-sent');
             pseudoSpan.classList.add('sender-pseudo');
             dateSpan.classList.add('sender-date');
         } else {
-            // Message reçu d'un autre utilisateur
+            //* Message reçu d'un autre utilisateur
             messageWrapperDiv.classList.add('message-left');
             messageContentDiv.classList.add('message-received');
             pseudoSpan.classList.add('receiver-pseudo');
@@ -302,10 +305,12 @@ document.addEventListener('DOMContentLoaded', function () {
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
+    //* Faire défiler vers le bas
     function scrollToBottom() {
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
+    //* Requête GET pour récupérer les messages d'un room
     async function getMessages(roomId) {
         try {
             const response = await fetch(`chat/room/${roomId}`, {
@@ -316,10 +321,11 @@ document.addEventListener('DOMContentLoaded', function () {
             return await response.json();
         } catch (error) {
             console.error("Error fetching messages:", error);
-            // Afficher un message d'erreur à l'utilisateur
+            //* Afficher un message d'erreur à l'utilisateur
         }
     }
 
+    //* Requête POST pour envoyer un message
     async function sendMessage(roomId, message) {
         try {
             const response = await fetch(`chat/new-message`, {
@@ -331,7 +337,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return await response.json();
         } catch (error) {
             console.error("Error sending message:", error);
-            // Afficher un message d'erreur à l'utilisateur
+            //* Afficher un message d'erreur à l'utilisateur
         }
     }
 });
