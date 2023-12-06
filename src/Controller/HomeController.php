@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\JeuRepository;
 use App\Repository\TournoiRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +17,7 @@ use Symfony\Component\Mercure\Publisher;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(Request $request, SessionInterface $session, TournoiRepository $tournoiRepository, JeuRepository $jeuRepository): Response
+    public function index(Request $request, SessionInterface $session, TournoiRepository $tournoiRepository, JeuRepository $jeuRepository, PaginatorInterface $paginator): Response
     {
         /***
          * @var \App\Entity\Utilisateur $user
@@ -39,10 +40,20 @@ class HomeController extends AbstractController
 
         // Si l'id du jeu est null ou vide, on récupère tous les tournois
         if ($jeuId == null || $jeuId == '') {
-            $tournois = $tournoiRepository->findAll();
+            $data = $tournoiRepository->findAll();
+            $tournois = $paginator->paginate(
+                $data,
+                $request->query->getInt('page', 1),
+                6
+            );
             // Si l'id du jeu n'est pas null ou vide, on récupère les tournois du jeu
         } else {
-            $tournois = $tournoiRepository->findBy(['jeu' => $jeuId]);
+            $data = $tournoiRepository->findBy(['jeu' => $jeuId]);
+            $tournois = $paginator->paginate(
+                $data,
+                $request->query->getInt('page', 1),
+                6
+            );
         }
         // On récupère tous les jeux
         $jeux = $jeuRepository->findAll();

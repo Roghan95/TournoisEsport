@@ -4,6 +4,11 @@
 	TournoisEsport
 {% endblock %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/pagination.css') }}">
+{% endblock %}
+
 
 {% block body %}
 	<div class="banner-theme">
@@ -24,7 +29,8 @@
 			{% endfor %}
 		</select>
 	</div>
-	<div class="tr-main-wrapper">
+	<div
+		class="tr-main-wrapper">
 		{# <h3 id="find-tr-h3">Trouver des tournois</h3> #}
 		<div class="tr-content">
 			<div class="tournois-list">
@@ -61,8 +67,8 @@
 				{% endfor %}
 			</div>
 		</div>
+		{{ knp_pagination_render(tournois) }}
 	</div>
-
 
 {% endblock %}
 

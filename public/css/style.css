@@ -34,25 +34,15 @@ body {
 } */
 
 #sidebar {
-  /* La largeur de votre sidebar */
   background-color: #2c3147;
-  /* La couleur de fond */
   position: sticky;
-  /* Faites la barre latérale sticky */
   top: 0;
-  /* Elle restera en haut lors du défilement */
   height: 100vh;
-  /* La hauteur de votre sidebar sera de 100% de la hauteur de la vue */
   max-height: 100vh;
-  /* S'assure que la hauteur ne dépasse pas la fenêtre d'affichage */
   overflow-y: auto;
-  /* Ajoutez un défilement interne si nécessaire */
   box-sizing: border-box;
-  /* Incluez le padding et la bordure dans la largeur/hauteur totale */
   padding: 0;
-  /* Ajustez selon vos besoins */
   margin: 0;
-  /* Ajustez selon vos besoins */
 }
 
 .side-menu a:hover {
@@ -63,14 +53,6 @@ body {
 
 .side-menu a:hover span {
   color: white !important;
-}
-
-/* Réponses aux différentes tailles d'écran */
-@media (max-width: 768px) {
-  #sidebar {
-    width: 150px;
-    /* Une largeur plus petite pour les écrans plus petits */
-  }
 }
 
 #sidebar a {
@@ -96,10 +78,13 @@ body {
   width: 250px;
   height: 60px;
   border-radius: none;
-  border: 1px solid rgba(255, 255, 255, 0.134);
+  border-left: none;
   background-color: #2c3147;
   color: white;
   box-shadow: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.134);
+  border-top: none;
+  border-bottom: none;
 }
 
 #jeu-select option {
@@ -113,7 +98,9 @@ body {
 
 .filter {
   background-color: #2c3147;
+  border: 1px solid rgba(255, 255, 255, 0.134);
 }
+
 
 .banner-theme {
   background-image: url("../img/bg-test-hl.png");
@@ -443,151 +430,16 @@ body {
 }
 
 
-/* CHAT
-#chat {
-  display: flex;
-  height: 100%;
+/* Responsive */
+
+@media screen and (max-width: 700px) {
+  .modal-content {
+    width: 100%;
+  }
+
+  .tr-content {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
-
-.rooms {
-  width: 200px;
-  height: 100vh;
-}
-
-.last-message {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.messages {
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-}
-
-.message-right {
-  display: flex;
-  flex-direction: column;
-  align-items: end;
-  margin: 5px 10px 5px 10px;
-}
-
-.message-left {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  margin: 5px 10px 5px 10px;
-}
-
-#send-message-form input {
-  padding: 20px;
-  width: 100%;
-  height: 80px;
-  border-radius: 10px;
-  outline: none;
-  border: none;
-  position: absolute;
-  bottom: 0;
-}
-
-.btn-send {
-  text-align: center;
-  display: inline-block;
-  align-items: center;
-  font-size: 16px;
-  position: relative;
-  right: 60px;
-  z-index: 0;
-  border: none;
-  background: none;
-}
-
-.sender-pseudo {
-  border: none;
-  color: #fff;
-  font-size: 12px;
-  align-items: flex-end;
-}
-
-.receiver-pseudo {
-  border: none;
-  color: #000;
-  font-size: 12px;
-  width: fit-content;
-  align-items: flex-start;
-}
-
-
-#messages {
-  overflow-y: scroll;
-  height: 600px;
-  width: 100%;
-}
-
-.material-symbols-outlined {
-  color: rgba(0, 0, 0, 0.467);
-  margin: 0 10px 0 10px;
-  cursor: pointer;
-  align-items: center;
-  display: flex;
-}
-
-.message-sent {
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  max-width: 70%;
-  background-color: #248bf5;
-
-}
-
-.message-received {
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  max-width: 70%;
-  background-color: #e5e5ea;
-  color: #000;
-  padding: 10px;
-}
-
-.hide-form {
-  display: none;
-}
-
-.show-form {
-  padding: 0px !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-/* Chat -> Date */
-/* .sender-date {
-  align-self: flex-end;
-  font-size: 12px;
-  color: #ffffff88;
-}
-
-.receiver-date {
-  align-self: flex-start;
-  font-size: 12px;
-  color: #00000088;
-} */
-
-/* Chat -> Room */
-/* .room-date {
-  font-size: 12px;
-  color: #ffffff88;
-}
-
-.room-item {
-  padding: 5px;
-  border-radius: 5px;
-}
-
-.room-item-active {
-  background-color: #248bf5;
-} */
