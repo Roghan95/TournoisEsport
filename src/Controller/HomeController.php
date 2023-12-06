@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mercure\Publisher;
 
 class HomeController extends AbstractController
 {
@@ -53,16 +54,16 @@ class HomeController extends AbstractController
         ]);
     }
 
-    // #[Route('/publish', name: 'publish')]
-    // public function publish(HubInterface $hub): Response
-    // {
-    //     $update = new Update(
-    //         'https://example.com/rooms/1',
-    //         json_encode(['status' => 'OutOfStock'])
-    //     );
+    #[Route('/publish', name: 'publish')]
+    public function publish(HubInterface $hub): Response
+    {
+        $update = new Update(
+            'https://example.com/rooms/1',
+            json_encode(['status' => 'OutOfStock'])
+        );
 
-    //     $hub->publish($update);
+        $hub->publish($update);
 
-    //     return new Response('published!');
-    // }
+        return new Response('published!');
+    }
 }

@@ -1,56 +1,58 @@
 <div id="sidebar" class="sticky-sidebar">
 	<div class="top-menu">
 		<a class="logo" href="{{ path('app_home') }}"><img src="{{ asset('img/logo.png') }}" alt="Logo victoryforge"/></a>
-		<hr>
-		<a href="{{ path('app_home') }}">
-			<span class="material-symbols-outlined">home</span>
-			Accueil
-		</a>
-		<a href="{{ path('app_tournoi_new') }}">
-			<span class="material-symbols-outlined">
-				contract_edit
-			</span>
-			Organiser un tournoi
-		</a>
-		<a href="">
-			<span class="material-symbols-outlined">
-				receipt_long
-			</span>
-			Tournois rejoint
-		</a>
-		<a href="{{ path('new_equipe') }}">
-			<span class="material-symbols-outlined">
-				add_circle
-			</span>
-			Crée une équipe
-		</a>
-		<a href="{{ path('app_chat') }}">
-			<span class="material-symbols-outlined">
-				chat_bubble
-			</span>
-			Chat
-		</a>
-		{% if app.user == null %}
-			<a href="{{ path('app_login') }}">
-				<span class="material-symbols-outlined">
-					login
-				</span>
-				Se connecter
+		<hr class="logo-underline">
+		<div class="side-menu">
+			<a href="{{ path('app_home') }}">
+				<span class="material-symbols-outlined">home</span>
+				Accueil
 			</a>
-			<a href="{{ path('app_register') }}">
+			<a href="{{ path('app_tournoi_new') }}">
 				<span class="material-symbols-outlined">
-					how_to_reg
+					contract_edit
 				</span>
-				S'enregistrer
+				Organiser un tournoi
 			</a>
-		{% else %}
-			<a href="{{ path('app_logout') }}">
+			<a href="">
 				<span class="material-symbols-outlined">
-					logout
+					receipt_long
 				</span>
-				Se déconnecter
+				Tournois rejoint
 			</a>
-		{% endif %}
+			<a href="{{ path('new_equipe') }}">
+				<span class="material-symbols-outlined">
+					add_circle
+				</span>
+				Crée une équipe
+			</a>
+			<a href="{{ path('app_chat') }}">
+				<span class="material-symbols-outlined">
+					chat_bubble
+				</span>
+				Chat
+			</a>
+			{% if app.user == null %}
+				<a href="{{ path('app_login') }}">
+					<span class="material-symbols-outlined">
+						login
+					</span>
+					Se connecter
+				</a>
+				<a href="{{ path('app_register') }}">
+					<span class="material-symbols-outlined">
+						how_to_reg
+					</span>
+					S'enregistrer
+				</a>
+			{% else %}
+				<a href="{{ path('app_logout') }}">
+					<span class="material-symbols-outlined">
+						logout
+					</span>
+					Se déconnecter
+				</a>
+			{% endif %}
+		</div>
 	</div>
 	<div class="profil-menu">
 		{% if app.user and app.user.photo %}
