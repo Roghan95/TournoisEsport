@@ -11,6 +11,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ChatController extends AbstractController
@@ -77,6 +79,29 @@ class ChatController extends AbstractController
             $this->em->flush();
 
             return $this->json($message, 200, [], ['groups' => 'message']);
+        } catch (\Throwable $th) {
+            return $this->json($th->getMessage(), 500);
+        }
+    }
+
+    #[Route('/chat/new-room', name: 'chat_new_room', methods: ['POST'])]
+    public function newRoom(Request $request): Response
+    {
+        try {
+            $data = json_decode($request->getContent(), true);
+            $userId = $data['userId'];
+            $user = $this->getUser();
+            $destinataire = $this->em->getRepository(Utilisateur::class)->find($userId);
+
+            $room = new Room();
+            $room->setLastMessage('Nouvelle conversation');
+            $room->addUtilisateur($user);
+            $room->addUtilisateur($destinataire);
+
+            $this->em->persist($room);
+            $this->em->flush();
+
+            return $this->json($room, 200, [], ['groups' => 'room']);
         } catch (\Throwable $th) {
             return $this->json($th->getMessage(), 500);
         }

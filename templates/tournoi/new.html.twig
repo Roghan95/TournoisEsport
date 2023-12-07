@@ -8,3 +8,8 @@
 	{{ include("tournoi/_form.html.twig") }}
 
 {% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+	<script src="{{ asset('js/tinymce.js') }}"></script>
+{% endblock %}

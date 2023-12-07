@@ -75,11 +75,4 @@
 {% block javascripts %}
 	{# {{ encore_entry_script_tags('app') }} #}
 	<script src="{{ asset('js/select_jeu.js') }}"></script>
-	<script>
-		const eventSource = new EventSource("{{ mercure('localhost:3000/.well-known/mercure?topic=http://exemple.com/rooms/1')|escape('js') }}");
-eventSource.onmessage = event => {
-const data = JSON.parse(event.data);
-console.log(data);
-};
-	</script>
 {% endblock %}

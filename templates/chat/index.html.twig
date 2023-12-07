@@ -55,4 +55,11 @@
 {% block javascripts %}
 	{# {{ parent() }} #}
 	<script src="{{ asset('js/chat.js') }}"></script>
+	<script>
+		const eventSource = new EventSource("{{ mercure('localhost:3000/.well-known/mercure?topic=http://exemple.com/rooms/1')|escape('js') }}");
+eventSource.onmessage = event => {
+const data = JSON.parse(event.data);
+console.log(data);
+};
+	</script>
 {% endblock %}

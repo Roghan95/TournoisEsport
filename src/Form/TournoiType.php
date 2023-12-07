@@ -4,15 +4,14 @@ namespace App\Form;
 
 use App\Entity\Jeu;
 use App\Entity\Tournoi;
+use Eckinox\TinymceBundle\Form\Type\TinymceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 class TournoiType extends AbstractType
 {
@@ -37,14 +36,16 @@ class TournoiType extends AbstractType
                 'label' => 'Date de fin * ',
                 'required' => true
             ])
-            ->add(
-                'description',
-                CKEditorType::class,
-                [
-                    'label' => 'Description *: ',
-                    'required' => true
-                ]
-            )
+            // ->add(
+            //     'description',
+            //     TinymceType::class,
+            //     [
+            //         'required' => true,
+            //         'attr' => [
+            //             'placeholder' => 'Description du tournoi',
+            //         ],
+            //     ]
+            // )
             ->add('logoFile', VichImageType::class, [
                 'label' => 'Logo du tournoi *: ',
                 'required' => true,

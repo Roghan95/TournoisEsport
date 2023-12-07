@@ -42,7 +42,12 @@ class TournoiController extends AbstractController
         $form = $this->createForm(TournoiType::class, $tournoi);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $description = $request->request->get('tournoi-description');
+            // dump($request);
+            // dd($description);
+            $tournoi->setDescription($description);
             $tournoi->setOrganisateur($this->getUser());
             $this->em->persist($tournoi);
             $this->em->flush();

@@ -204,7 +204,7 @@ class Tournoi
         return $this->banniereTr;
     }
 
-    public function setBanniereTr(string $banniereTr): static
+    public function setBanniereTr(?string $banniereTr): static
     {
         $this->banniereTr = $banniereTr;
 
