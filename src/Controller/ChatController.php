@@ -7,6 +7,7 @@ use App\Entity\Room;
 use App\Entity\Utilisateur;
 use App\Repository\MessageRepository;
 use App\Repository\RoomRepository;
+use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\WebLink\Link;
 
 class ChatController extends AbstractController
 {
@@ -22,11 +24,15 @@ class ChatController extends AbstractController
     }
 
     #[Route('/chat', name: 'app_chat')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
         /** @var Utilisateur $user */
         $user = $this->getUser();
         $rooms = $this->roomRepo->findRoomsByUser($user);
+
+        $hubUrl = $this->getParameter('mercure.default_hub');
+        $this->addLink($request, new Link('mercure', $hubUrl));
+
         return $this->render('chat/index.html.twig', [
             'rooms' => $rooms,
         ]);
@@ -84,24 +90,27 @@ class ChatController extends AbstractController
         }
     }
 
-    #[Route('/chat/new-room', name: 'chat_new_room', methods: ['POST'])]
-    public function newRoom(Request $request): Response
+    #[Route('/chat/new-room/{userId}', name: 'chat_new_room')]
+    public function newRoom(int $userId, UtilisateurRepository $utilisateurRepo): Response
     {
         try {
-            $data = json_decode($request->getContent(), true);
-            $userId = $data['userId'];
-            $user = $this->getUser();
-            $destinataire = $this->em->getRepository(Utilisateur::class)->find($userId);
-
+            /** @var Utilisateur $user */
+            $me = $this->getUser();
+            $him = $utilisateurRepo->find($userId);
             $room = new Room();
-            $room->setLastMessage('Nouvelle conversation');
-            $room->addUtilisateur($user);
-            $room->addUtilisateur($destinataire);
+            $room->setLastMessage('');
+            $room->addUtilisateur($me);
+            $room->addUtilisateur($him);
 
             $this->em->persist($room);
             $this->em->flush();
 
-            return $this->json($room, 200, [], ['groups' => 'room']);
+            $rooms = $this->roomRepo->findRoomsByUser($me);
+
+            return $this->render('chat/index.html.twig', [
+                'rooms' => $rooms,
+                'selectedRoomId' => $room->getId(),
+            ]);
         } catch (\Throwable $th) {
             return $this->json($th->getMessage(), 500);
         }

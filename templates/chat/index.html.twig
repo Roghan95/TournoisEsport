@@ -57,9 +57,22 @@
 	<script src="{{ asset('js/chat.js') }}"></script>
 	<script>
 		const eventSource = new EventSource("{{ mercure('localhost:3000/.well-known/mercure?topic=http://exemple.com/rooms/1')|escape('js') }}");
-eventSource.onmessage = event => {
-const data = JSON.parse(event.data);
-console.log(data);
-};
+		eventSource.onmessage = event => {
+			const data = JSON.parse(event.data);
+			console.log(data);
+		};
+
+		{# document.addEventListener('DOMContentLoaded', (event) => {
+			// Vérifie si selectedRoomId est défini et non null
+			{% if selectedRoomId is defined and selectedRoomId is not null %}
+				const selectedRoomId = {{ selectedRoomId }};
+				// Trouve l'élément DOM correspondant
+				const roomElement = document.querySelector(`.room-item[data-room-id="${selectedRoomId}"]`);
+				if (roomElement) {
+					// Appelle la fonction JavaScript en passant l'élément trouvé
+					handleRoomClick.bind(roomElement)();
+				}
+			{% endif %}
+		}); #}
 	</script>
 {% endblock %}
