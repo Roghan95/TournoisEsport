@@ -33,9 +33,7 @@ class ProfilController extends AbstractController
     #[Route('/profil/param', name: 'app_profil_param')]
     public function profilParam(): Response
     {
-        return $this->render('profil/param_acc.html.twig', [
-            
-        ]);
+        return $this->render('profil/param_acc.html.twig', []);
     }
 
     // Fonction pour qui permet de quitter une équipe
@@ -46,6 +44,21 @@ class ProfilController extends AbstractController
         $user = $this->getUser();
         $user->removeEquipe($equipe);
 
+        $this->em->flush();
+
+        return $this->redirectToRoute('app_profil');
+    }
+
+    // Fonction pour qui permet de supprimer une équipe
+    #[Route('/equipe/supprimer/{id}', name: 'equipe_supprimer')]
+    public function deleteTeam(Equipe $equipe): Response
+    {
+        // Supprimer les participants de l'équipe
+        foreach ($equipe->getMembres() as $membre) {
+            $equipe->removeMembre($membre);
+        }
+
+        $this->em->remove($equipe);
         $this->em->flush();
 
         return $this->redirectToRoute('app_profil');

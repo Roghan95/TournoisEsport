@@ -36,9 +36,13 @@
 			{{ tournoi.jeu }}
 		</div>
 		<div id="participants" class="content" style="display:none;">
-			<p>Joueurs ({{ tournoi.participantTournois | length }})</p>
+			<p>Joueurs (<span id="nbJoueurs">{{ tournoi.participantTournois | length }}</span>)</p>
 			{% for participant in tournoi.participantTournois %}
-				{{ participant.utilisateur.pseudo }}
+				{% for pseudoEnJeu in participant.utilisateur.pseudosEnJeux %}
+					{% if pseudoEnJeu.jeu.id == tournoi.jeu.id %}
+						<p class="participant">{{ pseudoEnJeu.pseudo }}</p>
+					{% endif %}
+				{% endfor %}
 			{% endfor %}
 		</div>
 		<div id="matchs" class="content" style="display:none;">
@@ -55,7 +59,7 @@
 	</div>
 	{% if app.user is not null and tournoi.organisateur.id == app.user.id %}
 		{# <a href="{{ path('new_match', {'id' : tournoi.id}) }}">Ajouter un match</a>
-				<a href="{{ path('app_tournoi_edit', {'id' : tournoi.id}) }}">Edit</a> #}
+										<a href="{{ path('app_tournoi_edit', {'id' : tournoi.id}) }}">Edit</a> #}
 		{{ include('tournoi/_delete_form.html.twig') }}
 	{% elseif app.user is not null %}
 		<!-- Bouton pour ouvrir la modale -->
@@ -73,8 +77,9 @@
 		<div id="pseudoModal" class="modal">
 			<div class="modal-content">
 				<span class="close-btn">&times;</span>
-				<h2>Entrez votre pseudo</h2>
-				<input type="text" id="pseudo" name="pseudo">
+				<h2>Entrez votre pseudo
+					{{ tournoi.jeu.nomJeu }}</h2>
+				<input type="text" id="pseudo" name="pseudo" placeholder="Pseudo">
 				<button id="btnSubmitPseudo">Envoyer</button>
 			</div>
 		</div>

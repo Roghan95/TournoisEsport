@@ -94,7 +94,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('reponse:', data);
                 let result = data.success;
                 console.log('result', result);
-                // Traiter la réponse
+                if (result == true) {
+                    let pseudo = data.pseudo;
+                    changeJoinBtnState();
+                    addUserToListParticipants(pseudo);
+                }
+
             })
             .catch(error => console.error('Error:', error));
     }
@@ -133,5 +138,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.getElementById('pseudoModal').style.display = 'none';
     });
+
+
+    // On change le texte du bouton et on le désactive
+    function changeJoinBtnState() {
+        btnParticiper.innerHTML = "Vous participez à ce tournoi";
+        btnParticiper.disabled = true;
+    }
+
+    function addUserToListParticipants(pseudo) {
+        const listParticipants = document.getElementById('participants');
+        const p = document.createElement('p');
+        p.classList.add('participant');
+        p.innerHTML = pseudo;
+        listParticipants.appendChild(p);
+
+        const nbJoueurs = document.getElementById('nbJoueurs');
+        let nbJoueursInt = parseInt(nbJoueurs.innerHTML);
+        nbJoueursInt++;
+        nbJoueurs.innerHTML = nbJoueursInt;
+
+    }
 
 });

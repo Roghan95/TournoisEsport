@@ -35,6 +35,9 @@ class ParticipantTournoi
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\ManyToOne]
+    private ?Equipe $equipe = null;
+
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function updateTimestamps(): void
@@ -126,5 +129,17 @@ class ParticipantTournoi
     public function __toString(): string
     {
         return $this->getInGamePseudo();
+    }
+
+    public function getEquipe(): ?Equipe
+    {
+        return $this->equipe;
+    }
+
+    public function setEquipe(?Equipe $equipe): static
+    {
+        $this->equipe = $equipe;
+
+        return $this;
     }
 }
