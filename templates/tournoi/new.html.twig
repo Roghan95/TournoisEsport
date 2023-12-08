@@ -5,6 +5,12 @@
 {% block body %}
 	<h1>Créer un tournoi</h1>
 
+	{% for message in app.flashes('error') %}
+		<div class="alert alert-error">
+			{{ message }}
+		</div>
+	{% endfor %}
+
 	{{ include("tournoi/_form.html.twig") }}
 
 {% endblock %}

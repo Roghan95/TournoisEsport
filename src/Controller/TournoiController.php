@@ -45,6 +45,10 @@ class TournoiController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($tournoi->getDateDebut() > $tournoi->getDateFin()) {
+                $this->addFlash('error', 'La date de début doit être antérieure à la date de fin');
+                return $this->redirectToRoute('app_tournoi_new');
+            }
             $description = $request->request->get('tournoi-description');
             // dump($request);
             // dd($description);

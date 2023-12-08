@@ -4,13 +4,14 @@ namespace App\Form;
 
 use App\Entity\Jeu;
 use App\Entity\Tournoi;
-use Eckinox\TinymceBundle\Form\Type\TinymceType;
+// use Doctrine\DBAL\Types\DateTimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class TournoiType extends AbstractType
@@ -26,26 +27,20 @@ class TournoiType extends AbstractType
                 'label' => 'Nom de l\'organisation * ',
                 'required' => true
             ])
-            ->add('dateDebut', DateType::class, [
+            ->add('dateDebut', DateTimeType::class, [
                 'input' => 'datetime_immutable',
                 'label' => 'Date de début * ',
-                'required' => true
+                'required' => true,
+                'widget' => 'single_text',
+                'attr'   => ['min' => (new \DateTime())->format('Y-m-d H:i')]
             ])
-            ->add('dateFin', DateType::class, [
+            ->add('dateFin', DateTimeType::class, [
                 'input' => 'datetime_immutable',
                 'label' => 'Date de fin * ',
-                'required' => true
+                'required' => true,
+                'widget' => 'single_text',
+                'attr'   => ['min' => (new \DateTime())->format('Y-m-d H:i')]
             ])
-            // ->add(
-            //     'description',
-            //     TinymceType::class,
-            //     [
-            //         'required' => true,
-            //         'attr' => [
-            //             'placeholder' => 'Description du tournoi',
-            //         ],
-            //     ]
-            // )
             ->add('logoFile', VichImageType::class, [
                 'label' => 'Logo du tournoi *: ',
                 'required' => true,
