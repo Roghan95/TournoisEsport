@@ -55,7 +55,6 @@ class TournoiType extends AbstractType
                     'placeholder' => 'Ex: Europe, Amérique du Nord, ...'
                 ]
             ])
-
             ->add('lienTwitch', TextType::class, [
                 'label' => 'Lien Twitch : ',
                 'required' => false,
@@ -63,7 +62,6 @@ class TournoiType extends AbstractType
                     'placeholder' => 'Ex: https://www.twitch.tv/...'
                 ]
             ])
-
             ->add('jeu', EntityType::class, [
                 'class' => Jeu::class,
                 'choice_label' => 'nomJeu',

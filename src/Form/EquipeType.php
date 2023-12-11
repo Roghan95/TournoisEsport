@@ -41,20 +41,19 @@ class EquipeType extends AbstractType
                 'image_uri' => true,
                 'asset_helper' => true,
             ])
-            ->add('description', TextType::class, [
-                'label' => 'Description de l\'équipe',
-                'attr' => [
-                    'placeholder' => 'Description de l\'équipe'
-                ]
-            ])
+            // ->add('description', TextType::class, [
+            //     'label' => 'Description de l\'équipe',
+            //     'attr' => [
+            //         'placeholder' => 'Description de l\'équipe'
+            //     ]
+            // ])
 
             ->add('submit', SubmitType::class, [
                 'label' => 'Ajouter',
                 'attr' => [
                     'class' => 'btn btn-primary'
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

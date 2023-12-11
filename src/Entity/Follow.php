@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\FollowRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: FollowRepository::class)]
 #[ORM\UniqueConstraint(name: 'follow_unique', columns: ['follower_id', 'following_id'])]

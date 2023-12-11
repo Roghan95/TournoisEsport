@@ -2,26 +2,25 @@
 
 {% block title %}Créer une équipe
 {% endblock %}
+{% block body %}
+	<h1>Créer une équipe</h1>
 
-{# {% block sidebar %} #}
-{# <div id="sidebar">
-    <img class="logo" src="{{ asset('img/logo.png') }}" alt="Logo victoryforge" />
-    <hr>
-    <a href="{{ path('app_home') }}">Accueil</a>
-    <a href="{{ path('app_profil') }}">Profil</a>
-    <a href="{{ path('app_tournoi_new') }}">Organiser un tournoi</a>
-    <a href="">Paramètres du compte</a>
-    <a href="{{ path('app_logout') }}">Se déconnecter</a>
-</div> #}
-{# {% endblock %} #}
 
-	{% block body %}<h1>
-	Créer une équipe
-	</h1>
 	{{ form_start(form) }}
 	{{ form_row(form.jeu) }}
 	{{ form_row(form.nomEquipe) }}
-	{{ form_row(form.description) }}
+	{# {{ form_row(form.description) }} #}
+	<textarea name="tournoi-description" id="tournoi-description"></textarea>
+	{# <button class="btn">{{ button_label|default('Enregistrer') }}</button> #}
 	{{ form_row(form.imageFile) }}
 	{{ form_row(form.submit) }}
-{{ form_end(form) }}{% endblock %}
+	{{ form_end(form) }} 
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+	<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+	<script src="{{ asset('js/tinymce.js') }}"></script>
+{% endblock %}

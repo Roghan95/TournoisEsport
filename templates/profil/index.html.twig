@@ -8,7 +8,21 @@
 
 {% block body %}
 	<h1>{{ app.user.pseudo }}</h1>
-
+	<p>
+		Membre depuis le
+		{{ app.user.createdAt|format_date('short', locale='fr') }}
+	</p>
+	{% if app.user.isBanned == false %}
+		<p>
+			<a href="{{ path('app_chat') }}">Chat</a>
+		</p>
+	{% else %}
+		<p>
+			L'utilisateur est banni jusqu'au :
+			{{ app.user.banExpireIn|format_date('full',  locale='fr') }}
+		</p>
+	{% endif %}
+	<p></p>
 	<div class="titre-equipe">
 		<h2>Mes équipes</h2>
 		<a href="{{ path('new_equipe') }}">Crée une équipe</a>

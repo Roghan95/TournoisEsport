@@ -50,10 +50,10 @@ class TournoiController extends AbstractController
                 return $this->redirectToRoute('app_tournoi_new');
             }
             $description = $request->request->get('tournoi-description');
-            // dump($request);
-            // dd($description);
+
             $tournoi->setDescription($description);
             $tournoi->setOrganisateur($this->getUser());
+
             $this->em->persist($tournoi);
             $this->em->flush();
 

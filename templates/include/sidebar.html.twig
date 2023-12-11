@@ -7,30 +7,52 @@
 				<span class="material-symbols-outlined">home</span>
 				Accueil
 			</a>
-			<a href="{{ path('app_tournoi_new') }}">
-				<span class="material-symbols-outlined">
-					contract_edit
-				</span>
-				Organiser un tournoi
-			</a>
-			<a href="">
-				<span class="material-symbols-outlined">
-					receipt_long
-				</span>
-				Tournois rejoint
-			</a>
-			<a href="{{ path('new_equipe') }}">
-				<span class="material-symbols-outlined">
-					add_circle
-				</span>
-				Crée une équipe
-			</a>
-			<a href="{{ path('app_chat') }}">
-				<span class="material-symbols-outlined">
-					chat_bubble
-				</span>
-				Chat
-			</a>
+			{% if app.user == null %}
+				<a href="{{ path('app_login') }}">
+					<span class="material-symbols-outlined">
+						contract_edit
+					</span>
+					Organiser un tournoi
+				</a>
+				<a href="{{ path('app_login') }}">
+					<span class="material-symbols-outlined">
+						add_circle
+					</span>
+					Crée une équipe
+				</a>
+				{# <a href="{{ path('app_login') }}">
+					<span class="material-symbols-outlined">
+						chat_bubble
+					</span>
+					Chat
+				</a> #}
+			{% else %}
+				<a href="{{ path('app_tournoi_new') }}">
+					<span class="material-symbols-outlined">
+						contract_edit
+					</span>
+					Organiser un tournoi
+				</a>
+				<a href="{{ path('new_equipe') }}">
+					<span class="material-symbols-outlined">
+						add_circle
+					</span>
+					Crée une équipe
+				</a>
+				{# <a href="{{ path('app_chat') }}">
+					<span class="material-symbols-outlined">
+						chat_bubble
+					</span>
+					Chat
+				</a> #}
+			{% endif %}
+			{# <a href="">
+											<span class="material-symbols-outlined">
+												receipt_long
+											</span>
+											Tournois rejoint
+											</a> #}
+
 			{% if app.user == null %}
 				<a href="{{ path('app_login') }}">
 					<span class="material-symbols-outlined">
@@ -73,5 +95,3 @@
 		{% endif %}
 	</div>
 </div>
-
-

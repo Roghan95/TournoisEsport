@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -74,6 +75,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: PseudoEnJeu::class, orphanRemoval: true)]
     private Collection $pseudosEnJeux;
+
+    #[ORM\Column(nullable: false, options: ['default' => false])]
+    private bool $isBanned = false;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $banExpireIn = null;
 
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
@@ -422,6 +429,30 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
                 $pseudosEnJeux->setUtilisateur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsBanned(): ?bool
+    {
+        return $this->isBanned;
+    }
+
+    public function setIsBanned(?bool $isBanned): static
+    {
+        $this->isBanned = $isBanned;
+
+        return $this;
+    }
+
+    public function getBanExpireIn(): ?\DateTimeInterface
+    {
+        return $this->banExpireIn;
+    }
+
+    public function setBanExpireIn(?\DateTimeInterface $banExpireIn): static
+    {
+        $this->banExpireIn = $banExpireIn;
 
         return $this;
     }
