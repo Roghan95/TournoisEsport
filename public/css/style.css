@@ -477,3 +477,12 @@ button:disabled {
     grid-template-columns: repeat(1, 1fr);
   }
 }
+
+.nav-item-active {
+  background-color: #202430;
+  color: white !important;
+}
+
+.nav-item-active span {
+  color: white !important;
+}

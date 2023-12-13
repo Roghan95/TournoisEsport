@@ -52,5 +52,4 @@ class EquipeController extends AbstractController
             'id' => $id
         ]);
     }
-
 }

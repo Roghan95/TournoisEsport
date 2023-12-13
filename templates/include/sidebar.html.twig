@@ -3,7 +3,7 @@
 		<a class="logo" href="{{ path('app_home') }}"><img src="{{ asset('img/logo.png') }}" alt="Logo victoryforge"/></a>
 		<hr class="logo-underline">
 		<div class="side-menu">
-			<a href="{{ path('app_home') }}">
+			<a {# Faire ça pour appliquer la classe active pour les différents liens #} href="{{ path('app_home') }}" {% if app.request.attributes.get('_route') == 'app_home' %} class="nav-item-active" {% endif %}>
 				<span class="material-symbols-outlined">home</span>
 				Accueil
 			</a>
@@ -20,39 +20,20 @@
 					</span>
 					Crée une équipe
 				</a>
-				{# <a href="{{ path('app_login') }}">
-					<span class="material-symbols-outlined">
-						chat_bubble
-					</span>
-					Chat
-				</a> #}
 			{% else %}
-				<a href="{{ path('app_tournoi_new') }}">
+				<a href="{{ path('app_tournoi_new') }}" {% if app.request.attributes.get('_route') == 'app_tournoi_new' %} class="nav-item-active" {% endif %}>
 					<span class="material-symbols-outlined">
 						contract_edit
 					</span>
 					Organiser un tournoi
 				</a>
-				<a href="{{ path('new_equipe') }}">
+				<a href="{{ path('new_equipe') }}" {% if app.request.attributes.get('_route') == 'new_equipe' %} class="nav-item-active" {% endif %}>
 					<span class="material-symbols-outlined">
 						add_circle
 					</span>
 					Crée une équipe
 				</a>
-				{# <a href="{{ path('app_chat') }}">
-					<span class="material-symbols-outlined">
-						chat_bubble
-					</span>
-					Chat
-				</a> #}
 			{% endif %}
-			{# <a href="">
-											<span class="material-symbols-outlined">
-												receipt_long
-											</span>
-											Tournois rejoint
-											</a> #}
-
 			{% if app.user == null %}
 				<a href="{{ path('app_login') }}">
 					<span class="material-symbols-outlined">
@@ -91,7 +72,6 @@
 					</span>
 				</p>
 			</a>
-
 		{% endif %}
 	</div>
 </div>

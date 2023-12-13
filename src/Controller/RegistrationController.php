@@ -43,11 +43,15 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $this->addFlash('success', 'Votre compte a bien été créé !');
+
             $entityManager->persist($user);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
+                $user,
                 (new TemplatedEmail())
                     ->from(new Address('admin@exemple.com', 'Admin Site'))
                     ->to($user->getEmail())

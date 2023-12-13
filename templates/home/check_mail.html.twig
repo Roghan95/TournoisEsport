@@ -1,19 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Vérifier email</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Vérifier email">
+		<title>Vérifie ton email</title>
 		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
 	</head>
-	<body>
-		<h1>
-			Veuillez vérifer votre boite email pour confirmer votre compte.
-		</h1>
+	<body style="
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+				height: 100vh;
+				background-image: url(../img/bg-register.png);
+				background-size: cover;
+				background-repeat: no-repeat;
+				background-position: center;
+				">
 
-		ul>
-		<li>
-			<a href="{{ path('app_home') }}">Revenir sur la page d'accueil</a>
-		</li>
-		<a href=""></a>
+		<h1 style="
+				color: white;
+				position: absolute; 
+				top: 20px; 
+				display:flex; 
+				flex-direction: 
+				column; 
+				align-items: center; 
+				justify-content: center;">Veuillez vérifer votre boite email pour confirmer votre compte.
+				<span style='font-size:100px;'>&#128513;</span>
+		</h1>
+		<img style="
+				position: absolute; 
+				bottom: 20px; 
+				display:flex; 
+				flex-direction: 
+				column; 
+				align-items: center; 
+				justify-content: center;
+		" src="{{ asset('img/logo.png') }}" alt="">
 	</body>
 </html>

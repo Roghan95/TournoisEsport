@@ -29,6 +29,15 @@
 			{% endfor %}
 		</select>
 	</div>
+	<div class="flash-message">
+		{% for message in app.flashes('success') %}
+			<div class="success">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in app.flashes('error') %}
+			<div class="error">{{ message }}</div>
+		{% endfor %}
+	</div>
 	<div
 		class="tr-main-wrapper">
 		{# <h3 id="find-tr-h3">Trouver des tournois</h3> #}

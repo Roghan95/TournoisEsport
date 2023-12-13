@@ -1,33 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}VictoryForge | Inscription
+{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/security.css') }}">
+{% endblock %}
+
 
 {% block body %}
-{% for flash_error in app.flashes('verify_email_error') %}
-<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-{% endfor %}
+	{% for flash_error in app.flashes('verify_email_error') %}
+		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+	{% endfor %}
+	<div class="form-center">
+		<img style="margin-bottom: 50px;" src="{{ asset('img/logo.png')}}" alt="">
+		<div class="register-form">
+			<div class="form-group">
+				<div class="form-title">
+					<h2 class="h2-register">Inscription</h2>
+					<em>* Champs obligatoires</em>
+				</div>
+				{{ form_errors(registrationForm) }}
 
-<div class="register-form">
-    <em>* Champs obligatoires</em>
-    <h2 class="h2-register">Crée ton compte</h2>
+				{{ form_start(registrationForm) }}
+				<div class="email">
+					{{ form_row(registrationForm.email) }}
+				</div>
+				<div class="pseudo">
+					{{ form_row(registrationForm.pseudo) }}
+				</div>
 
-    {{ form_errors(registrationForm) }}
+				<div class="plainPassword">
+					{{ form_row(registrationForm.plainPassword) }}
+				</div>
+				<div class="agree-check">
+					{{ form_label(registrationForm.agreeTerms) }}
+					{{ form_errors(registrationForm.agreeTerms) }}
+					{{ form_widget(registrationForm.agreeTerms) }}
+				</div>
 
-    {{ form_start(registrationForm) }}
-
-    {{ form_row(registrationForm.email) }}
-
-    {{ form_row(registrationForm.pseudo) }}
-
-    {{ form_row(registrationForm.plainPassword) }}
-
-    <div class="agree-terms">
-        {{ form_row(registrationForm.agreeTerms, { label: 'Accepter les conditions d\'utilisation *' }) }}
-    </div>
-
-    <button type="submit" class="btn">Valider</button>
-    {{ form_end(registrationForm) }}
-
-    <p>Déjà un compte ? <a href="{{ path('app_login') }}">Connecte-toi</a> !</p>
-</div>
+				{# {{ form_row(registrationForm.agreeTerms, { label: 'Accepter les conditions d\'utilisation *' }) }} #}
+				<div class="btn-register">
+					<button type="submit" class="btn">START</button>
+					<p>Déjà un compte ?
+						<a href="{{ path('app_login') }}">Connectez-vous.</a>
+					</p>
+				</div>
+				{{ form_end(registrationForm) }}
+			</div>
+		</div>
+	</div>
 {% endblock %}
