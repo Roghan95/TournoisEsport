@@ -96,6 +96,10 @@ body {
   border-radius: none;
 }
 
+.box-equipe img {
+  width: clamp(50px, 100%, 100px);
+}
+
 .filter {
   background-color: #2c3147;
   border: 1px solid rgba(255, 255, 255, 0.134);

@@ -11,6 +11,8 @@ class FollowController extends AbstractController
     #[Route('/follow', name: 'app_follow')]
     public function index(): Response
     {
+        
+
         return $this->render('follow/index.html.twig', [
             'controller_name' => 'FollowController',
         ]);

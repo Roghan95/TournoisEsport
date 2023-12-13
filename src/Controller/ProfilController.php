@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Equipe;
 use App\Repository\EquipeRepository;
+use App\Repository\JeuRepository;
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,16 +18,18 @@ class ProfilController extends AbstractController
     }
 
     #[Route('/profil', name: 'app_profil')]
-    public function index(EquipeRepository $equipeRepo): Response
+    public function index(EquipeRepository $equipeRepo, JeuRepository $jeuRepo): Response
     {
         $equipes = $equipeRepo->findBy(['proprietaire' => $this->getUser()]);
         /** @var Utilisateur $user */
         $user = $this->getUser();
         $tournois = $user->getMesTournois();
+        $jeux = $jeuRepo->findAll();
         return $this->render('profil/index.html.twig', [
             'user' => $this->getUser(),
             'equipes' => $equipes,
-            'tournois' => $tournois
+            'tournois' => $tournois,
+            'jeux' => $jeux,
         ]);
     }
 

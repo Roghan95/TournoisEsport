@@ -52,7 +52,6 @@
 	<h2>Mes tournois</h2>
 
 	{% for tournoi in tournois %}
-		<img src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Logo d'un tournoi"/>
-		<p></p>
+		<img style="width: clamp(30px, 50px, 50px);" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Logo d'un tournoi"/>
 	{% endfor %}
 {% endblock %}
