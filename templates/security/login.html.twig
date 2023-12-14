@@ -2,6 +2,10 @@
 
 {% block title %}Se connecter
 {% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/security.css') }}">
+{% endblock %}
 
 {% block body %}
 	<form method="post">
@@ -17,25 +21,22 @@
 			</div>
 		{% endif %}
 
-		<h1 class="h3 mb-3 font-weight-normal">Connectez-vous</h1>
+		<h1 class="h1-register">Connexion</h1>
 		<label for="inputEmail">Email :
 		</label>
-		<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+		<input placeholder="exemple@exemple.com" type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
 		<label for="inputPassword">Mot de passe :
 		</label>
-		<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
+		<input placeholder="••••••••" type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-		<button class="btn btn-lg btn-primary" type="submit">
-			Connexion
-		</button>
-
+		<button class="btn-lg" type="submit">Connexion</button>
+	</form>
+	<div>
 		<p>Pas de compte ?
-			<a href="{{ path('app_register') }}">Inscrivez-vous</a>
-			!</p>
+			<a href="{{ path('app_register') }}">Inscrivez-vous !</a>
+		</p>
 		<p>Vous avez oublié votre mot de passe ?
 			<a href="{{ path('app_forgot_password_request') }}">Réinitialisez-le</a>!
 		</p>
-	</form>
+	</div>
 {% endblock %}

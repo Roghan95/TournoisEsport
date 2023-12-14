@@ -15,12 +15,13 @@
 	{% for flash_error in app.flashes('verify_email_error') %}
 		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
 	{% endfor %}
-	<div class="form-center">
-		<img style="margin-bottom: 50px;" src="{{ asset('img/logo.png')}}" alt="">
+	<div
+		class="form-center">
+		{# <img style="margin-bottom: 5px;" src="{{ asset('img/logo.png')}}" alt=""> #}
 		<div class="register-form">
 			<div class="form-group">
 				<div class="form-title">
-					<h2 class="h2-register">Inscription</h2>
+					<h1 class="h1-register">Inscription</h2>
 					<em>* Champs obligatoires</em>
 				</div>
 				{{ form_errors(registrationForm) }}

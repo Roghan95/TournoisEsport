@@ -59,7 +59,7 @@
 	</div>
 	{% if app.user is not null and tournoi.organisateur.id == app.user.id %}
 		{# <a href="{{ path('new_match', {'id' : tournoi.id}) }}">Ajouter un match</a>
-										<a href="{{ path('app_tournoi_edit', {'id' : tournoi.id}) }}">Edit</a> #}
+				<a href="{{ path('app_tournoi_edit', {'id' : tournoi.id}) }}">Edit</a> #}
 		{{ include('tournoi/_delete_form.html.twig') }}
 	{% elseif app.user is not null %}
 		<!-- Bouton pour ouvrir la modale -->
@@ -69,6 +69,7 @@
 				{% set isParticipant = true %}
 			{% endif %}
 		{% endfor %}
+		{# Bouton pour participer au tournoi #}
 		{% if not isParticipant %}
 			<button id="btnParticiper" data-tournoi-id="{{ tournoi.id }}" data-jeu-id="{{ tournoi.jeu.id }}">Participer</button>
 		{% endif %}

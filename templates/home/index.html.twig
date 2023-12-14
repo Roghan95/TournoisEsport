@@ -33,7 +33,6 @@
 		{% for message in app.flashes('success') %}
 			<div class="success">{{ message }}</div>
 		{% endfor %}
-
 		{% for message in app.flashes('error') %}
 			<div class="error">{{ message }}</div>
 		{% endfor %}
@@ -63,7 +62,11 @@
 								</div>
 								<div class="tr-item-line"></div>
 								<div class="tr-region">
-									<p>{{tournoi.region}}</p>
+									{% if tournoi.region is not null %}
+										<p>{{tournoi.region}}</p>
+									{% else %}
+										<p>Monde</p>
+									{% endif %}
 								</div>
 								<div class="tr-item-line"></div>
 								<div class="organisateur-info">

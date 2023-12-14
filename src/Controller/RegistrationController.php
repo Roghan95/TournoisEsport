@@ -91,4 +91,18 @@ class RegistrationController extends AbstractController
 
         return $this->redirectToRoute('app_home');
     }
+
+    // // Fonction pour vérifier si pseudo existe déjà
+    // #[Route('/register/verif-pseudo', name: 'app_register_verif_pseudo', methods: ['POST'])]
+    // public function verifPseudo(Request $request, EntityManagerInterface $entityManager): Response
+    // {
+    //     $pseudo = $request->request->get('pseudo');
+    //     $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['pseudo' => $pseudo]);
+
+    //     if ($user) {
+    //         return $this->json(['message' => 'Ce pseudo existe déjà'], 400);
+    //     }
+
+    //     return $this->json(['message' => 'Ce pseudo est disponible'], 200);
+    // }
 }

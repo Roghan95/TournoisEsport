@@ -42,13 +42,14 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
+    // $this->addFlash('success', 'Bienvenue ' . $this->getUser()->getPseudo() . ' !');
+
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
         return new RedirectResponse($this->urlGenerator->generate('app_home')); // CHANGER LA ROUTE UNE FOIS LES ENTITY CREE
     }
 
