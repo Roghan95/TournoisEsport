@@ -33,7 +33,6 @@ div.overlay.active {
 }
 
 body {
-  color: white;
   min-height: 100vh;
 }
 
@@ -46,7 +45,7 @@ body {
 #sidebar {
   background-color: #2c3147;
   height: 100vh;
-  width: 80%;
+  /* width: 80%; */
   position: fixed;
   top: 0;
   left: -80%;
@@ -74,7 +73,7 @@ body {
   display: flex;
   padding: 10px;
   color: rgba(255, 255, 255, 0.5);
-  margin: 15px 0 0 0;
+  margin: 10px auto;
   text-decoration: none;
   align-items: center;
   gap: 20px;
@@ -123,20 +122,12 @@ body {
 
 .banner-theme {
   background-image: url("../img/bg-test-hl.png");
-  /* Assurez-vous que le nom du fichier correspond à celui de votre image téléchargée */
   background-size: cover;
-  /* Pour couvrir entièrement la div */
   background-position: center center;
-  /* Centrer l'image horizontalement et verticalement */
   background-repeat: no-repeat;
-  /* Pour ne pas répéter l'image */
   color: white;
-  /* Pour une meilleure visibilité du texte sur un fond sombre */
   text-align: center;
-  /* Centrer le texte dans la div */
   padding: 100px 50px;
-  /* Ajoutez du padding pour donner de l'espace autour du texte */
-  /* Vous pouvez ajuster le padding selon la quantité d'espace souhaitée autour de votre texte */
   width: auto;
   height: 300px;
 }
@@ -164,12 +155,8 @@ body {
   align-items: center;
 }
 
-/* #find-tr-h3 {
-  color: rgba(255, 255, 255, 0.368);
-} */
-
 .logo-underline {
-  width: 90%;
+  width: 100%;
 }
 
 .profil-menu img {
@@ -183,6 +170,8 @@ body {
   justify-content: center;
   width: 100%;
   background-color: #202430;
+  position: absolute;
+  bottom: 0;
 }
 
 .profile-link {
@@ -190,6 +179,10 @@ body {
   justify-content: center;
   display: flex;
   gap: 10px;
+}
+
+.logo-mobile {
+  height: 15px;
 }
 
 /* ------------------------------ */
@@ -381,9 +374,13 @@ body {
   margin-top: 5px;
 }
 
+.line-tr {
+  width: 300px;
+  height: 1px;
+}
+
 .tab-active {
   border-bottom: 2px solid rgb(255, 0, 0);
-  /* ou tout autre style de votre choix */
 }
 
 .tab:hover {
@@ -397,30 +394,22 @@ body {
 }
 
 .banner-tr {
-  width: 900px;
-  height: 350px;
+  width: auto;
+  height: 300px;
 }
 
 /* MODAL PARTICIPATION TOURNOI */
 .modal {
   display: none;
-  /* Caché par défaut */
   position: fixed;
-  /* Reste en place même lors du défilement */
   z-index: 1;
-  /* Se situe au-dessus des autres éléments */
   left: 0;
   top: 0;
   width: 100%;
-  /* Largeur complète */
   height: 100%;
-  /* Hauteur complète */
   overflow: auto;
-  /* Gérer le défilement si nécessaire */
   background-color: rgb(0, 0, 0);
-  /* Couleur de fond */
   background-color: rgba(0, 0, 0, 0.4);
-  /* Fond noir avec opacité */
 }
 
 .modal-content {
@@ -476,26 +465,39 @@ button:disabled {
   cursor: pointer;
 }
 
-
-/* Responsive */
-
-@media screen and (max-width: 700px) {
-  .modal-content {
-    width: 100%;
-  }
-
-  .tr-content {
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(1, 1fr);
-  }
+.mobile-header {
+  background-color: #2c3147;
+  position: sticky;
 }
 
-@media screen and (min-width: 768px) {
+.banner-theme-txt p {
+  display: block;
+}
+
+.fa-solid.fa-xmark {
+  color: white;
+  font-size: 20px;
+}
+
+.fa-solid.fa-bars {
+  color: white;
+  font-size: 20px;
+}
+
+.banner-theme-txt p {
+  display: none;
+}
+
+
+@media (min-width: 768px) {
 
   .mobile-header,
   .top-menu .fa-xmark {
     display: none;
+  }
+
+  .banner-theme-txt p {
+    display: block;
   }
 
   #sidebar {

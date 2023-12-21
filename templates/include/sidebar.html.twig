@@ -1,10 +1,13 @@
 <div id="sidebar" class="sticky-sidebar">
-	<div class="top-menu">
-		<i class="fa-solid fa-xmark"></i>
+	<div
+		class="top-menu">
+		{# <i class="fa-solid fa-xmark"></i> #}
 		<a class="logo" href="{{ path('app_home') }}"><img src="{{ asset('img/logo.png') }}" alt="Logo victoryforge"/></a>
 		<hr class="logo-underline">
-		<div class="side-menu">
-			<a {# Faire ça pour appliquer la classe active pour les différents liens #} href="{{ path('app_home') }}" {% if app.request.attributes.get('_route') == 'app_home' %} class="nav-item-active" {% endif %}>
+		<div
+			class="side-menu">
+			{# Faire ça pour appliquer la classe active pour les différents liens #}
+			<a href="{{ path('app_home') }}" {% if app.request.attributes.get('_route') == 'app_home' %} class="nav-item-active" {% endif %}>
 				<span class="material-symbols-outlined">home</span>
 				Accueil
 			</a>
