@@ -82,6 +82,9 @@ class Tournoi
     #[ORM\Column(length: 50)]
     private ?string $region = null;
 
+    #[ORM\Column]
+    private ?int $nbJoueursMax = null;
+
 
     public function __construct()
     {
@@ -368,6 +371,18 @@ class Tournoi
     public function setRegion(string $region): static
     {
         $this->region = $region;
+
+        return $this;
+    }
+
+    public function getNbJoueursMax(): ?int
+    {
+        return $this->nbJoueursMax;
+    }
+
+    public function setNbJoueursMax(int $nbJoueursMax): static
+    {
+        $this->nbJoueursMax = $nbJoueursMax;
 
         return $this;
     }

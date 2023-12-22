@@ -4,13 +4,16 @@ namespace App\Form;
 
 use App\Entity\Jeu;
 use App\Entity\Tournoi;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class TournoiType extends AbstractType
 {
@@ -38,6 +41,29 @@ class TournoiType extends AbstractType
                 'required' => true,
                 'widget' => 'single_text',
                 'attr'   => ['min' => (new \DateTime())->format('Y-m-d H:i')]
+            ])
+            // NbJoueursMax
+            ->add('nbJoueursMax', IntegerType::class, [
+                'label' => 'Nombre de joueurs maximum * ',
+                'required' => true,
+                'attr' => [
+                    'min' => 1, // Limite minimale (ajustez selon vos besoins)
+                    'max' => 100, // Limite maximale (ajustez selon vos besoins)
+                    'step' => 1, // Incrément - 1 pour les nombres entiers
+                    'class' => 'custom-class', // Classe CSS pour le style personnalisé
+                    'placeholder' => 'Nombre maximum de joueurs'
+                ],
+                'constraints' => [
+                    // new NotBlank([
+                    //     'message' => 'Veuillez entrer le nombre de joueurs maximum.'
+                    // ]),
+                    new Range([
+                        'min' => 1,
+                        'max' => 100,
+                        'minMessage' => 'Le nombre de joueurs doit être au moins de {{ limit }}.',
+                        'maxMessage' => 'Le nombre de joueurs ne peut pas dépasser {{ limit }}.'
+                    ]),
+                ],
             ])
             ->add('logoFile', VichImageType::class, [
                 'label' => 'Logo du tournoi *: ',
