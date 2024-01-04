@@ -36,12 +36,9 @@ function openTab(tabName) {
 
 // Active le premier tab par défaut
 document.getElementById("tab-regles").click();
-// --------------------------------------------------
-
-
 // ---------------------------------------------------------------------------
 
-
+// ---------------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', function () {
 
     let btnParticiper = document.getElementById("btnParticiper");
@@ -77,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('pseudoModal').style.display = 'none';
     });
 
-
     // Ajouter l'utilisateur dans le tournoi
     function addUserTournoi() {
         fetch('join-tournoi', {
@@ -104,8 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error:', error));
     }
 
-    // Fonction asynchrone pour sauvegarder le nouveau pseudo
-
+// Fonction asynchrone pour sauvegarder le nouveau pseudo
     async function saveNewPseudo(pseudo) {
         let response = await fetch('save-new-pseudo', {
             method: 'POST',

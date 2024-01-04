@@ -30,8 +30,8 @@ class ChatController extends AbstractController
         $user = $this->getUser();
         $rooms = $this->roomRepo->findRoomsByUser($user);
 
-        $hubUrl = $this->getParameter('mercure.default_hub');
-        $this->addLink($request, new Link('mercure', $hubUrl));
+        // $hubUrl = $this->getParameter('mercure.default_hub');
+        // $this->addLink($request, new Link('mercure', $hubUrl));
 
         return $this->render('chat/index.html.twig', [
             'rooms' => $rooms,
@@ -51,7 +51,7 @@ class ChatController extends AbstractController
     }
 
     #[Route('/chat/new-message', name: 'chat_new_message', methods: ['POST'])]
-    public function newMessage(Request $request): Response
+    public function newMessage(Request $request, HubInterface $hub): Response
     {
         try {
             $data = json_decode($request->getContent(), true);
@@ -73,16 +73,24 @@ class ChatController extends AbstractController
                 }
             }
 
+            
             $message = new Message();
             $message->setRoom($room);
             $message->setTexteMessage($text);
             $message->setExpediteur($expediteur);
             $message->setDestinataire($destinataire);
-
+            
             $room->setLastMessage($text);
-
+            
             $this->em->persist($message);
             $this->em->flush();
+            
+            try {
+                $update = new Update('chat'. $roomId,  json_encode(['message' => $message]));
+                $hub->publish($update);
+            } catch (\Throwable $th) {
+                throw $th;
+            }
 
             return $this->json($message, 200, [], ['groups' => 'message']);
         } catch (\Throwable $th) {

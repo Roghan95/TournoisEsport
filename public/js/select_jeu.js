@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('jeuId', jeuId);
         selectJeu(jeuId);
     });
-
 });
 
 // Sélectionner le jeu
