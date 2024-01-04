@@ -1,81 +1,82 @@
 <div id="sidebar" class="sticky-sidebar">
-	<div
-		class="top-menu">
-		{# <i class="fa-solid fa-xmark"></i> #}
-		<a class="logo" href="{{ path('app_home') }}"><img src="{{ asset('img/logo.png') }}" alt="Logo victoryforge"/></a>
+	<div class="top-menu">
+		<a class="logo" href="{{ path('app_home') }}"><img src="{{ asset('img/logo.png') }}"
+				alt="Logo victoryforge" /></a>
 		<hr class="logo-underline">
-		<div
-			class="side-menu">
+		<div class="side-menu">
 			{# Faire ça pour appliquer la classe active pour les différents liens #}
-			<a href="{{ path('app_home') }}" {% if app.request.attributes.get('_route') == 'app_home' %} class="nav-item-active" {% endif %}>
+			<a href="{{ path('app_home') }}" {% if app.request.attributes.get('_route')=='app_home' %}
+				class="nav-item-active" {% endif %}>
 				<span class="material-symbols-outlined">home</span>
 				Accueil
 			</a>
 			{% if app.user == null %}
-				<a href="{{ path('app_login') }}">
-					<span class="material-symbols-outlined">
-						contract_edit
-					</span>
-					Organiser un tournoi
-				</a>
-				<a href="{{ path('app_login') }}">
-					<span class="material-symbols-outlined">
-						add_circle
-					</span>
-					Crée une équipe
-				</a>
+			<a href="{{ path('app_login') }}">
+				<span class="material-symbols-outlined">
+					contract_edit
+				</span>
+				Organiser un tournoi
+			</a>
+			<a href="{{ path('app_login') }}">
+				<span class="material-symbols-outlined">
+					add_circle
+				</span>
+				Crée une équipe
+			</a>
 			{% else %}
-				<a href="{{ path('app_tournoi_new') }}" {% if app.request.attributes.get('_route') == 'app_tournoi_new' %} class="nav-item-active" {% endif %}>
-					<span class="material-symbols-outlined">
-						contract_edit
-					</span>
-					Organiser un tournoi
-				</a>
-				<a href="{{ path('new_equipe') }}" {% if app.request.attributes.get('_route') == 'new_equipe' %} class="nav-item-active" {% endif %}>
-					<span class="material-symbols-outlined">
-						add_circle
-					</span>
-					Crée une équipe
-				</a>
+			<a href="{{ path('app_tournoi_new') }}" {% if app.request.attributes.get('_route')=='app_tournoi_new' %}
+				class="nav-item-active" {% endif %}>
+				<span class="material-symbols-outlined">
+					contract_edit
+				</span>
+				Organiser un tournoi
+			</a>
+			<a href="{{ path('new_equipe') }}" {% if app.request.attributes.get('_route')=='new_equipe' %}
+				class="nav-item-active" {% endif %}>
+				<span class="material-symbols-outlined">
+					add_circle
+				</span>
+				Crée une équipe
+			</a>
 			{% endif %}
 			{% if app.user == null %}
-				<a href="{{ path('app_login') }}">
-					<span class="material-symbols-outlined">
-						login
-					</span>
-					Se connecter
-				</a>
-				<a href="{{ path('app_register') }}">
-					<span class="material-symbols-outlined">
-						how_to_reg
-					</span>
-					S'enregistrer
-				</a>
+			<a href="{{ path('app_login') }}">
+				<span class="material-symbols-outlined">
+					login
+				</span>
+				Se connecter
+			</a>
+			<a href="{{ path('app_register') }}">
+				<span class="material-symbols-outlined">
+					how_to_reg
+				</span>
+				S'enregistrer
+			</a>
 			{% else %}
-				<a href="{{ path('app_logout') }}">
-					<span class="material-symbols-outlined">
-						logout
-					</span>
-					Se déconnecter
-				</a>
+			<a href="{{ path('app_logout') }}">
+				<span class="material-symbols-outlined">
+					logout
+				</span>
+				Se déconnecter
+			</a>
 			{% endif %}
 		</div>
 	</div>
 	<div class="profil-menu">
 		{% if app.user and app.user.photo %}
-			<a href="{{ path('app_profil', {'id' : utilisateur.id}) }}">
-				<img src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">
-				<p>{{ app.user.pseudo }}</p>
-			</a>
+		<a href="{{ path('app_profil', {'id' : utilisateur.id}) }}">
+			<img src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">
+			<p>{{ app.user.pseudo }}</p>
+		</a>
 		{% elseif app.user %}
-			<a href="{{ path('app_profil') }}">
-				<img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
-				<p class="profile-link">{{ app.user.pseudo }}
-					<span class="material-symbols-outlined">
-						chevron_right
-					</span>
-				</p>
-			</a>
+		<a href="{{ path('app_profil') }}">
+			<img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
+			<p class="profile-link">{{ app.user.pseudo }}
+				<span class="material-symbols-outlined">
+					chevron_right
+				</span>
+			</p>
+		</a>
 		{% endif %}
 	</div>
 </div>

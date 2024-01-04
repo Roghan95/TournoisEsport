@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error:', error));
     }
 
-// Fonction asynchrone pour sauvegarder le nouveau pseudo
+    // Fonction asynchrone pour sauvegarder le nouveau pseudo
     async function saveNewPseudo(pseudo) {
         let response = await fetch('save-new-pseudo', {
             method: 'POST',
@@ -154,5 +154,4 @@ document.addEventListener('DOMContentLoaded', function () {
         nbJoueurs.innerHTML = nbJoueursInt;
 
     }
-
 });

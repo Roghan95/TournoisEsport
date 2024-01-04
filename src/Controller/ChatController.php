@@ -12,7 +12,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\WebLink\Link;
@@ -29,9 +28,6 @@ class ChatController extends AbstractController
         /** @var Utilisateur $user */
         $user = $this->getUser();
         $rooms = $this->roomRepo->findRoomsByUser($user);
-
-        // $hubUrl = $this->getParameter('mercure.default_hub');
-        // $this->addLink($request, new Link('mercure', $hubUrl));
 
         return $this->render('chat/index.html.twig', [
             'rooms' => $rooms,
@@ -51,7 +47,7 @@ class ChatController extends AbstractController
     }
 
     #[Route('/chat/new-message', name: 'chat_new_message', methods: ['POST'])]
-    public function newMessage(Request $request, HubInterface $hub): Response
+    public function newMessage(Request $request): Response
     {
         try {
             $data = json_decode($request->getContent(), true);
@@ -73,7 +69,6 @@ class ChatController extends AbstractController
                 }
             }
 
-            
             $message = new Message();
             $message->setRoom($room);
             $message->setTexteMessage($text);
@@ -84,13 +79,6 @@ class ChatController extends AbstractController
             
             $this->em->persist($message);
             $this->em->flush();
-            
-            try {
-                $update = new Update('chat'. $roomId,  json_encode(['message' => $message]));
-                $hub->publish($update);
-            } catch (\Throwable $th) {
-                throw $th;
-            }
 
             return $this->json($message, 200, [], ['groups' => 'message']);
         } catch (\Throwable $th) {

@@ -16,6 +16,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(Request $request, SessionInterface $session, TournoiRepository $tournoiRepository, JeuRepository $jeuRepository, PaginatorInterface $paginator): Response
     {
+
         /***
          * @var \App\Entity\Utilisateur $user
          */

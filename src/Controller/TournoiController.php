@@ -39,6 +39,8 @@ class TournoiController extends AbstractController
     #[Route('/new', name: 'app_tournoi_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
+        $this->addFlash('danger', 'Test');
+
         $tournoi = new Tournoi();
         $form = $this->createForm(TournoiType::class, $tournoi);
         $form->handleRequest($request);
