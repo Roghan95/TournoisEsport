@@ -17,8 +17,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/tournoi')]
+#[IsGranted('ROLE_ADMIN', statusCode: 403, exceptionCode: 10010)]
 class TournoiController extends AbstractController
 {
 
@@ -39,8 +41,6 @@ class TournoiController extends AbstractController
     #[Route('/new', name: 'app_tournoi_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
-        $this->addFlash('danger', 'Test');
-
         $tournoi = new Tournoi();
         $form = $this->createForm(TournoiType::class, $tournoi);
         $form->handleRequest($request);

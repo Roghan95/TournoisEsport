@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
 // Sélectionner le jeu
 function selectJeu(jeuId) {
     fetch('/', {
