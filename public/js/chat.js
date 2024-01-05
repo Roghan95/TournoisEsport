@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ roomId, message })
             });
-            console.log(response);
+            // console.log(response);
             if (!response.ok) throw new Error('Failed to send message');
             return await response.json();
         } catch (error) {
@@ -135,8 +135,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //const eventSource = new EventSource("{{ mercure('localhost/.well-known/mercure?topic=http://exemple.com/rooms/1')|escape('js') }}");
     //eventSource.onmessage = event => {
-     //   const data = JSON.parse(event.data);
-      //  console.log(data);
+    //   const data = JSON.parse(event.data);
+    //  console.log(data);
     //};
 
     roomItems.forEach((room) => {
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
         eventSource.onmessage = event => {
             const data = JSON.parse(event.data);
             console.log(data);
-            
+
             if (data.message && data.message.destinataire.id === userId) {
                 displayMessage(data.message);
             }
