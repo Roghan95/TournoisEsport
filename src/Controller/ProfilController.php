@@ -165,18 +165,22 @@ class ProfilController extends AbstractController
             /** @var Utilisateur $user */
             $him = $this->utilisateurRepo->find($userId);
 
-            $alreadyFollow = false;
-            $follows = $me->getFollows();
+        
+            $alreadyFollow = false; // if already follow default false
+            $follows = $me->getFollows(); // get all follows
+            // verify if getFollows contains $user
             foreach ($follows as $key => $follow) {
+                // if already follow, remove follow
                 if ($follow->getFollowing()->getId() == $him->getId()) {
                     $this->em->remove($follow);
                     $this->em->flush();
-                    $alreadyFollow = true;
+                    $alreadyFollow = true; // if already follow true 
                     // stop loop
                     break;
                 }
             }
 
+            // if already follow, remove follow
             if($alreadyFollow){
                 return $this->json([
                     'code' => 200,
