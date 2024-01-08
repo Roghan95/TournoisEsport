@@ -32,7 +32,7 @@
 			<hr class="line-tr">
 			<p>A PROPOS DE CE TOURNOI</p>
 
-			{{ tournoi.description | raw}}
+			{{ tournoi.description | raw }}
 			{{ tournoi.jeu }}
 		</div>
 		<div id="participants" class="content" style="display:none;">
@@ -57,6 +57,7 @@
 			</ul>
 		</div>
 	</div>
+
 	{% if app.user is not null and tournoi.organisateur.id == app.user.id %}
 		{# <a href="{{ path('new_match', {'id' : tournoi.id}) }}">Ajouter un match</a>
 				<a href="{{ path('app_tournoi_edit', {'id' : tournoi.id}) }}">Edit</a> #}

@@ -24,19 +24,29 @@ TournoisEsport
 </div>
 <div class="filter">
 	<details id="jeux-dropdown">
+		
 		<summary>
-			Sélectionnez un jeu
+			{% if selectedJeu != null %}
+			    <img class="logo-jeu" src="{{ vich_uploader_asset(selectedJeu, 'logoFile') }}" alt="{{ selectedJeu.nomJeu }}">
+				{{ selectedJeu.nomJeu }}
+
+				{% else %}
+				Sélectionnez un jeu
+			{% endif %}
 			<i class="fa-solid fa-chevron-down"></i>
 		</summary>
 		<ul class="jeux-liste">
 			{% for jeu in jeux %}
-			<li data-value="{{ jeu.id }}" {% if jeu.id==jeuSelectionne %} class="selected" {% endif %}>
-				<img class="logo-jeu" src="{{ vich_uploader_asset(jeu, 'logoFile') }}" alt="{{ jeu.nomJeu }}">
-				<span class="nomJeu">{{ jeu.nomJeu }}</span>
-			</li>
+			
+				{#{% if selectedJeu is not null and jeu.id != selectedJeu.id %}#}
+				
+					<li data-value="{{ jeu.id }}">
+						<img class="logo-jeu" src="{{ vich_uploader_asset(jeu, 'logoFile') }}" alt="{{ jeu.nomJeu }}">
+						<span class="nomJeu">{{ jeu.nomJeu }}</span>
+					</li>
 			{% endfor %}
 		</ul>
-	</details>
+</details>
 </div>
 <div class="tr-main-wrapper">
 	{# <h3 id="find-tr-h3">Trouver des tournois</h3> #}

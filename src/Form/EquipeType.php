@@ -21,8 +21,8 @@ class EquipeType extends AbstractType
         $builder
             ->add('jeu', EntityType::class, [
                 'class' => Jeu::class,
-                'multiple' => true,
-                'expanded' => false,
+              //  'multiple' => true,
+                //'expanded' => false,
                 // 'choice_label' => '',
                 'label' => 'Sélectionnez un jeu :',
                 'attr' => [

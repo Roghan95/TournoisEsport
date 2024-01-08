@@ -7,19 +7,37 @@
 {% endblock %}
 
 {% block body %}
-	<h1>{{ app.user.pseudo }}</h1>
+	<h1>{{ user.pseudo }}</h1>
+	{% if user.id != app.user.id %}
+		<div class="action-btn">
+			<div><a href="#" id="invite-user" data-user-id={{user.id}}>Inviter dans mon équipe</a></div>
+			<div>
+
+					<a href="#" id="follow-user" data-user-id={{user.id}}>
+						{% if alreadyFollow %}
+							Unfollow
+						{% else %}
+							Follow
+						{% endif %}
+					</a>	
+			
+			</div>
+		</div>
+	{% endif %}
+	
+
 	<p>
 		Membre depuis le
-		{{ app.user.createdAt|format_date('short', locale='fr') }}
+		{{ user.createdAt|format_date('short', locale='fr') }}
 	</p>
-	{% if app.user.isBanned == false %}
+	{% if user.isBanned == false %}
 		<p>
 			<a href="{{ path('app_chat') }}">Chat</a>
 		</p>
 	{% else %}
 		<p>
 			L'utilisateur est banni jusqu'au :
-			{{ app.user.banExpireIn|format_date('full',  locale='fr') }}
+			{{ user.banExpireIn|format_date('full',  locale='fr') }}
 		</p>
 	{% endif %}
 	<p></p>
@@ -54,4 +72,8 @@
 	{% for tournoi in tournois %}
 		<img style="width: clamp(30px, 50px, 50px);" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Logo d'un tournoi"/>
 	{% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('js/profil.js') }}"></script>
 {% endblock %}

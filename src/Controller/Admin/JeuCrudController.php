@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
+#[IsGranted('ROLE_ADMIN', statusCode: 403, exceptionCode: 10010)]
 class JeuCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

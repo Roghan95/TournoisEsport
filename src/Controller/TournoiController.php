@@ -20,7 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/tournoi')]
-#[IsGranted('ROLE_ADMIN', statusCode: 403, exceptionCode: 10010)]
+// #[IsGranted('ROLE_ADMIN', statusCode: 403, exceptionCode: 10010)] // On vérifie que l'utilisateur est bien connecté et qu'il a le rôle admin
 class TournoiController extends AbstractController
 {
 

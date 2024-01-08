@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rechercher les utilisateurs{% endblock %}
+
+{% block body %}
+
+    <h1>Rechercher les utilisateurs</h1>
+
+    <form action="{{ path('app_search_user') }}" method="get">
+        <input type="text" name="search" id="search" placeholder="Rechercher un utilisateur">
+        <input type="submit" value="Rechercher">
+    </form>
+
+        {% if users is not empty %}
+            {% for user in users %}
+               <div class="user-profil-item">
+                    <div class="user-container">
+                        <a class="profil-link" href="{{ path('app_user_profil', {'id' : user.id}) }}">
+                            {% if user.photo %}
+                                <img class="logo-jeu" src="{{ vich_uploader_asset(user, 'photoFile') }}" alt="Photo de profil">
+                            {% elseif app.user %}
+                                <img class="logo-jeu" src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
+                            {% endif %}
+
+                            <div class="user-content">
+                                <p class="user-content-header">
+                                    {{ user.pseudo }}·
+                                </p> 
+                            </div>
+                        </a>
+                    </div>
+                    <div class="action-btn">
+                        <div><a href="#" id="invite-user" data-user-id={{user.id}}>Inviter dans mon équipe</a></div>
+                        <div><a href="#" id="follow-user" data-user-id={{user.id}}>Follow</a></div>
+                    </div>
+
+               </div>
+
+            {% endfor %}
+        {% else %}
+            <p>Aucun utilisateur trouvé</p>
+        {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('js/profil.js') }}"></script>
+{% endblock %}

@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Validator\Constraints\Date;
 
+#[IsGranted('ROLE_ADMIN', statusCode: 403, exceptionCode: 10010)]
 class UtilisateurCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
@@ -29,10 +30,10 @@ class UtilisateurCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             TextField::new('email'),
             TextField::new('pseudo'),
+            TextField::new('password'),
             BooleanField::new('isVerified'),
             BooleanField::new('isBanned'),
             ArrayField::new('roles'),
-            // TextField::new('password')->hideOnIndex(),
             DateTimeField::new('createdAt')->hideOnForm(),
             DateTimeField::new('updatedAt')->hideOnForm(),
 

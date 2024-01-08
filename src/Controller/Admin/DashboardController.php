@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 
+#[IsGranted('ROLE_ADMIN', statusCode: 403, exceptionCode: 10010)]
 class DashboardController extends AbstractDashboardController
 {
     #[Route('/admin', name: 'admin')]

@@ -55,11 +55,25 @@ class HomeController extends AbstractController
         }
         // On récupère tous les jeux
         $jeux = $jeuRepository->findAll();
+        $selectedJeu = null;
+
+        if($jeuId != null){
+            foreach ($jeux as $key => $jeu) {
+                if ($jeu->getId() == $jeuId) {
+                    // Trouver le jeu sélectionné
+                    $selectedJeu = $jeu;
+
+                    // Retirer le jeu sélectionné de la liste
+                    unset($jeux[$key]);
+                    break;
+                }
+            }
+        }
 
         return $this->render('home/index.html.twig', [
             'tournois' => $tournois,
             'jeux' => $jeux,
-            'jeuSelectionne' => $jeuId
+            'selectedJeu' => $selectedJeu,
         ]);
     }
 }

@@ -171,8 +171,9 @@ details>summary i {
   background-color: #e0e0e0;
 }
 
-.jeux-liste li img {
-  width: 30px;
+.logo-jeu {
+  width: 50px;
+  height: 50px;
   /* Ajustez la taille selon vos besoins */
   margin-right: 10px;
 }
@@ -599,4 +600,10 @@ button:disabled {
 
 .nav-item-active span {
   color: white !important;
+}
+
+.user-profil-item{
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }

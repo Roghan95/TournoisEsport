@@ -47,10 +47,10 @@ class TournoiType extends AbstractType
                 'label' => 'Nombre de joueurs maximum * ',
                 'required' => true,
                 'attr' => [
-                    'min' => 1, // Limite minimale (ajustez selon vos besoins)
-                    'max' => 100, // Limite maximale (ajustez selon vos besoins)
-                    'step' => 1, // Incrément - 1 pour les nombres entiers
-                    'class' => 'custom-class', // Classe CSS pour le style personnalisé
+                    'min' => 1, 
+                    'max' => 100, 
+                    'step' => 1, 
+                    'class' => 'nbJoueursMax',
                     'placeholder' => 'Nombre maximum de joueurs'
                 ],
                 'constraints' => [

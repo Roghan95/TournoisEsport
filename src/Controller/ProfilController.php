@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Equipe;
-use App\Repository\EquipeRepository;
+use App\Entity\Follow;
+use App\Entity\Utilisateur;
+use App\Entity\Notification;
 use App\Repository\JeuRepository;
-use App\Repository\UtilisateurRepository;
+use App\Repository\EquipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\UtilisateurRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProfilController extends AbstractController
 {
@@ -17,23 +21,23 @@ class ProfilController extends AbstractController
     {
     }
 
-    #[Route('/profil', name: 'app_profil')]
+    #[Route('/profil', name: 'app_mon_profil')]
     public function index(EquipeRepository $equipeRepo, JeuRepository $jeuRepo): Response
     {
-        $equipes = $equipeRepo->findBy(['proprietaire' => $this->getUser()]);
         /** @var Utilisateur $user */
         $user = $this->getUser();
+        $equipes = $equipeRepo->findBy(['proprietaire' => $user]);
         $tournois = $user->getMesTournois();
         $jeux = $jeuRepo->findAll();
         return $this->render('profil/index.html.twig', [
-            'user' => $this->getUser(),
+            'user' => $user,
             'equipes' => $equipes,
             'tournois' => $tournois,
             'jeux' => $jeux,
         ]);
     }
 
-    #[Route('/profil/param', name: 'app_profil_param')]
+    #[Route('/profil/param', name: 'app_mon_profil_param')]
     public function profilParam(): Response
     {
         return $this->render('profil/param_acc.html.twig', []);
@@ -49,7 +53,36 @@ class ProfilController extends AbstractController
 
         $this->em->flush();
 
-        return $this->redirectToRoute('app_profil');
+        return $this->redirectToRoute('app_mon_profil');
+    }
+
+    #[Route('/profil/{id}', name: 'app_user_profil')]
+    public function userProfil(Utilisateur $user, EquipeRepository $equipeRepo): Response
+    {
+        $equipes = $equipeRepo->findBy(['proprietaire' => $user]);
+        $tournois = $user->getMesTournois();
+
+        /** @var Utilisateur $user */
+        $me = $this->getUser();
+
+        $alreadyFollow = false;
+
+        // verify if getFollows contains $user
+        $follows = $me->getFollows();
+        foreach ($follows as $key => $follow) {
+            if ($follow->getFollowing()->getId() == $user->getId()) {
+                $alreadyFollow = true;
+                // stop loop
+                break;
+            }
+        }
+
+        return $this->render('profil/index.html.twig', [
+            'user' => $user,
+            'equipes' => $equipes,
+            'tournois' => $tournois,
+            'alreadyFollow' => $alreadyFollow
+        ]);
     }
 
     // Fonction pour qui permet de supprimer une équipe
@@ -64,6 +97,118 @@ class ProfilController extends AbstractController
         $this->em->remove($equipe);
         $this->em->flush();
 
-        return $this->redirectToRoute('app_profil');
+        return $this->redirectToRoute('app_mon_profil');
+    }
+
+    // Fonction qui permet d'inviter un utilisateur dans une équipe
+    #[Route('/api/invite-user', name: 'api_invite_user', methods: ['POST'])]
+    public function inviteUser(Request $request): Response
+    {
+        try {
+            /** @var Utilisateur $user */
+            $me = $this->getUser();
+
+            $data = json_decode($request->getContent(), true);
+            $userId = $data['userId'];
+
+            /** @var Utilisateur $user */
+            $him = $this->utilisateurRepo->find($userId);
+
+            $notification = new Notification();
+            $notification->setTexte("L'utilisateur " . $me->getPseudo() . " vous a invité dans son équipe");
+            $notification->setType("invitationForTeam");
+            $notification->setExpediteur($me);
+            $notification->setDestinataire($him);
+            $notification->setEquipe($me->getEquipes()[0]);
+            
+            $this->em->persist($notification);
+            $this->em->flush();
+
+            return $this->json([
+                'code' => 200,
+                'success' => true,
+                'message' => 'Invitation envoyée'
+            ], 200);
+        } catch (\Throwable $th) {
+            return $this->json([
+                'code' => 500,
+                'success' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    //Fonction qui permet de rejoindre une équipe
+    #[Route('/equipe/rejoindre/{id}', name: 'equipe_rejoindre')]
+    public function joinTeam(Equipe $equipe): Response
+    {
+        /** @var Utilisateur $user */
+        $user = $this->getUser();
+        $equipe->addMembre($user);
+
+        $this->em->flush();
+
+        return $this->redirectToRoute('app_mon_profil');
+    }
+
+    // Fonction qui permet de follow un utilisateur
+    #[Route('/api/follow-user', name: 'api_follow_user', methods: ['POST'])]
+    public function followUser(Request $request): Response
+    {
+        try {
+            /** @var Utilisateur $user */
+            $me = $this->getUser();
+
+            $data = json_decode($request->getContent(), true);
+            $userId = $data['userId'];
+
+            /** @var Utilisateur $user */
+            $him = $this->utilisateurRepo->find($userId);
+
+            $alreadyFollow = false;
+            $follows = $me->getFollows();
+            foreach ($follows as $key => $follow) {
+                if ($follow->getFollowing()->getId() == $him->getId()) {
+                    $this->em->remove($follow);
+                    $this->em->flush();
+                    $alreadyFollow = true;
+                    // stop loop
+                    break;
+                }
+            }
+
+            if($alreadyFollow){
+                return $this->json([
+                    'code' => 200,
+                    'success' => true,
+                    'message' => 'Vous ne suivez plus cet utilisateur',
+                    'textContent' => 'Follow'
+                ], 200);
+            }
+    
+
+            $follow = new Follow();
+            $follow->setFollower($me);
+            $follow->setFollowing($him);
+
+            $this->em->persist($follow);
+
+            $me->addFollow($follow);
+
+            $this->em->flush();
+
+            return $this->json([
+                'code' => 200,
+                'success' => true,
+                'message' => 'Vous suivez cet utilisateur',
+                'textContent' => 'Unfollow'
+            ], 200);
+        } catch (\Throwable $th) {
+            return $this->json([
+                'code' => 500,
+                'success' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 }

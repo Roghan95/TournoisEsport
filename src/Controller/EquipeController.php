@@ -37,7 +37,7 @@ class EquipeController extends AbstractController
             // dd($equipe);
             $this->em->persist($equipe);
             $this->em->flush();
-            return $this->redirectToRoute('app_profil');
+            return $this->redirectToRoute('app_mon_profil');
         }
         return $this->render('equipe/new.html.twig', [
             'form' => $form,

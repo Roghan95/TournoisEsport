@@ -48,6 +48,15 @@ class UtilisateurRepository extends ServiceEntityRepository implements PasswordU
             ->getOneOrNullResult();
     }
 
+    public function search(string $search): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.pseudo LIKE :search')
+            ->setParameter('search', '%' . $search . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Utilisateur[] Returns an array of Utilisateur objects
     //     */

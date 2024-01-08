@@ -38,6 +38,13 @@
 				</span>
 				Crée une équipe
 			</a>
+			<a href="{{ path('app_search_user') }}" {% if app.request.attributes.get('_route')=='app_search_user' %}
+				class="nav-item-active" {% endif %}>
+				<span class="material-symbols-outlined">
+					search
+				</span>
+				Rechercher un utilisateur
+			</a>
 			{% endif %}
 			{% if app.user == null %}
 			<a href="{{ path('app_login') }}">
@@ -64,12 +71,12 @@
 	</div>
 	<div class="profil-menu">
 		{% if app.user and app.user.photo %}
-		<a href="{{ path('app_profil', {'id' : utilisateur.id}) }}">
+		<a href="{{ path('app_mon_profil', {'id' : utilisateur.id}) }}">
 			<img src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">
 			<p>{{ app.user.pseudo }}</p>
 		</a>
 		{% elseif app.user %}
-		<a href="{{ path('app_profil') }}">
+		<a href="{{ path('app_mon_profil') }}">
 			<img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
 			<p class="profile-link">{{ app.user.pseudo }}
 				<span class="material-symbols-outlined">

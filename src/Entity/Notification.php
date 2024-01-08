@@ -2,12 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\NotificationRepository;
+use App\Entity\Equipe;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\NotificationRepository;
+
+enum NotificationType: string
+{
+    case InvitationForTeam = "invitationForTeam";
+    case Follow = "follow";
+}
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 class Notification
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -38,6 +46,18 @@ class Notification
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $destinataire = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Equipe $equipe = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+        $this->estLu = false;
+        $this->statut = 'pending';
+    }
 
     public function getId(): ?int
     {
@@ -136,6 +156,18 @@ class Notification
     public function setDestinataire(?Utilisateur $destinataire): static
     {
         $this->destinataire = $destinataire;
+
+        return $this;
+    }
+
+    public function getEquipe(): ?Equipe
+    {
+        return $this->equipe;
+    }
+
+    public function setEquipe(?Equipe $equipe): static
+    {
+        $this->equipe = $equipe;
 
         return $this;
     }

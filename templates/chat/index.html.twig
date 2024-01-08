@@ -23,7 +23,7 @@
 								{% else %}
 									<img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
 								{% endif %}
-								<a class="room-pseudo" href="{{ path('app_profil', {'id' : utilisateur.id}) }}">
+								<a class="room-pseudo" href="{{ path('app_mon_profil', {'id' : utilisateur.id}) }}">
 									<p>{{utilisateur.pseudo}}</p>
 								</a>
 							</div>
