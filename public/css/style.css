@@ -86,37 +86,6 @@ div.overlay.active {
   gap: 20px;
 }
 
-#content {
-  /* display: table-cell; */
-  /* width: 100%; */
-  /* vertical-align: top; */
-  /* padding: 20px; */
-}
-
-/* #jeu-select {
-  width: fit-content;
-  height: 60px;
-  border-radius: none;
-  border-left: none;
-  background-color: #2c3147;
-  color: white;
-  box-shadow: none;
-  border-right: 1px solid rgba(255, 255, 255, 0.134);
-  border-top: none;
-  border-bottom: none;
-  padding: 10px;
-}
-
-#jeu-select option {
-  background-color: #2c3147;
-  color: white;
-  border: none;
-  outline: none;
-  box-shadow: none;
-  border-radius: none;
-  padding: 20px;
-} */
-
 /* ---------- Jeu selectionner ---------- */
 
 details>summary::-webkit-details-marker,
@@ -127,16 +96,25 @@ details>summary::-moz-list-bullet {
 details>summary {
   cursor: pointer;
   list-style: none;
-  padding: 10px;
-  background-color: #2c3147;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: none;
+  transition: all 0.3s ease-in-out;
+}
+
+details>summary:hover {
+  background-color: #4061f3;
   color: white;
   border: none;
   outline: none;
   box-shadow: none;
-  border-radius: none;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+}
+
+.fa-solid.fa-chevron-down {
+  margin: 0;
+  padding: 0;
 }
 
 details>summary i {
@@ -156,31 +134,45 @@ details>summary i {
 
 .jeux-liste {
   list-style: none;
-  padding: 0;
+  padding: 10px;
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  gap: 10px;
 }
 
 .jeux-liste li {
-  padding: 5px;
   cursor: pointer;
   display: flex;
+  flex-direction: column;
+  width: 20%;
   align-items: center;
 }
 
-.jeux-liste li:hover {
-  background-color: #e0e0e0;
+.jeux-liste li span {
+  text-align: center;
 }
 
 .logo-jeu {
-  width: 50px;
-  height: 50px;
-  /* Ajustez la taille selon vos besoins */
-  margin-right: 10px;
+  width: 35px;
+  height: 35px;
 }
 
-.jeux-liste li.selected {
-  font-weight: bold;
+.not-selected-nom-jeu {
+  width: 80px;
+  height: 80px;
+  border-radius: 5px;
 }
+
+.not-selected-nom-jeu:hover {
+  outline: 3px solid #4061f3;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
 
 /* ----------------------------------- */
 
@@ -363,6 +355,7 @@ details>summary i {
   align-content: center;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .tr-region p {
@@ -473,7 +466,7 @@ body {
 
 .banner-tr {
   width: auto;
-  height: 300px;
+  height: 150px;
 }
 
 /* MODAL PARTICIPATION TOURNOI */
@@ -602,8 +595,12 @@ button:disabled {
   color: white !important;
 }
 
-.user-profil-item{
+.user-profil-item {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
+/* DETAIL TOURNOI */
+
+.tr-join-status {}

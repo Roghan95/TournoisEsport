@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let jeuxListe = document.querySelector(".jeux-liste");
     let summary = document.querySelector("#jeux-dropdown summary");
 
+
     jeuxListe.addEventListener('click', function (e) {
         // Trouver l'élément 'li' le plus proche, peu importe où le clic a eu lieu
         let targetLi = e.target.closest('li');
