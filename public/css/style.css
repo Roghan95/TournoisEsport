@@ -7,6 +7,7 @@
   padding: 0;
   margin: 0;
   list-style: none;
+  text-decoration: none;
 }
 
 body {
@@ -44,7 +45,7 @@ div.overlay.active {
 
 
 #main-container {
-  display: table;
+  /* display: table; */
   width: 100%;
   height: 100%;
 }
@@ -410,19 +411,42 @@ body {
 }
 
 .logo-trd {
-  height: 50px;
-  width: 50px;
+  height: 70px;
+  width: 70px;
+  border-radius: 5px;
 }
 
 .head-trd {
   display: flex;
-
+  padding: 10px;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.follow-trd {
+.logo-nom {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-nom a {
+  color: white;
+  padding-left: 10px;
+}
+
+.fa-regular .fa-message {
+  position: relative;
+  right: 10px;
+}
+
+.follow-trd a {
+  color: white;
+}
+
+
+.chat-icon {
+  font-size: 25px;
+  color: #ffffff82;
 }
 
 .head-flw {
@@ -430,8 +454,10 @@ body {
   align-items: center;
 }
 
+
 .tab-bar {
   display: flex;
+  justify-content: center;
 }
 
 .tab-container .tab {
@@ -442,12 +468,21 @@ body {
 
 .content {
   padding: 10px;
-  margin-top: 5px;
+  margin-top: 10px;
+}
+
+.title-organisation {
+  padding: 10px;
+}
+
+#title-propos-tr {
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .line-tr {
-  width: 300px;
+  width: 100%;
   height: 1px;
+  margin: 10px 0 10px 0;
 }
 
 .tab-active {
@@ -460,13 +495,13 @@ body {
 
 
 .main-content {
-  width: 900px;
+  width: auto;
   justify-content: center;
 }
 
 .banner-tr {
-  width: auto;
-  height: 150px;
+  width: 100%;
+  height: 200px;
 }
 
 /* MODAL PARTICIPATION TOURNOI */
@@ -603,4 +638,37 @@ button:disabled {
 
 /* DETAIL TOURNOI */
 
-.tr-join-status {}
+.tr-join-status {
+  position: fixed;
+  z-index: 1;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  background-color: #282828;
+}
+
+.btn-join-tr {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.tr-status {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tr-status h4 {
+  padding-bottom: 10px;
+}
+
+#rejoindre-tr {
+  color: rgba(255, 255, 255, 0.5);
+}

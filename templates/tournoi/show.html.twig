@@ -4,95 +4,99 @@
 {% endblock %}
 
 {% block body %}
-	<div class="main-content">
-		<div class="head-trd">
-			<img class="logo-trd" src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo du tournoi"/>
-			<div class="follow-trd">
-				<a href="">Valorant EU Daily by MEST.gg</a>
-				<div class="head-flw">
-					<a href="">Follow</a>
-					<p>10 Follower</p>
-				</div>
-			</div>
+<div class="main-content">
+	<div class="head-trd">
+		<div class="logo-nom">
+			<img class="logo-trd" src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo du tournoi" />
+			<a href="">Valorant EU Daily by MEST.gg</a>
 		</div>
-
-		<h2>{{ tournoi.nomOrganisation }}</h2>
-
-		<div class="tab-bar">
-			<div class="tab-container">
-				<div class="tab" id="tab-regles" onclick="openTab('regles')">REGLES</div>
-				<div class="tab" onclick="openTab('participants')">PARTICIPANTS</div>
-				<div class="tab" onclick="openTab('matchs')">MATCHS</div>
-				<!-- Plus de tabs si nécessaire -->
-			</div>
+		<div class="follow-trd">
+			<a href="">
+				<i class="fa-regular fa-message chat-icon"></i>
+			</a>
 		</div>
-
-		<div id="regles" class="content">
-			<img class="banner-tr" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière du tournoi">
-			<hr class="line-tr">
-			<p>A PROPOS DE CE TOURNOI</p>
-
-			{{ tournoi.description | raw }}
-			{{ tournoi.jeu }}
-		</div>
-		<div id="participants" class="content" style="display:none;">
-			<p>Joueurs (<span id="nbJoueurs">{{ tournoi.participantTournois | length }}</span>)</p>
-			{% for participant in tournoi.participantTournois %}
-				{% for pseudoEnJeu in participant.utilisateur.pseudosEnJeux %}
-					{% if pseudoEnJeu.jeu.id == tournoi.jeu.id %}
-						<p class="participant">{{ pseudoEnJeu.pseudo }}</p>
-					{% endif %}
-				{% endfor %}
-			{% endfor %}
-		</div>
-		<div id="matchs" class="content" style="display:none;">
-			<p>Matchs</p>
-			<ul>
-				{% for index, match in tournoi.getGameMatches %}
-					<li>
-						{{ index + 1 }}:
-						{{ match.dateDebut | format_datetime('short', 'short', locale='fr') }}
-					</li>
-				{% endfor %}
-			</ul>
+	</div>
+	<h2 class="title-organisation">{{ tournoi.nomOrganisation | upper }}</h2>
+	<div class="tab-bar">
+		<div class="tab-container">
+			<div class="tab" id="tab-regles" onclick="openTab('regles')">REGLES</div>
+			<div class="tab" onclick="openTab('participants')">PARTICIPANTS</div>
+			<div class="tab" onclick="openTab('matchs')">MATCHS</div>
+			<!-- Plus de tabs si nécessaire -->
 		</div>
 	</div>
 
-	{% if app.user is not null and tournoi.organisateur.id == app.user.id %}
-		{# <a href="{{ path('new_match', {'id' : tournoi.id}) }}">Ajouter un match</a>
-				<a href="{{ path('app_tournoi_edit', {'id' : tournoi.id}) }}">Edit</a> #}
-		{{ include('tournoi/_delete_form.html.twig') }}
-	{% elseif app.user is not null %}
-		<!-- Bouton pour ouvrir la modale -->
-		{% set isParticipant = false %}
+	<div id="regles" class="content">
+		<img class="banner-tr" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière du tournoi">
+		<hr class="line-tr">
+		<p id="title-propos-tr">A PROPOS DE CE TOURNOI : {{ tournoi.jeu | upper }}</p>
+
+		{{ tournoi.description | raw }}
+
+	</div>
+	<div id="participants" class="content" style="display:none;">
+		<p>Joueurs (<span id="nbJoueurs">{{ tournoi.participantTournois | length }}</span>)</p>
 		{% for participant in tournoi.participantTournois %}
-			{% if participant.utilisateur.id == app.user.id %}
-				{% set isParticipant = true %}
-			{% endif %}
-		{% endfor %}
-		{# Bouton pour participer au tournoi #}
-		{% if not isParticipant %}
-			<button id="btnParticiper" data-tournoi-id="{{ tournoi.id }}" data-jeu-id="{{ tournoi.jeu.id }}">Participer</button>
+		{% for pseudoEnJeu in participant.utilisateur.pseudosEnJeux %}
+		{% if pseudoEnJeu.jeu.id == tournoi.jeu.id %}
+		<p class="participant">{{ pseudoEnJeu.pseudo }}</p>
 		{% endif %}
+		{% endfor %}
+		{% endfor %}
+	</div>
+	<div id="matchs" class="content" style="display:none;">
+		<p>Matchs</p>
+		<ul>
+			{% for index, match in tournoi.getGameMatches %}
+			<li>
+				{{ index + 1 }}:
+				{{ match.dateDebut | format_datetime('short', 'short', locale='fr') }}
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
 
-		<!-- Modale -->
-		<div id="pseudoModal" class="modal">
-			<div class="modal-content">
-				<span class="close-btn">&times;</span>
-				<h2>Entrez votre pseudo
-					{{ tournoi.jeu.nomJeu }}</h2>
-				<input type="text" id="pseudo" name="pseudo" placeholder="Pseudo">
-				<button id="btnSubmitPseudo">Envoyer</button>
-			</div>
-		</div>
-	{% endif %}
+{% if app.user is not null and tournoi.organisateur.id == app.user.id %}
+{# <a href="{{ path('new_match', {'id' : tournoi.id}) }}">Ajouter un match</a>
+<a href="{{ path('app_tournoi_edit', {'id' : tournoi.id}) }}">Edit</a> #}
+{{ include('tournoi/_delete_form.html.twig') }}
+{% elseif app.user is not null %}
+<!-- Bouton pour ouvrir la modale -->
+{% set isParticipant = false %}
+{% for participant in tournoi.participantTournois %}
+{% if participant.utilisateur.id == app.user.id %}
+{% set isParticipant = true %}
+{% endif %}
+{% endfor %}
+{# Bouton pour participer au tournoi #}
+{% if not isParticipant %}
+<button id="btnParticiper" data-tournoi-id="{{ tournoi.id }}" data-jeu-id="{{ tournoi.jeu.id }}">Participer</button>
+{% endif %}
 
-	<div class="tr-join-status">
+<!-- Modale -->
+<div id="pseudoModal" class="modal">
+	<div class="modal-content">
+		<span class="close-btn">&times;</span>
+		<h2>Entrez votre pseudo
+			{{ tournoi.jeu.nomJeu }}</h2>
+		<input type="text" id="pseudo" name="pseudo" placeholder="Pseudo">
+		<button id="btnSubmitPseudo">Envoyer</button>
+	</div>
+</div>
+{% endif %}
+
+
+<div class="tr-join-status">
+	<div class="tr-status">
 		<h4>Enregistrement Ouvert</h4>
 		<p>40 / {{ tournoi.nbJoueursMax }} <em>Joueurs enregistré</em></p>
+	</div>
+	<div class="btn-join-tr">
 		<span id="rejoindre-tr">REJOINDRE</span>
 		<a href="{{ path('app_tournoi_join', {'id' : tournoi.id }) }}">
 			<button class="btnRejoindreTr">Rejoindre</button>
 		</a>
 	</div>
+</div>
 {% endblock %}
