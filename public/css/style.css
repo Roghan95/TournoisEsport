@@ -12,6 +12,7 @@
 
 body {
   min-height: 100vh;
+  background-color: #28303F !important;
 }
 
 html {
@@ -574,6 +575,7 @@ button:disabled {
 .mobile-header {
   background-color: #2c3147;
   position: sticky;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .banner-theme-txt p {
@@ -645,7 +647,7 @@ button:disabled {
   width: 100%;
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   padding: 10px;
-  background-color: #282828;
+  background-color: #28303F;
 }
 
 .btn-join-tr {
@@ -671,4 +673,20 @@ button:disabled {
 
 #rejoindre-tr {
   color: rgba(255, 255, 255, 0.5);
+}
+
+/* LISTE DES PARTICIPANTS */
+
+.list-participants {
+  border-top: 1px solid rgb(255, 0, 0);
+  border-bottom: 1px solid rgb(255, 0, 0);
+  width: fit-content;
+  padding: 10px;
+  border-radius: 5px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: white;
 }

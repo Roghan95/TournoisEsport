@@ -2,22 +2,23 @@
 
 namespace App\Controller;
 
-use App\Entity\ParticipantTournoi;
-use App\Entity\PseudoEnJeu;
 use App\Entity\Tournoi;
-use App\Entity\Utilisateur;
 use App\Form\TournoiType;
-use App\Repository\EquipeRepository;
+use App\Entity\PseudoEnJeu;
+use App\Entity\Utilisateur;
 use App\Repository\JeuRepository;
-use App\Repository\PseudoEnJeuRepository;
+use App\Entity\ParticipantTournoi;
+use App\Repository\EquipeRepository;
 use App\Repository\TournoiRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\PseudoEnJeuRepository;
+use App\Repository\UtilisateurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/tournoi')]
 // #[IsGranted('ROLE_ADMIN', statusCode: 403, exceptionCode: 10010)] // On vérifie que l'utilisateur est bien connecté et qu'il a le rôle admin
@@ -26,7 +27,8 @@ class TournoiController extends AbstractController
 
     public function __construct(
         private EntityManagerInterface $em,
-        private TournoiRepository $tournoiRepo
+        private TournoiRepository $tournoiRepo,
+        private UtilisateurRepository $utilisateurRepo
     ) {
     }
     // #[Route('/', name: 'app_tournoi_index', methods: ['GET'])]
@@ -61,6 +63,7 @@ class TournoiController extends AbstractController
 
             return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
+
 
         return $this->render('tournoi/new.html.twig', [
             'tournoi' => $tournoi,

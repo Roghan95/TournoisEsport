@@ -35,14 +35,23 @@
 
 	</div>
 	<div id="participants" class="content" style="display:none;">
-		<p>Joueurs (<span id="nbJoueurs">{{ tournoi.participantTournois | length }}</span>)</p>
+		<p>JOUEURS INSCRITS (<span id="nbJoueurs">{{ tournoi.participantTournois | length }}</span>)</p>
 		{% for participant in tournoi.participantTournois %}
 		{% for pseudoEnJeu in participant.utilisateur.pseudosEnJeux %}
 		{% if pseudoEnJeu.jeu.id == tournoi.jeu.id %}
-		<p class="participant">{{ pseudoEnJeu.pseudo }}</p>
-		{% endif %}
-		{% endfor %}
-		{% endfor %}
+		<a class="participant" href="{{ path('app_user_profil', {'id': participant.id}) }}">
+			<div class="list-participants">
+				{% for utilisateurs in utilisateur %}
+
+				<img src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="photo de profil">
+				{% endfor %}
+				<img style="width: 40px; height:40px;" src="/img/defaultProfile.png" alt="photo de profil">
+				<p>#{{ pseudoEnJeu.pseudo }}</p>
+				{% endif %}
+				{% endfor %}
+				{% endfor %}
+			</div>
+		</a>
 	</div>
 	<div id="matchs" class="content" style="display:none;">
 		<p>Matchs</p>
