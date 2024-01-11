@@ -152,6 +152,23 @@ document.addEventListener('DOMContentLoaded', function () {
         let nbJoueursInt = parseInt(nbJoueurs.innerHTML);
         nbJoueursInt++;
         nbJoueurs.innerHTML = nbJoueursInt;
-
     }
+
+    document.getElementById('chat-icon').addEventListener('click', function() {
+        fetch('/create-room', { 
+            method: 'POST',
+            body: JSON.stringify({ tournoiId: '{{ tournoi.id }}' }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.roomId) {
+                window.location.href = `/chat?room=${data.roomId}`;
+            }
+        });
+    });
 });
+
+

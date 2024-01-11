@@ -37,6 +37,7 @@ class ProfilController extends AbstractController
         ]);
     }
 
+    // Fonction qui permet d'afficher les paramètres du profil
     #[Route('/profil/param', name: 'app_mon_profil_param')]
     public function profilParam(): Response
     {
@@ -56,16 +57,36 @@ class ProfilController extends AbstractController
         return $this->redirectToRoute('app_mon_profil');
     }
 
+
+    // Fonction qui permet d'afficher le profil d'un utilisateur avec ces informations
     #[Route('/profil/{id}', name: 'app_user_profil')]
     public function userProfil(Utilisateur $user, EquipeRepository $equipeRepo): Response
     {
-        $equipes = $equipeRepo->findBy(['proprietaire' => $user]);
-        $tournois = $user->getMesTournois();
+    // Check if the user exists
+    if (!$user) {
+        throw $this->createNotFoundException('L\'utilisateur demandé n\'existe pas.');
+    }
 
-        /** @var Utilisateur $user */
+    $equipes = $equipeRepo->findBy(['proprietaire' => $user]);
+
+    // Check if the teams exist
+    if (!$equipes) {
+        $this->addFlash('error', 'Aucune équipe trouvée pour cet utilisateur.');
+    }
+
+    $tournois = $user->getMesTournois();
+
+    // Check if the tournaments exist
+    if (!$tournois) {
+        $this->addFlash('error', 'Aucun tournoi trouvé pour cet utilisateur.');
+    }
+
+    $alreadyFollow = false;
+
+    // Check if user is logged in before trying to access User object
+    if ($this->getUser()) {
+        /** @var Utilisateur $me */
         $me = $this->getUser();
-
-        $alreadyFollow = false;
 
         // verify if getFollows contains $user
         $follows = $me->getFollows();
@@ -76,15 +97,17 @@ class ProfilController extends AbstractController
                 break;
             }
         }
-
-        return $this->render('profil/index.html.twig', [
-            'user' => $user,
-            'equipes' => $equipes,
-            'tournois' => $tournois,
-            'alreadyFollow' => $alreadyFollow
-        ]);
     }
 
+    return $this->render('profil/index.html.twig', [
+        'user' => $user,
+        'equipes' => $equipes,
+        'tournois' => $tournois,
+        'alreadyFollow' => $alreadyFollow
+    ]);
+    }
+
+    
     // Fonction pour qui permet de supprimer une équipe
     #[Route('/equipe/supprimer/{id}', name: 'equipe_supprimer')]
     public function deleteTeam(Equipe $equipe): Response

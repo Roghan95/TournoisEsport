@@ -1,4 +1,13 @@
-<form method="post" action="{{ path('app_tournoi_delete', {'id': tournoi.id}) }}" onsubmit="return confirm('Etes vous sur de vouloir supprimer?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tournoi.id) }}">
-    <button class="btn">Supprimer le tournoi</button>
-</form>
+
+{% if app.user and app.user.id == tournoi.organisateur.id %}
+    <form method="post" action="{{ path('app_tournoi_delete', {'id': tournoi.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloir supprimer?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tournoi.id) }}">
+        <button class="btn">Supprimer le tournoi</button>
+    </form>
+{% endif %}
+
+{# Edit tournoi #}
+{# <a href="{{ path('app_tournoi_edit', {'id' : tournoi.id}) }}">Edit</a>
+{# Add match #}
+{# <a href="{{ path('new_match', {'id' : tournoi.id}) }}">+ Match</a> #}
+{# Bouton pour participer au tournoi #}

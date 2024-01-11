@@ -86,13 +86,18 @@ class ChatController extends AbstractController
         }
     }
 
-    #[Route('/chat/new-room/{userId}', name: 'chat_new_room')]
-    public function newRoom(int $userId, UtilisateurRepository $utilisateurRepo): Response
+    #[Route('/chat/create-room', name: 'chat_new_room', methods: ['POST'])]
+    public function newRoom(Request $request): Response
     {
         try {
+            $data = json_decode($request->getContent(), true);
+            $userId = $data['userId'];
+
             /** @var Utilisateur $user */
             $me = $this->getUser();
+
             $him = $utilisateurRepo->find($userId);
+
             $room = new Room();
             $room->setLastMessage('');
             $room->addUtilisateur($me);
@@ -101,12 +106,7 @@ class ChatController extends AbstractController
             $this->em->persist($room);
             $this->em->flush();
 
-            $rooms = $this->roomRepo->findRoomsByUser($me);
-
-            return $this->render('chat/index.html.twig', [
-                'rooms' => $rooms,
-                'selectedRoomId' => $room->getId(),
-            ]);
+            return $this->json(['roomId' => $room->getId()]);
         } catch (\Throwable $th) {
             return $this->json($th->getMessage(), 500);
         }

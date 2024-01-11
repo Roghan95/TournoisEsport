@@ -85,6 +85,9 @@ class Tournoi
     #[ORM\Column]
     private ?int $nbJoueursMax = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $nbJoueurs = null;
+
 
     public function __construct()
     {
@@ -383,6 +386,18 @@ class Tournoi
     public function setNbJoueursMax(int $nbJoueursMax): static
     {
         $this->nbJoueursMax = $nbJoueursMax;
+
+        return $this;
+    }
+
+    public function getNbJoueurs(): ?int
+    {
+        return $this->nbJoueurs;
+    }
+
+    public function setNbJoueurs(?int $nbJoueurs): static
+    {
+        $this->nbJoueurs = $nbJoueurs;
 
         return $this;
     }

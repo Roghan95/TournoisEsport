@@ -5,15 +5,14 @@
 
 {% block body %}
 <div class="main-content">
-	<div class="head-trd">
+	<div id="ancre" class="head-trd">
 		<div class="logo-nom">
 			<img class="logo-trd" src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo du tournoi" />
 			<a href="">Valorant EU Daily by MEST.gg</a>
 		</div>
-		<div class="follow-trd">
-			<a href="">
-				<i class="fa-regular fa-message chat-icon"></i>
-			</a>
+		<div class="contact-user">
+			{# Icone pour contacter l'organisateur d'un tournoi #}
+			<i id="chat-icon" class="fa-regular fa-message chat-icon"></i>
 		</div>
 	</div>
 	<h2 class="title-organisation">{{ tournoi.nomOrganisation | upper }}</h2>
@@ -31,27 +30,29 @@
 		<hr class="line-tr">
 		<p id="title-propos-tr">A PROPOS DE CE TOURNOI : {{ tournoi.jeu | upper }}</p>
 
-		{{ tournoi.description | raw }}
-
+		{# Description du tournoi #}
+		<div class="tr-desc-regles">
+			{{ tournoi.description | raw }}
+		</div>
 	</div>
 	<div id="participants" class="content" style="display:none;">
 		<p>JOUEURS INSCRITS (<span id="nbJoueurs">{{ tournoi.participantTournois | length }}</span>)</p>
 		{% for participant in tournoi.participantTournois %}
-		{% for pseudoEnJeu in participant.utilisateur.pseudosEnJeux %}
-		{% if pseudoEnJeu.jeu.id == tournoi.jeu.id %}
-		<a class="participant" href="{{ path('app_user_profil', {'id': participant.id}) }}">
-			<div class="list-participants">
-				{% for utilisateurs in utilisateur %}
-
-				<img src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="photo de profil">
-				{% endfor %}
-				<img style="width: 40px; height:40px;" src="/img/defaultProfile.png" alt="photo de profil">
-				<p>#{{ pseudoEnJeu.pseudo }}</p>
+			{% for pseudoEnJeu in participant.utilisateur.pseudosEnJeux %}
+				{% if pseudoEnJeu.jeu.id == tournoi.jeu.id %}
+					<a class="participant" href="{{ path('app_user_profil', {'id': participant.utilisateur.id}) }}">
+						<div class="list-participants">
+							{% if participant.utilisateur.photoFile %}
+								<img style="width: 40px; height:40px;" src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="photo de profil">
+							{% else %}
+								<img style="width: 40px; height:40px;" src="/img/defaultProfile.png" alt="photo de profil">
+							{% endif %}
+							<p>#{{ pseudoEnJeu.pseudo }}</p>
+						</div>
+					</a>
 				{% endif %}
-				{% endfor %}
-				{% endfor %}
-			</div>
-		</a>
+			{% endfor %}
+		{% endfor %}
 	</div>
 	<div id="matchs" class="content" style="display:none;">
 		<p>Matchs</p>
@@ -66,46 +67,47 @@
 	</div>
 </div>
 
-{% if app.user is not null and tournoi.organisateur.id == app.user.id %}
-{# <a href="{{ path('new_match', {'id' : tournoi.id}) }}">Ajouter un match</a>
-<a href="{{ path('app_tournoi_edit', {'id' : tournoi.id}) }}">Edit</a> #}
-{{ include('tournoi/_delete_form.html.twig') }}
-{% elseif app.user is not null %}
-<!-- Bouton pour ouvrir la modale -->
-{% set isParticipant = false %}
-{% for participant in tournoi.participantTournois %}
-{% if participant.utilisateur.id == app.user.id %}
-{% set isParticipant = true %}
-{% endif %}
-{% endfor %}
-{# Bouton pour participer au tournoi #}
-{% if not isParticipant %}
-<button id="btnParticiper" data-tournoi-id="{{ tournoi.id }}" data-jeu-id="{{ tournoi.jeu.id }}">Participer</button>
-{% endif %}
-
-<!-- Modale -->
-<div id="pseudoModal" class="modal">
-	<div class="modal-content">
-		<span class="close-btn">&times;</span>
-		<h2>Entrez votre pseudo
-			{{ tournoi.jeu.nomJeu }}</h2>
-		<input type="text" id="pseudo" name="pseudo" placeholder="Pseudo">
-		<button id="btnSubmitPseudo">Envoyer</button>
-	</div>
-</div>
-{% endif %}
-
-
 <div class="tr-join-status">
-	<div class="tr-status">
-		<h4>Enregistrement Ouvert</h4>
-		<p>40 / {{ tournoi.nbJoueursMax }} <em>Joueurs enregistré</em></p>
-	</div>
-	<div class="btn-join-tr">
-		<span id="rejoindre-tr">REJOINDRE</span>
-		<a href="{{ path('app_tournoi_join', {'id' : tournoi.id }) }}">
-			<button class="btnRejoindreTr">Rejoindre</button>
-		</a>
-	</div>
+    <div class="tr-status">
+		{% if tournoi.nbJoueurs < tournoi.nbJoueursMax %}
+        <h4>ENREGISTREMENT OUVERT</h4>
+		{% else %}
+		<h4>ENREGISTREMENT FERME</h4>
+		{% endif %}
+        <p id="nbJoueurs">{{ tournoi.participantTournois | length }} / {{ tournoi.nbJoueursMax }} Joueurs enregistrés</p>
+        <a style="font-size: 25px; position:absolute; right:10px; color:white;" href="#ancre"><i class="fa-regular fa-circle-up"></i></a>
+    </div>
+    <div class="btn-join-tr">
+        <span id="rejoindre-tr">REJOINDRE</span>
+        {% if app.user is not null and tournoi.organisateur.id == app.user.id %}
+            {# <a href="{{ path('new_match', {'id' : tournoi.id}) }}">Ajouter un match</a>
+            <a href="{{ path('app_tournoi_edit', {'id' : tournoi.id}) }}">Edit</a> #}
+            {# {{ include('tournoi/_delete_form.html.twig') }} #}
+        {% elseif app.user is not null %}
+            <!-- Bouton pour ouvrir la modale -->
+            {% set isParticipant = false %}
+            {% for participant in tournoi.participantTournois %}
+            {% if participant.utilisateur.id == app.user.id %}
+            {% set isParticipant = true %}
+            {% endif %}
+            {% endfor %}
+            {# Bouton pour participer au tournoi #}
+            {% if not isParticipant and tournoi.nbJoueurs < tournoi.nbJoueursMax %}
+            <button id="btnParticiper" data-tournoi-id="{{ tournoi.id }}" data-jeu-id="{{ tournoi.jeu.id }}">Participer</button>
+            {% elseif not isParticipant and tournoi.nbJoueurs >= tournoi.nbJoueursMax %}
+            <button id="btnParticiper" data-tournoi-id="{{ tournoi.id }}" data-jeu-id="{{ tournoi.jeu.id }}" disabled>Participer</button>
+            {% endif %}
+            <!-- .......... Modale .......... -->
+            <div id="pseudoModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn">&times;</span>
+                    <h2>Entrez votre pseudo
+                        {{ tournoi.jeu.nomJeu }}</h2>
+                    <input type="text" id="pseudo" name="pseudo" placeholder="Pseudo">
+                    <button id="btnSubmitPseudo">Envoyer</button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

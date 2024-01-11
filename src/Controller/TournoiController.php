@@ -31,14 +31,6 @@ class TournoiController extends AbstractController
         private UtilisateurRepository $utilisateurRepo
     ) {
     }
-    // #[Route('/', name: 'app_tournoi_index', methods: ['GET'])]
-    // public function index(TournoiRepository $tournoiRepository): Response
-    // {
-    //     return $this->render('tournoi/index.html.twig', [
-    //         'tournois' => $tournoiRepository->findAll(),
-    //     ]);
-    // }
-
     // Fonction permettant de crée un tournoi
     #[Route('/new', name: 'app_tournoi_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
@@ -47,8 +39,12 @@ class TournoiController extends AbstractController
         $form = $this->createForm(TournoiType::class, $tournoi);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            if (!$user) {
+                $this->addFlash('error', 'Vous devez être connecté pour créer un tournoi');
+                return $this->redirectToRoute('app_login');
+            }
             if ($tournoi->getDateDebut() > $tournoi->getDateFin()) {
                 $this->addFlash('error', 'La date de début doit être antérieure à la date de fin');
                 return $this->redirectToRoute('app_tournoi_new');
@@ -60,10 +56,12 @@ class TournoiController extends AbstractController
 
             $this->em->persist($tournoi);
             $this->em->flush();
-
+            
+            $this->addFlash('success', 'Le tournoi a bien été créé');
             return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+        } else {
+            $this->addFlash('error', 'Le tournoi n\'a pas pu être créé');
         }
-
 
         return $this->render('tournoi/new.html.twig', [
             'tournoi' => $tournoi,
@@ -89,15 +87,20 @@ class TournoiController extends AbstractController
             $participantTournoi->setUtilisateur($user);
             $participantTournoi->setInGamePseudo($pseudoEnJeu->getPseudo());
 
+            // On ajoute le participant au tournoi
             $tournoi->addParticipantTournoi($participantTournoi);
+            // On incrémente la valeur de nbJoueurs
+            $tournoi->setNbJoueurs($tournoi->getNbJoueurs() + 1);
             $equipe = $equipeRepo->findOneBy(['proprietaire' => $user, 'jeu' => $tournoi->getJeu()]);
             if ($equipe !== null) {
                 $participantTournoi->setEquipe($equipe);
             }
 
             $this->em->persist($participantTournoi);
+            $this->em->persist($tournoi);
             $this->em->flush();
 
+            
             return $this->json(['success' => true, 'pseudo' => $pseudoEnJeu->getPseudo(),], 200);
         } catch (\Throwable $th) {
             // Gérer les erreurs éventuelles
@@ -127,11 +130,6 @@ class TournoiController extends AbstractController
     #[Route('/save-new-pseudo', name: 'save_new_pseudo', methods: ['POST'])]
     public function savePseudo(Request $request, JeuRepository $jeuRepo): Response
     {
-        // Vérifier que le token est valide
-        // if (!$this->isCsrfTokenValid('save_new_pseudo', $request->request->get('_token'))) {
-        //     return $this->json(['success' => false, 'error' => 'Token invalide'], 400);
-        // }
-
         try {
             // Récupérer les données envoyées et les décoder
             $data = json_decode($request->getContent(), true);
@@ -167,6 +165,11 @@ class TournoiController extends AbstractController
     {
         $id = $tournoi->getId();
         $tournoi = $this->em->getRepository(Tournoi::class)->find($id);
+    
+        if ($tournoi === null) {
+            throw $this->createNotFoundException('Le tournoi demandé n\'existe pas.');
+        }
+        
         return $this->render('tournoi/show.html.twig', [
             'tournoi' => $tournoi,
         ]);
@@ -178,13 +181,18 @@ class TournoiController extends AbstractController
     {
         $form = $this->createForm(TournoiType::class, $tournoi);
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+    
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $entityManager->flush();
+    
+                $this->addFlash('success', 'Le tournoi a bien été modifié');
+                return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+            } else {
+                $this->addFlash('error', 'Le tournoi n\'a pas pu être modifié');
+            }
         }
-
+    
         return $this->render('tournoi/edit.html.twig', [
             'tournoi' => $tournoi,
             'form' => $form,
@@ -195,13 +203,25 @@ class TournoiController extends AbstractController
     #[Route('/{id}', name: 'app_tournoi_delete', methods: ['POST'])]
     public function delete(Request $request, Tournoi $tournoi, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $tournoi->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($tournoi);
-            $entityManager->flush();
+        $user = $this->getUser();
+        // Vérifie d'abord si l'utilisateur est connecté et est l'organisateur du tournoi ou s'il a le rôle admin
+        if ($user && $user === $tournoi->getOrganisateur() || $this->isGranted('ROLE_ADMIN')) {
+            // Ensuite, vérifie le token CSRF
+            if ($this->isCsrfTokenValid('delete' . $tournoi->getId(), $request->request->get('_token'))) {
+                $entityManager->remove($tournoi);
+                $entityManager->flush();
+    
+                $this->addFlash('success', 'Le tournoi a bien été supprimé');
+            } else {
+                $this->addFlash('error', 'Le tournoi n\'a pas pu être supprimé');
+            }
+        } else {
+            $this->addFlash('error', 'Vous n\'avez pas les droits nécessaires pour supprimer ce tournoi');
         }
-
+    
         return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
     }
+    
 
     // Fonction permettant de supprimer un participant d'un tournoi
     #[Route('/{id}/delete-participant', name: 'app_tournoi_delete_participant', methods: ['POST'])]
@@ -210,6 +230,10 @@ class TournoiController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $participantTournoi->getId(), $request->request->get('_token'))) {
             $entityManager->remove($participantTournoi);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Le participant a bien été supprimé');
+        } else {
+            $this->addFlash('error', 'Le participant n\'a pas pu être supprimé');
         }
 
         return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
@@ -225,6 +249,10 @@ class TournoiController extends AbstractController
             $participantTournoi->setUtilisateur($this->getUser());
             $entityManager->persist($participantTournoi);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Vous avez bien rejoint le tournoi');
+        } else {
+            $this->addFlash('error', 'Vous n\'avez pas pu rejoindre le tournoi');
         }
 
         return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
@@ -232,15 +260,20 @@ class TournoiController extends AbstractController
 
 
     // Fonction permettant au joueur de quitter un tournoi
-    #[Route('/{id}/leave', name: 'app_tournoi_leave', methods: ['POST'])]
+    #[Route('/{id}/leave', name: 'app_tournoi_leave', methods: ['GET', 'POST'])]
     public function leave(Request $request, Tournoi $tournoi, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('leave' . $tournoi->getId(), $request->request->get('_token'))) {
             $participantTournoi = $this->em->getRepository(ParticipantTournoi::class)->findOneBy(['tournoi' => $tournoi, 'utilisateur' => $this->getUser()]);
             $entityManager->remove($participantTournoi);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Vous avez bien quitté le tournoi');
+        } else {
+            $this->addFlash('error', 'Vous n\'avez pas pu quitter le tournoi');
         }
 
+        // Rediriger vers la page d'accueil
         return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
     }
 }

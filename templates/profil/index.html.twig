@@ -7,8 +7,8 @@
 {% endblock %}
 
 {% block body %}
-	<h1>{{ user.pseudo }}</h1>
-	{% if user.id != app.user.id %}
+	<h1>Profil de {{ user.pseudo }}</h1>
+	{% if app. user and user.id != app.user.id %}
 		<div class="action-btn">
 			<div><a href="#" id="invite-user" data-user-id={{user.id}}>Inviter dans mon équipe</a></div>
 			<div>
@@ -36,7 +36,6 @@
 			{{ user.banExpireIn|format_date('full',  locale='fr') }}
 		</p>
 	{% endif %}
-	<p></p>
 	<div class="titre-equipe">
 		<h2>Mes équipes</h2>
 		<a href="{{ path('new_equipe') }}">Crée une équipe</a>

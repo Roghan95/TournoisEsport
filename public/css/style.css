@@ -641,7 +641,7 @@ button:disabled {
 /* DETAIL TOURNOI */
 
 .tr-join-status {
-  position: fixed;
+  position: sticky;
   z-index: 1;
   bottom: 0;
   width: 100%;
@@ -690,3 +690,10 @@ button:disabled {
   gap: 10px;
   color: white;
 }
+
+#participants, 
+#matchs,
+.tr-desc-regles {
+  height: 100vh;
+}
+
