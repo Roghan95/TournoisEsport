@@ -1,6 +1,14 @@
-{{ form_start(form) }}
-{{ form_widget(form) }}
-<textarea name="tournoi-description" id="tournoi-description"></textarea>
-<button class="btn">{{ button_label|default('Enregistrer') }}</button>
-{{ form_end(form) }}
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('css/security.css') }}">
+{% endblock %}
 
+<div class="tr-form-wrapper">
+
+    <h1>Créer un tournoi</h1>
+
+    {{ form_start(form, {'attr': {'class': 'tr-create-form'}}) }}
+    {{ form_widget(form) }}
+    <textarea name="tournoi-description" id="tournoi-description"></textarea>
+    <button class="btn">{{ button_label|default('Valider') }}</button>
+    {{ form_end(form) }}
+</div>

@@ -22,25 +22,40 @@ class TournoiType extends AbstractType
         $builder
             ->add('nomTournoi', TextType::class, [
                 'label' => 'Titre * ',
-                'required' => true
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Tournoi de League of Legends, ...',
+                    'class' => 'nomTournoi'
+                ]
             ])
             ->add('nomOrganisation', TextType::class, [
                 'label' => 'Nom de l\'organisation * ',
-                'required' => true
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Riot Games, Blizzard, ...',
+                    'class' => 'nomOrga'
+                ]
             ])
             ->add('dateDebut', DateTimeType::class, [
                 'input' => 'datetime_immutable',
                 'label' => 'Date de début * ',
                 'required' => true,
                 'widget' => 'single_text',
-                'attr'   => ['min' => (new \DateTime())->format('Y-m-d H:i')]
+                'attr'   => [
+                    'min' => (new \DateTime())->format('Y-m-d H:i'),
+                    'class' => 'dateDebut'
+                    ]
             ])
             ->add('dateFin', DateTimeType::class, [
                 'input' => 'datetime_immutable',
                 'label' => 'Date de fin * ',
                 'required' => true,
                 'widget' => 'single_text',
-                'attr'   => ['min' => (new \DateTime())->format('Y-m-d H:i')]
+                'attr'   => [
+                    'min' => (new \DateTime())->format('Y-m-d H:i'),
+                    'class' => 'dateFin'
+                    ]
+
             ])
             // NbJoueursMax
             ->add('nbJoueursMax', IntegerType::class, [
@@ -48,18 +63,15 @@ class TournoiType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'min' => 1, 
-                    'max' => 100, 
-                    'step' => 1, 
-                    'class' => 'nbJoueursMax',
-                    'placeholder' => 'Nombre maximum de joueurs'
+                    'max' => 1000, 
+                    'step' => 1,
+                    'class' => 'nombreJoueursMax',
+                    'placeholder' => 'Autorisé entre 1 et 1000 joueurs.'
                 ],
                 'constraints' => [
-                    // new NotBlank([
-                    //     'message' => 'Veuillez entrer le nombre de joueurs maximum.'
-                    // ]),
                     new Range([
                         'min' => 1,
-                        'max' => 100,
+                        'max' => 1000,
                         'minMessage' => 'Le nombre de joueurs doit être au moins de {{ limit }}.',
                         'maxMessage' => 'Le nombre de joueurs ne peut pas dépasser {{ limit }}.'
                     ]),
@@ -68,31 +80,42 @@ class TournoiType extends AbstractType
             ->add('logoFile', VichImageType::class, [
                 'label' => 'Logo du tournoi *: ',
                 'required' => true,
+                'attr' => [
+                    'class' => 'logoTournoi'
+                ]
 
             ])
             ->add('banniereTrFile', VichImageType::class, [
                 'label' => 'Bannière *: ',
-                'required' => true
+                'required' => true,
+                'attr' => [
+                    'class' => 'banniereTournoi'
+                ]
             ])
             ->add('region', TextType::class, [
                 'label' => 'Région *: ',
                 'required' => true,
                 'attr' => [
-                    'placeholder' => 'Ex: Europe, Amérique du Nord, ...'
+                    'placeholder' => 'Ex: Europe, Amérique du Nord, ...',
+                    'class' => 'regionTournoi'
                 ]
             ])
             ->add('lienTwitch', TextType::class, [
                 'label' => 'Lien Twitch : ',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Ex: https://www.twitch.tv/...'
+                    'placeholder' => 'Ex: https://www.twitch.tv/...',
+                    'class' => 'lienTwitch'
                 ]
             ])
             ->add('jeu', EntityType::class, [
                 'class' => Jeu::class,
                 'choice_label' => 'nomJeu',
                 'label' => 'Jeu',
-                'placeholder' => 'Choisissez un jeu *: '
+                'placeholder' => 'Choisissez un jeu *: ',
+                'attr' => [
+                    'class' => 'jeuTournoi'
+                ]
             ]);
     }
 

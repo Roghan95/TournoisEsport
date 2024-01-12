@@ -3,19 +3,10 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Créer un tournoi</h1>
-
-	{% for message in app.flashes('error') %}
-		<div class="alert alert-error">
-			{{ message }}
-		</div>
-	{% endfor %}
-
-	{{ include("tournoi/_form.html.twig") }}
-
+{{ include("tournoi/_form.html.twig") }}
 {% endblock %}
 
 {% block javascripts %}
-	<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
-	<script src="{{ asset('js/tinymce.js') }}"></script>
+<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+<script src="{{ asset('js/tinymce.js') }}"></script>
 {% endblock %}
