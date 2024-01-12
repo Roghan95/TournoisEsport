@@ -25,61 +25,61 @@
 </head>
 
 <body>
-	<header class="mobile-header">
-		<i class="fa-solid fa-bars"></i>
-		<img class="logo-mobile" src="{{ asset('img/logo.png') }}" alt="logo" />
-	</header>
-	<div class="overlay"></div>
-	<div id="main-container">
-		{% block sidebar %}
-		{{ include ('include/sidebar.html.twig') }}
-		{% endblock %}
+	<div id="wrapper">
+		<header class="mobile-header">
+			<i class="fa-solid fa-bars"></i>
+			<img class="logo-mobile" src="{{ asset('img/logo.png') }}" alt="logo" />
+		</header>
+		<div class="overlay"></div>
+		<main id="main-container">
+			{% block sidebar %}
+			{{ include ('include/sidebar.html.twig') }}
+			{% endblock %}
 
-		<div id="content"> {% block body %}{% endblock %}
-			{% for message in app.flashes('success') %}
+			<div id="content"> {% block body %}{% endblock %}
+				{% for message in app.flashes('success') %}
 				<div class="alert alert-success">
 					{{ message }}
 				</div>
-			{% endfor %}
-			
-			{% for message in app.flashes('error') %}
+				{% endfor %}
+
+				{% for message in app.flashes('error') %}
 				<div class="alert alert-danger">
 					{{ message }}
 				</div>
-			{% endfor %}
-		</div>
+				{% endfor %}
+			</div>
+		</main>
 	</div>
+	{% block javascripts %}
+	{# {{ encore_entry_script_tags('app') }} #}
+	<script src="{{ asset('js/script.js') }}"></script>
+	{% endblock %}
 
-</body>
+	<script>
+		const openSidebar = document.querySelector('.fa-bars');
+		const sidebar = document.querySelector('#sidebar');
+		const overlay = document.querySelector('.overlay');
 
-{% block javascripts %}
-{# {{ encore_entry_script_tags('app') }} #}
-<script src="{{ asset('js/script.js') }}"></script>
-{% endblock %}
-
-<script>
-	const openSidebar = document.querySelector('.fa-bars');
-	const sidebar = document.querySelector('#sidebar');
-	const overlay = document.querySelector('.overlay');
-
-	openSidebar.addEventListener('click', () => {
-		sidebar.classList.add('active');
-		overlay.classList.add('active');
-	});
-
-	overlay.addEventListener('click', () => {
-		sidebar.classList.remove('active');
-		overlay.classList.remove('active');
-	});
-
-	document.addEventListener('DOMContentLoaded', (event) => {
-		const flashMessages = document.querySelectorAll('.alert');
-	
-		flashMessages.forEach((flashMessage) => {
-			setTimeout(() => {
-				flashMessage.style.display = 'none';
-			}, 2000);
+		openSidebar.addEventListener('click', () => {
+			sidebar.classList.add('active');
+			overlay.classList.add('active');
 		});
-	});
-</script>
+
+		overlay.addEventListener('click', () => {
+			sidebar.classList.remove('active');
+			overlay.classList.remove('active');
+		});
+
+		document.addEventListener('DOMContentLoaded', (event) => {
+			const flashMessages = document.querySelectorAll('.alert');
+
+			flashMessages.forEach((flashMessage) => {
+				setTimeout(() => {
+					flashMessage.style.display = 'none';
+				}, 2000);
+			});
+		});
+	</script>
+</body>
 </html>
