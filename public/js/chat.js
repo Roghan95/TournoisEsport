@@ -41,17 +41,27 @@ document.addEventListener('DOMContentLoaded', function () {
     async function handleRoomClick(e) {
         e.preventDefault();
         const roomId = this.dataset.roomId;
-        setActiveRoom(roomId);
-        const messages = await getMessages(roomId);
-        displayMessages(messages, userId);
+        setActiveRoom(roomId)
     }
 
-    function setActiveRoom(roomId) {
+    function addClassesToActiveRoom(roomId) {
         roomItems.forEach(room => {
             room.classList.toggle('room-item-active', room.dataset.roomId === roomId);
         });
         sendMessageForm.setAttribute('data-room-id', roomId);
         sendMessageForm.classList.add('show-form');
+    }
+
+    const roomId = document.getElementById('chat').dataset.activeRoomId;
+
+    if(roomId){
+        setActiveRoom(roomId);
+    }
+
+    async function setActiveRoom(roomId){
+        addClassesToActiveRoom(roomId);
+        const messages = await getMessages(roomId);
+        displayMessages(messages, userId);
     }
 
     function displayMessages(messages, userId) {

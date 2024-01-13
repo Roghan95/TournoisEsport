@@ -3,72 +3,78 @@
 {% endblock %}
 
 {% block sidebar %}
-	{{ include ('include/profil_sidebar.html.twig') }}
+{{ include ('include/profil_sidebar.html.twig') }}
 {% endblock %}
 
 {% block body %}
-	<h1>Profil de {{ user.pseudo }}</h1>
-	{% if app. user and user.id != app.user.id %}
-		<div class="action-btn">
-			<div><a href="#" id="invite-user" data-user-id={{user.id}}>Inviter dans mon équipe</a></div>
-			<div>
-				<a href="#" id="follow-user" data-user-id={{user.id}}>
-					{% if alreadyFollow %}
-						Unfollow
-					{% else %}
-						Follow
-					{% endif %}
-				</a>
-			</div>
-		</div>
-	{% endif %}
-	<p>
-		Membre depuis le
-		{{ user.createdAt|format_date('short', locale='fr') }}
-	</p>
-	{% if user.isBanned == false %}
-		<p>
-			<a href="{{ path('app_chat') }}">Chat</a>
-		</p>
-	{% else %}
-		<p>
-			L'utilisateur est banni jusqu'au :
-			{{ user.banExpireIn|format_date('full',  locale='fr') }}
-		</p>
-	{% endif %}
-	<div class="titre-equipe">
-		<h2>Mes équipes</h2>
-		<a href="{{ path('new_equipe') }}">Crée une équipe</a>
+<h1>Profil de {{ user.pseudo }}</h1>
+{% if app. user and user.id != app.user.id %}
+<div class="action-btn">
+	<div><a href="#" id="invite-user" data-user-id={{user.id}}>Inviter dans mon équipe</a></div>
+	<div>
+		<a href="#" id="follow-user" data-user-id={{user.id}}>
+			{% if alreadyFollow %}
+			Unfollow
+			{% else %}
+			Follow
+			{% endif %}
+		</a>
 	</div>
-	{% if equipes is empty %}
-		<div class="no-equipe">
-			<p>Vous n'avez pas d'équipe</p>
-		</div>
-	{% else %}
-		<div class="container-equipe">
-			{% for equipe in equipes %}
-				<div class="box-equipe">
-					{% if equipe.logo is not empty %}
-						<img src="{{ vich_uploader_asset(equipe, 'imageFile') }}" alt="Logo de l'équipe {{ equipe.nomEquipe }}"/>
-						<h2>{{ equipe.nomEquipe }}</h2>
-						<p>
-							Membre depuis le
-							{{ equipe.createdAt|format_date('full', locale='fr') }}
-						</p>
-						<a href="{{ path('equipe_quitter', { id: equipe.id }) }}">Quitter</a>
-					{% endif %}
-				{% endfor %}
-			</div>
-		</div>
-	{% endif %}
+</div>
+{% endif %}
+<p>
+	Membre depuis le
+	{{ user.createdAt|format_date('short', locale='fr') }}
+</p>
+{% if user.isBanned == false %}
 
-	<h2>Mes tournois</h2>
+{% if user.id != app.user.id %}
+<div class="contact-user">
+	{# Icon pour contacter l'organisateur d'un tournoi #}
+	<i id="chat-icon" class="fa-regular fa-message chat-icon" data-organisateur-id="{{ user.id }}"></i>
+</div>
+{% endif %}
+{% else %}
+<p>
+	L'utilisateur est banni jusqu'au :
+	{{ user.banExpireIn|format_date('full', locale='fr') }}
+</p>
+{% endif %}
+<div class="titre-equipe">
+	<h2>Mes équipes</h2>
+	<a href="{{ path('new_equipe') }}">Crée une équipe</a>
+</div>
+{% if equipes is empty %}
+<div class="no-equipe">
+	<p>Vous n'avez pas d'équipe</p>
+</div>
+{% else %}
+<div class="container-equipe">
+	{% for equipe in equipes %}
+	<div class="box-equipe">
+		{% if equipe.logo is not empty %}
+		<img src="{{ vich_uploader_asset(equipe, 'imageFile') }}" alt="Logo de l'équipe {{ equipe.nomEquipe }}" />
+		<h2>{{ equipe.nomEquipe }}</h2>
+		<p>
+			Membre depuis le
+			{{ equipe.createdAt|format_date('full', locale='fr') }}
+		</p>
+		<a href="{{ path('equipe_quitter', { id: equipe.id }) }}">Quitter</a>
+		{% endif %}
+		{% endfor %}
+	</div>
+</div>
+{% endif %}
 
-	{% for tournoi in tournois %}
-		<img style="width: clamp(30px, 50px, 50px);" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Logo d'un tournoi"/>
-	{% endfor %}
+<h2>Mes tournois</h2>
+
+{% for tournoi in tournois %}
+<img style="width: clamp(30px, 50px, 50px);" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}"
+	alt="Logo d'un tournoi" />
+{% endfor %}
 {% endblock %}
 
 {% block javascripts %}
-	<script src="{{ asset('js/profil.js') }}"></script>
+<script src="{{ asset('js/script.js') }}"></script>
+<script src="{{ asset('js/profil.js') }}"></script>
 {% endblock %}

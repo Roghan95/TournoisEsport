@@ -33,6 +33,20 @@ class RoomRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findRoomByUsers(Utilisateur $me, Utilisateur $him): ?Room
+    {
+        return $this->createQueryBuilder('r')
+            ->innerJoin('r.utilisateurs', 'u')
+            ->where('u.id = :me')
+            ->orWhere('u.id = :him')
+            ->groupBy('r.id')
+            ->having('COUNT(r.id) = 2')
+            ->setParameter('me', $me->getId())
+            ->setParameter('him', $him->getId())
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 
     //    /**
     //     * @return Room[] Returns an array of Room objects

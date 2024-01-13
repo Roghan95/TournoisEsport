@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block body %}
-    <div id="chat" data-user-id="{{ app.user.id }}">
+    <div id="chat" data-user-id="{{ app.user.id }}" data-active-room-id="{{ roomId }}">
         <div class="rooms">
             {% for room in rooms %}
                 <div class="room-item" data-room-id={{room.id}}>

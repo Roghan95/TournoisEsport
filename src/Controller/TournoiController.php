@@ -16,6 +16,7 @@ use App\Repository\UtilisateurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\ParticipantTournoiRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -89,8 +90,7 @@ class TournoiController extends AbstractController
 
             // On ajoute le participant au tournoi
             $tournoi->addParticipantTournoi($participantTournoi);
-            // On incrémente la valeur de nbJoueurs
-            $tournoi->setNbJoueurs($tournoi->getNbJoueurs() + 1);
+
             $equipe = $equipeRepo->findOneBy(['proprietaire' => $user, 'jeu' => $tournoi->getJeu()]);
             if ($equipe !== null) {
                 $participantTournoi->setEquipe($equipe);
@@ -161,10 +161,17 @@ class TournoiController extends AbstractController
 
     // Fonction qui permet d'afficher le détail d'un tournoi
     #[Route('/{id}', name: 'app_tournoi_show', methods: ['GET'])]
-    public function show(Tournoi $tournoi): Response
+    public function show(Tournoi $tournoi, ParticipantTournoiRepository $participantTournoiRepo): Response
     {
         $id = $tournoi->getId();
         $tournoi = $this->em->getRepository(Tournoi::class)->find($id);
+
+        // check if connected user participates to the tournament
+        $user = $this->getUser();
+        $isAlreadyParticipate = false;
+        if ($user) {
+            $isAlreadyParticipate = $participantTournoiRepo->findOneBy(['tournoi' => $tournoi, 'utilisateur' => $user]);
+        }
     
         if ($tournoi === null) {
             throw $this->createNotFoundException('Le tournoi demandé n\'existe pas.');
@@ -172,6 +179,7 @@ class TournoiController extends AbstractController
         
         return $this->render('tournoi/show.html.twig', [
             'tournoi' => $tournoi,
+            'isAlreadyParticipate' => $isAlreadyParticipate,
         ]);
     }
 
@@ -239,41 +247,47 @@ class TournoiController extends AbstractController
         return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
     }
 
-    // Fonction permettant au participant de rejoindre un tounoi 
-    #[Route('/{id}/join', name: 'app_tournoi_join', methods: ['POST'])]
-    public function join(Request $request, Tournoi $tournoi, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('join' . $tournoi->getId(), $request->request->get('_token'))) {
-            $participantTournoi = new ParticipantTournoi();
-            $participantTournoi->setTournoi($tournoi);
-            $participantTournoi->setUtilisateur($this->getUser());
-            $entityManager->persist($participantTournoi);
-            $entityManager->flush();
 
-            $this->addFlash('success', 'Vous avez bien rejoint le tournoi');
-        } else {
-            $this->addFlash('error', 'Vous n\'avez pas pu rejoindre le tournoi');
+    #[Route('/{id}/participer', name: 'tournoi_participer', methods: ['GET'])]
+    public function participer(Tournoi $tournoi, EquipeRepository $equipeRepo, ParticipantTournoiRepository $participantTournoiRepo)
+    {
+        /** @var Utilisateur $user */
+        $user = $this->getUser();
+
+        // check if user is already in tournament
+        $isAlreadyParticipate = $participantTournoiRepo->findOneBy(['tournoi' => $tournoi, 'utilisateur' => $user]);
+        if ($isAlreadyParticipate) {
+            $this->addFlash('error', 'Vous participez déjà à ce tournoi');
+            return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoi->getId()]);
         }
 
-        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+        $equipe = $equipeRepo->findOneBy(['proprietaire' => $user, 'jeu' => $tournoi->getJeu()]);
+
+        $participantTournoi = new ParticipantTournoi();
+        $participantTournoi->setTournoi($tournoi);
+        $participantTournoi->setUtilisateur($user);
+        $participantTournoi->setInGamePseudo($user->getPseudo());
+        $participantTournoi->setEquipe($equipe);
+
+        // On ajoute le participant au tournoi
+        $tournoi->addParticipantTournoi($participantTournoi);
+
+        $this->em->persist($participantTournoi);
+
+        // get equipe with same jeu as tournoi
+        // dump($tournoi->getJeu()->getNomJeu());
+        // dd($equipe->getMembres()->toArray());
+
+        $membresEquipe = $equipe->getMembres()->toArray();
+
+        return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoi->getId()]);
     }
 
-
-    // Fonction permettant au joueur de quitter un tournoi
-    #[Route('/{id}/leave', name: 'app_tournoi_leave', methods: ['GET', 'POST'])]
-    public function leave(Request $request, Tournoi $tournoi, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/quitter', name: 'tournoi_quitter', methods: ['POST'])]
+    public function quitter(Tournoi $tournoi)
     {
-        if ($this->isCsrfTokenValid('leave' . $tournoi->getId(), $request->request->get('_token'))) {
-            $participantTournoi = $this->em->getRepository(ParticipantTournoi::class)->findOneBy(['tournoi' => $tournoi, 'utilisateur' => $this->getUser()]);
-            $entityManager->remove($participantTournoi);
-            $entityManager->flush();
+        // Code pour retirer l'utilisateur actuel de la liste des participants du tournoi
 
-            $this->addFlash('success', 'Vous avez bien quitté le tournoi');
-        } else {
-            $this->addFlash('error', 'Vous n\'avez pas pu quitter le tournoi');
-        }
-
-        // Rediriger vers la page d'accueil
-        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoi->getId()]);
     }
 }
