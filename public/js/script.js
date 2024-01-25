@@ -45,7 +45,7 @@ if (tabRegles != null) {
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('chat-icon').addEventListener('click', function () {
         const organisateurId = this.dataset.organisateurId;
-        console.log('organisateurId', organisateurId);
+        // console.log('organisateurId', organisateurId);
         fetch('/chat/create-room', {
             method: 'POST',
             body: JSON.stringify({ userId: organisateurId }),

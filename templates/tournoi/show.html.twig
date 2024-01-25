@@ -11,12 +11,12 @@
 			<a href="">{{ tournoi.nomTournoi }}</a>
 		</div>
 
-		{% if tournoi.organisateur.id != app.user.id %}
-		<div class="contact-user">
-			{# Icon pour contacter l'organisateur d'un tournoi #}
-			<i id="chat-icon" class="fa-regular fa-message chat-icon"
-				data-organisateur-id="{{ tournoi.organisateur.id }}"></i>
-		</div>
+		{% if app.user and tournoi.organisateur.id != app.user.id %}
+			<div class="contact-user">
+				{# Icon pour contacter l'organisateur d'un tournoi #}
+				<i id="chat-icon" class="fa-regular fa-message chat-icon"
+					data-organisateur-id="{{ tournoi.organisateur.id }}"></i>
+			</div>
 		{% endif %}
 	</div>
 	<h2 class="title-organisation">{{ tournoi.nomOrganisation | upper }}</h2>
@@ -42,8 +42,6 @@
 	<div id="participants" class="content" style="display:none;">
 		<p>JOUEURS INSCRITS (<span id="nbJoueurs">{{ tournoi.participantTournois | length }}</span>)</p>
 		{% for participant in tournoi.participantTournois %}
-		{# {% for pseudoEnJeu in participant.utilisateur.pseudosEnJeux %} #}
-		{# {% if pseudoEnJeu.jeu.id == tournoi.jeu.id %} #}
 		<a class="participant" href="{{ path('app_user_profil', {'id': participant.utilisateur.id}) }}">
 			<div class="list-participants">
 				{% if participant.utilisateur.photoFile %}
@@ -55,8 +53,6 @@
 				<p>{{ participant.utilisateur.pseudo }}</p>
 			</div>
 		</a>
-		{# {% endif %} #}
-		{# {% endfor %} #}
 		{% endfor %}
 	</div>
 	<div id="matchs" class="content" style="display:none;">
@@ -74,38 +70,30 @@
 
 <div class="tr-join-status">
 	<div class="tr-status">
-		{% if tournoi.nbJoueurs < tournoi.nbJoueursMax %} <h4>ENREGISTREMENT OUVERT</h4>
+		{% if tournoi.nbJoueurs < tournoi.nbJoueursMax %} 
+		<h4>ENREGISTREMENT OUVERT</h4>
 			{% else %}
-			<h4>ENREGISTREMENT FERME</h4>
+			<h4>ENREGISTREMENT FERMEE</h4>
 			{% endif %}
 			<p id="nbJoueurs">{{ tournoi.participantTournois | length }} / {{ tournoi.nbJoueursMax }} Joueurs
 				enregistrés</p>
-			<a style="font-size: 25px; position:absolute; right:10px; color:white;" href="#ancre"><i
-					class="fa-regular fa-circle-up"></i></a>
+			<a style="font-size: 25px; position:absolute; right:10px; color:white;" href="#ancre">
+				<i class="fa-regular fa-circle-up"></i>
+			</a>
 	</div>
 	<div class="btn-join-tr">
 		<span id="rejoindre-tr">REJOINDRE</span>
-		{# {% if app.user is not null and tournoi.organisateur.id == app.user.id %} #}
-		{# <a href="{{ path('new_match', {'id' : tournoi.id}) }}">Ajouter un match</a>
-		<a href="{{ path('app_tournoi_edit', {'id' : tournoi.id}) }}">Edit</a> #}
-		{# {{ include('tournoi/_delete_form.html.twig') }} #}
-
 		{% if app.user %}
-		<!-- Bouton pour ouvrir la modale -->
-
-			{# Bouton pour participer au tournoi #}
 			{% if not isAlreadyParticipate and tournoi.nbJoueurs < tournoi.nbJoueursMax %}
-
-				<form action="{{ path('tournoi_participer', {'id': tournoi.id}) }}" method="post">
+				<form action="{{ path('tournoi_participer', {'id': tournoi.id}) }}" method="POST">
 					<button type="submit">Participer</button>
 				</form>
 			{% elseif not isAlreadyParticipate and tournoi.nbJoueurs >= tournoi.nbJoueursMax %}
-				<button id="btnParticiper" disabled>Participer</button>
+				<button id="btnParticiper" >Participer</button>
 			{% endif %}
 
-
-			{% if isAlreadyParticipate %}
-				<form action="{{ path('tournoi_quitter', {'id': tournoi.id}) }}" method="post">
+			{% if isAlreadyParticipate and app.user %}
+				<form action="{{ path('tournoi_quitter', {'id': tournoi.id}) }}" method="POST">
 					<button type="submit">Quitter</button>
 				</form>
 			{% endif %}
@@ -116,3 +104,8 @@
 	</div>
 </div>
 {% endblock %}
+
+		{# {% if app.user is not null and tournoi.organisateur.id == app.user.id %} #}
+		{# <a href="{{ path('new_match', {'id' : tournoi.id}) }}">Ajouter un match</a>
+		<a href="{{ path('app_tournoi_edit', {'id' : tournoi.id}) }}">Edit</a> #}
+		{# {{ include('tournoi/_delete_form.html.twig') }} #}

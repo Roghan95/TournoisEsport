@@ -163,36 +163,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    //const eventSource = new EventSource("{{ mercure('localhost/.well-known/mercure?topic=http://exemple.com/rooms/1')|escape('js') }}");
-    //eventSource.onmessage = event => {
-    //   const data = JSON.parse(event.data);
-    //  console.log(data);
-    //};
-
-    roomItems.forEach((room) => {
-        const roomId = room.dataset.roomId;
-        //const eventSource = new EventSource(`chat/${roomId}`);
-        const url = new URL('http://localhost/.well-known/mercure');
-        url.searchParams.append('topic', 'chat' + roomId);
-
-        const eventSource = new EventSource(url);
-        eventSource.onmessage = event => {
-            const data = JSON.parse(event.data);
-            console.log(data);
-
-            if (data.message && data.message.destinataire.id === userId) {
-                displayMessage(data.message);
-            }
-        };
-    });
-
-    // fonction pour échapper les caractères HTML
-    function escapeHTML(unsafeText) {
-        let div = document.createElement('div');
-        div.textContent = unsafeText;
-        return div.innerHTML;
-    }
-
     // fonction pour afficher un message
     function displayMessage(message) {
         // Sélection de l'élément HTML avec l'ID 'messages' et stockage de sa référence dans la variable "messagesDiv"
@@ -205,3 +175,36 @@ document.addEventListener('DOMContentLoaded', function () {
         messagesDiv.appendChild(messageElement);
     }
 });
+
+
+
+
+//const eventSource = new EventSource("{{ mercure('localhost/.well-known/mercure?topic=http://exemple.com/rooms/1')|escape('js') }}");
+//eventSource.onmessage = event => {
+//   const data = JSON.parse(event.data);
+//  console.log(data);
+//};
+
+// roomItems.forEach((room) => {
+//     const roomId = room.dataset.roomId;
+//     //const eventSource = new EventSource(`chat/${roomId}`);
+//     const url = new URL('http://localhost/.well-known/mercure');
+//     url.searchParams.append('topic', 'chat' + roomId);
+
+//     const eventSource = new EventSource(url);
+//     eventSource.onmessage = event => {
+//         const data = JSON.parse(event.data);
+//         console.log(data);
+
+//         if (data.message && data.message.destinataire.id === userId) {
+//             displayMessage(data.message);
+//         }
+//     };
+// });
+
+// fonction pour échapper les caractères HTML
+// function escapeHTML(unsafeText) {
+//     let div = document.createElement('div');
+//     div.textContent = unsafeText;
+//     return div.innerHTML;
+// }
