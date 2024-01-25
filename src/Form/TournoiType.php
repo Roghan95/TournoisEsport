@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Jeu;
+use Symfony\Component\Validator\Constraints\File;
 use App\Entity\Tournoi;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
