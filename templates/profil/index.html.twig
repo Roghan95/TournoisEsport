@@ -1,5 +1,4 @@
 {% extends 'base.html.twig' %}
-<meta name="description" content="Bienvenue {{ user.pseudo }} sur ton profil" />
 {% block title %}Profil
 {% endblock %}
 
@@ -60,6 +59,7 @@
 			Membre depuis le
 			{{ equipe.createdAt|format_date('full', locale='fr') }}
 		</p>
+		<a href="{{ path('app_search_user') }}">Inviter</a>
 		<a href="{{ path('equipe_quitter', { id: equipe.id }) }}">Quitter</a>
 		{% endif %}
 		{% endfor %}

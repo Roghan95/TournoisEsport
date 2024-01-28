@@ -88,6 +88,9 @@ class Tournoi
     #[ORM\Column(nullable: true)]
     private ?int $nbJoueurs = null;
 
+    #[ORM\Column(length: 255, options: ["default" => "solo"])]
+    private ?string $type = null;
+
 
     public function __construct()
     {
@@ -398,6 +401,18 @@ class Tournoi
     public function setNbJoueurs(?int $nbJoueurs): static
     {
         $this->nbJoueurs = $nbJoueurs;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

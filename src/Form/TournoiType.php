@@ -3,16 +3,17 @@
 namespace App\Form;
 
 use App\Entity\Jeu;
-use Symfony\Component\Validator\Constraints\File;
 use App\Entity\Tournoi;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
@@ -145,6 +146,17 @@ class TournoiType extends AbstractType
                 'placeholder' => 'Choisissez un jeu *: ',
                 'attr' => [
                     'class' => 'jeuTournoi'
+                ]
+            ])
+            ->add('type', ChoiceType::class, [
+                'choices' => [
+                    'Solo' => 'solo',
+                    'Equipe' => 'equipe'
+                ],
+                'label' => 'Type de tournoi *: ',
+                'required' => true,
+                'attr' => [
+                    'class' => 'typeTournoi'
                 ]
             ]);
     }

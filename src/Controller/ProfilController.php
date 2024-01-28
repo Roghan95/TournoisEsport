@@ -149,6 +149,7 @@ class ProfilController extends AbstractController
             $notification->setType("invitationForTeam");
             $notification->setExpediteur($me);
             $notification->setDestinataire($him);
+            
             $notification->setEquipe($me->getEquipes()[0]);
             
             $this->em->persist($notification);

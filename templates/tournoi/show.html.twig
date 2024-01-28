@@ -89,7 +89,7 @@
 					<button type="submit">Participer</button>
 				</form>
 			{% elseif not isAlreadyParticipate and tournoi.nbJoueurs >= tournoi.nbJoueursMax %}
-				<button id="btnParticiper" >Participer</button>
+				<button id="btnParticiper" disabled>Participer</button>
 			{% endif %}
 
 			{% if isAlreadyParticipate and app.user %}
