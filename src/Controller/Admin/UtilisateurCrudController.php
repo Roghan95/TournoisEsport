@@ -3,17 +3,14 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Utilisateur;
-use DateTime;
-use DateTimeImmutable;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use phpDocumentor\Reflection\Types\Boolean;
-use Symfony\Component\Validator\Constraints\Date;
+
 
 #[IsGranted('ROLE_ADMIN', statusCode: 403, exceptionCode: 10010)]
 class UtilisateurCrudController extends AbstractCrudController
@@ -36,7 +33,6 @@ class UtilisateurCrudController extends AbstractCrudController
             ArrayField::new('roles'),
             DateTimeField::new('createdAt')->hideOnForm(),
             DateTimeField::new('updatedAt')->hideOnForm(),
-
         ];
     }
 

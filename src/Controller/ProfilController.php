@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProfilController extends AbstractController
 {
-    public function __construct(private UtilisateurRepository $utilisateurRepo, private EntityManagerInterface $em)
+    public function __construct(private UtilisateurRepository $utilisateurRepo, private EntityManagerInterface $em, private EquipeRepository $equipeRepo)
     {
     }
 
@@ -26,8 +26,16 @@ class ProfilController extends AbstractController
     {
         /** @var Utilisateur $user */
         $user = $this->getUser();
+
+        // Check if user is logged in
+        if (!$user) {
+        return $this->redirectToRoute('app_login');
+        }
+
         $equipes = $equipeRepo->findBy(['proprietaire' => $user]);
+
         $tournois = $user->getMesTournois();
+
         $jeux = $jeuRepo->findAll();
         return $this->render('profil/index.html.twig', [
             'user' => $user,
@@ -56,7 +64,6 @@ class ProfilController extends AbstractController
 
         return $this->redirectToRoute('app_mon_profil');
     }
-
 
     // Fonction qui permet d'afficher le profil d'un utilisateur avec ces informations
     #[Route('/profil/{id}', name: 'app_user_profil')]

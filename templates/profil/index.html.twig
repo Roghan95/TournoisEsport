@@ -1,27 +1,28 @@
 {% extends 'base.html.twig' %}
+<meta name="description" content="Bienvenue {{ user.pseudo }} sur ton profil" />
 {% block title %}Profil
 {% endblock %}
 
 {% block sidebar %}
-{{ include ('include/profil_sidebar.html.twig') }}
+	{{ include ('include/profil_sidebar.html.twig') }}
 {% endblock %}
 
 {% block body %}
-<h1>Profil de {{ user.pseudo }}</h1>
-{% if app. user and user.id != app.user.id %}
-<div class="action-btn">
-	<div><a href="#" id="invite-user" data-user-id={{user.id}}>Inviter dans mon équipe</a></div>
-	<div>
-		<a href="#" id="follow-user" data-user-id={{user.id}}>
-			{% if alreadyFollow %}
-			Unfollow
-			{% else %}
-			Follow
-			{% endif %}
-		</a>
+	<h1>Profil de {{ user.pseudo }}</h1>
+	{% if app. user and user.id != app.user.id %}
+	<div class="action-btn">
+		<div><a href="#" id="invite-user" data-user-id={{user.id}}>Inviter dans mon équipe</a></div>
+		<div>
+			<a href="#" id="follow-user" data-user-id={{user.id}}>
+				{% if alreadyFollow %}
+				Unfollow
+				{% else %}
+				Follow
+				{% endif %}
+			</a>
+		</div>
 	</div>
-</div>
-{% endif %}
+	{% endif %}
 <p>
 	Membre depuis le
 	{{ user.createdAt|format_date('short', locale='fr') }}

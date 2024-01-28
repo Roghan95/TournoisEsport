@@ -1,57 +1,56 @@
 {% extends 'base.html.twig' %}
-
+<meta name="description" content="Bienvenue sur notre chat. Communiquez avec d'autres utilisateurs.">
+<meta name="keywords" content="chat, communication, messages">
 {% block title %}Chat{% endblock %}
-
 {% block meta %}
-    <meta name="description" content="Bienvenue sur notre chat. Communiquez avec d'autres utilisateurs.">
-    <meta name="keywords" content="chat, communication, messages">
 {% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/chat.css') }}">
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('css/chat.css') }}">
 {% endblock %}
 
 {% block body %}
-    <div id="chat" data-user-id="{{ app.user.id }}" data-active-room-id="{{ roomId }}">
-        <div class="rooms">
-            {% for room in rooms %}
-                <div class="room-item" data-room-id={{room.id}}>
-                    {% for utilisateur in room.utilisateurs %}
-                        {% if utilisateur.id != app.user.id %}
-                            <div class="room-avatar">
-                                {% if utilisateur.photo is not null %}
-                                    <img src="{{ vich_uploader_asset(utilisateur, 'photoFile') }}" alt="Photo de profil de {{ utilisateur.pseudo }}">
-                                {% else %}
-                                    <img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil par défaut">
-                                {% endif %}
-                                <a class="room-pseudo" href="{{ path('app_mon_profil', {'id' : utilisateur.id}) }}">
-                                    <h2>{{utilisateur.pseudo}}</h2>
-                                </a>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                    <p class="last-message" id="last-message-{{room.id}}">{{ room.lastMessage }}</p>
-                    <p class="room-date">{{ room.createdAt|format_datetime('short', 'short', locale='fr') }}</p>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="message-container">
-            <div id="messages"></div>
-            <div class="message-form">
-                <form class="hide-form" id="send-message-form">
-                    <textarea type="text" id="message-text" placeholder="Écrivez un message..."></textarea>
-                    <button class="btn-send" type="submit">
-                        <span class="material-symbols-outlined">
-                            send
-                        </span>
-                    </button>
-                </form>
+<div id="chat" data-user-id="{{ app.user.id }}" data-active-room-id="{{ roomId }}">
+    <div class="rooms">
+        {% for room in rooms %}
+        <div class="room-item" data-room-id={{room.id}}>
+            {% for utilisateur in room.utilisateurs %}
+            {% if utilisateur.id != app.user.id %}
+            <div class="room-avatar">
+                {% if utilisateur.photo is not null %}
+                <img src="{{ vich_uploader_asset(utilisateur, 'photoFile') }}"
+                    alt="Photo de profil de {{ utilisateur.pseudo }}">
+                {% else %}
+                <img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil par défaut">
+                {% endif %}
+                <a class="room-pseudo" href="{{ path('app_mon_profil', {'id' : utilisateur.id}) }}">
+                    <h2>{{utilisateur.pseudo}} :</h2>
+                </a>
             </div>
+            {% endif %}
+            {% endfor %}
+            <p class="last-message" id="last-message-{{room.id}}">{{ room.lastMessage }}</p>
+            <p class="room-date">{{ room.createdAt|format_datetime('short', 'short', locale='fr') }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="message-container">
+        <div id="messages"></div>
+        <div class="message-form">
+            <form class="hide-form" id="send-message-form">
+                <textarea type="text" id="message-text" placeholder="Écrivez un message..."></textarea>
+                <button class="btn-send" type="submit">
+                    <span class="material-symbols-outlined">
+                        send
+                    </span>
+                </button>
+            </form>
         </div>
     </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/chat.js') }}"></script>
+<script src="{{ asset('js/chat.js') }}"></script>
 {% endblock %}

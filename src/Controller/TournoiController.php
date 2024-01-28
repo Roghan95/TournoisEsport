@@ -4,9 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Tournoi;
 use App\Form\TournoiType;
-use App\Entity\PseudoEnJeu;
+// use App\Entity\PseudoEnJeu;
 use App\Entity\Utilisateur;
-use App\Repository\JeuRepository;
+// use App\Repository\JeuRepository;
 use App\Entity\ParticipantTournoi;
 use App\Repository\EquipeRepository;
 use App\Repository\TournoiRepository;
@@ -18,14 +18,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ParticipantTournoiRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/tournoi')]
-// #[IsGranted('ROLE_ADMIN', statusCode: 403, exceptionCode: 10010)] // On vérifie que l'utilisateur est bien connecté et qu'il a le rôle admin
 class TournoiController extends AbstractController
 {
-
     public function __construct(
         private EntityManagerInterface $em,
         private TournoiRepository $tournoiRepo,
@@ -82,11 +79,11 @@ class TournoiController extends AbstractController
             $tournoiId = $data['tournoiId'];
             // return $this->json(['success' => true, 'tournoiId' => $data], 200);
             $tournoi = $this->tournoiRepo->find($tournoiId);
-            $pseudoEnJeu = $pseudoEnJeuRepo->findOneBy(['utilisateur' => $user, 'jeu' => $tournoi->getJeu()->getId()]);
+            // $pseudoEnJeu = $pseudoEnJeuRepo->findOneBy(['utilisateur' => $user, 'jeu' => $tournoi->getJeu()->getId()]);
             $participantTournoi = new ParticipantTournoi();
             $participantTournoi->setTournoi($tournoi);
             $participantTournoi->setUtilisateur($user);
-            $participantTournoi->setInGamePseudo($pseudoEnJeu->getPseudo());
+            // $participantTournoi->setInGamePseudo($pseudoEnJeu->getPseudo());
 
             // On ajoute le participant au tournoi
             $tournoi->addParticipantTournoi($participantTournoi);
@@ -101,61 +98,10 @@ class TournoiController extends AbstractController
             $this->em->flush();
 
             
-            return $this->json(['success' => true, 'pseudo' => $pseudoEnJeu->getPseudo(),], 200);
-        } catch (\Throwable $th) {
-            // Gérer les erreurs éventuelles
-            return new JsonResponse(['success' => false, 'error' => $th->getMessage()], 400);
-        }
-    }
-
-    // Fonction permettant de vérifier si un utilisateur est déjà inscrit à un tournoi
-    #[Route('/check-pseudo/{jeuId}', name: 'check_pseudo', methods: ['GET'])]
-    public function checkPseudo($jeuId, PseudoEnJeuRepository $pseudoEnJeuRepo): Response
-    {
-        try {
-            $pseudoEnJeu = $pseudoEnJeuRepo->findOneBy(['utilisateur' => $this->getUser(), 'jeu' => $jeuId]);
-
-            if ($pseudoEnJeu === null) {
-                return $this->json(['success' => false, 'pseudo' => null], 200);
-            }
-
-            return $this->json(['success' => true, 'pseudo' => $pseudoEnJeu->getPseudo()], 200);
-        } catch (\Throwable $th) {
-            // Gérer les erreurs éventuelles
-            return new JsonResponse(['success' => false, 'error' => $th->getMessage()]);
-        }
-    }
-
-    // Fonction permettant de sauvegarder un nouveau pseudo
-    #[Route('/save-new-pseudo', name: 'save_new_pseudo', methods: ['POST'])]
-    public function savePseudo(Request $request, JeuRepository $jeuRepo): Response
-    {
-        try {
-            // Récupérer les données envoyées et les décoder
-            $data = json_decode($request->getContent(), true);
-
-            // Récupérer les données
-            $pseudo = $data['pseudo'];
-            $jeuId = $data['jeuId'];
-
-            // Récupérer l'id du jeu
-            $jeu = $jeuRepo->find($jeuId);
-
-            // Créer un nouveau pseudo
-            $pseudoEnJeu = new PseudoEnJeu();
-            $pseudoEnJeu->setPseudo($pseudo);
-            $pseudoEnJeu->setUtilisateur($this->getUser());
-            $pseudoEnJeu->setJeu($jeu);
-
-            // Sauvegarder le pseudo
-            $this->em->persist($pseudoEnJeu);
-            $this->em->flush();
-
-            // Retourner une réponse en JSON
             return $this->json(['success' => true], 200);
         } catch (\Throwable $th) {
             // Gérer les erreurs éventuelles
-            return new JsonResponse(['success' => false, 'error' => $th->getMessage()]);
+            return new JsonResponse(['success' => false, 'error' => $th->getMessage()], 400);
         }
     }
 
@@ -248,7 +194,7 @@ class TournoiController extends AbstractController
     }
 
 
-    #[Route('/{id}/participer', name: 'tournoi_participer', methods: ['GET'])]
+    #[Route('/{id}/participer', name: 'tournoi_participer', methods: ['POST'])]
     public function participer(Tournoi $tournoi, EquipeRepository $equipeRepo, ParticipantTournoiRepository $participantTournoiRepo)
     {
         /** @var Utilisateur $user */
@@ -266,7 +212,7 @@ class TournoiController extends AbstractController
         $participantTournoi = new ParticipantTournoi();
         $participantTournoi->setTournoi($tournoi);
         $participantTournoi->setUtilisateur($user);
-        $participantTournoi->setInGamePseudo($user->getPseudo());
+        // $participantTournoi->setInGamePseudo($user->getPseudo());
         $participantTournoi->setEquipe($equipe);
 
         // On ajoute le participant au tournoi
@@ -278,16 +224,32 @@ class TournoiController extends AbstractController
         // dump($tournoi->getJeu()->getNomJeu());
         // dd($equipe->getMembres()->toArray());
 
-        $membresEquipe = $equipe->getMembres()->toArray();
+        // $membresEquipe = $equipe->getMembres()->toArray();
 
         return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoi->getId()]);
     }
 
     #[Route('/{id}/quitter', name: 'tournoi_quitter', methods: ['POST'])]
-    public function quitter(Tournoi $tournoi)
+    public function quitter(Tournoi $tournoi, ParticipantTournoiRepository $participantTournoiRepo, EntityManagerInterface $entityManager): Response
     {
-        // Code pour retirer l'utilisateur actuel de la liste des participants du tournoi
+        $user = $this->getUser();
 
+        if (!$user) {
+            return new JsonResponse(['success' => false, 'error' => 'Vous devez être connecté pour quitter un tournoi'], 401);
+        }
+    
+        // Check if user is already in tournament
+        $participantTournoi = $participantTournoiRepo->findOneBy(['tournoi' => $tournoi, 'utilisateur' => $user]);
+    
+        if (!$participantTournoi) {
+            $this->addFlash('error', 'Vous ne participez pas à ce tournoi');
+            return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoi->getId()]);
+        }
+    
+        $entityManager->remove($participantTournoi);
+        $entityManager->flush();
+    
+        $this->addFlash('success', 'Vous avez quitté le tournoi');
         return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoi->getId()]);
     }
 }

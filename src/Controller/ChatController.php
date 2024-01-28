@@ -12,9 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\WebLink\Link;
 
 class ChatController extends AbstractController
 {
@@ -49,42 +47,60 @@ class ChatController extends AbstractController
         }
     }
 
+    // Fonction permettant de récupérer les messages d'une room et de les afficher dans le chat
     #[Route('/chat/new-message', name: 'chat_new_message', methods: ['POST'])]
     public function newMessage(Request $request): Response
     {
         try {
+            // Décodage du contenu JSON de la requête en un tableau associatif
             $data = json_decode($request->getContent(), true);
+            // Extraction de l'ID de la salle et du texte du message à partir des données
             $roomId = $data['roomId'];
             $text = $data['message'];
 
+            // Récupération de l'entité de la salle à partir de la base de données en utilisant l'ID de la salle
             $room = $this->roomRepo->findOneBy(['id' => $roomId]);
 
+            // Récupération des utilisateurs de la salle et conversion en tableau
             $utilisateurs = $room->getUtilisateurs()->toArray();
 
+            // Récupération de l'utilisateur courant
             /** @var Utilisateur $currentUser */
             $currentUser = $this->getUser();
 
+            // Parcours des utilisateurs de la salle
             foreach ($utilisateurs as $utilisateur) {
+                // Si l'ID de l'utilisateur n'est pas égal à l'ID de l'utilisateur courant, alors il est le destinataire
                 if ($utilisateur->getId() !== $currentUser->getId()) {
                     $destinataire = $utilisateur;
                 } else {
+                    // Sinon, l'utilisateur courant est l'expéditeur
                     $expediteur = $utilisateur;
                 }
             }
-
+            // Création d'un nouveau message
             $message = new Message();
+            // Définition de la salle du message
             $message->setRoom($room);
+            // Définition du texte du message
             $message->setTexteMessage($text);
+            // Définition de l'expéditeur du message
             $message->setExpediteur($expediteur);
+            // Définition du destinataire du message
             $message->setDestinataire($destinataire);
-            
+
+            // Mise à jour du dernier message de la salle
             $room->setLastMessage($text);
-            
+
+            // Persistance du message dans la base de données
             $this->em->persist($message);
+            // Enregistrement des changements dans la base de données
             $this->em->flush();
 
+            // Retour du message en format JSON avec un code de statut 200
             return $this->json($message, 200, [], ['groups' => 'message']);
         } catch (\Throwable $th) {
+            // En cas d'erreur, retour du message d'erreur en format JSON avec un code de statut 500
             return $this->json($th->getMessage(), 500);
         }
     }
@@ -104,7 +120,7 @@ class ChatController extends AbstractController
             // check if room already exists
             $room = $this->roomRepo->findRoomByUsers($me, $him);
 
-            if($room) {
+            if ($room) {
                 return $this->json(['roomId' => $room->getId()]);
             }
 

@@ -502,7 +502,7 @@ body {
 
 .banner-tr {
   width: 100%;
-  height: 200px;
+
 }
 
 /* MODAL PARTICIPATION TOURNOI */
@@ -700,5 +700,5 @@ button:disabled {
 #wrapper {
   min-height: 100vh;
   position: relative;
-  padding-bottom: 113px;
+  padding-bottom: 132px;
 }
