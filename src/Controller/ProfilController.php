@@ -8,8 +8,10 @@ use App\Entity\Utilisateur;
 use App\Entity\Notification;
 use App\Repository\JeuRepository;
 use App\Repository\EquipeRepository;
+use App\Repository\FollowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UtilisateurRepository;
+use App\Repository\NotificationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,7 +24,7 @@ class ProfilController extends AbstractController
     }
 
     #[Route('/profil', name: 'app_mon_profil')]
-    public function index(EquipeRepository $equipeRepo, JeuRepository $jeuRepo): Response
+    public function index(EquipeRepository $equipeRepo, JeuRepository $jeuRepo, FollowRepository $followRepo): Response
     {
         /** @var Utilisateur $user */
         $user = $this->getUser();
@@ -37,11 +39,17 @@ class ProfilController extends AbstractController
         $tournois = $user->getMesTournois();
 
         $jeux = $jeuRepo->findAll();
+
+        $followers = $followRepo->findBy(['following' => $user]);
+        $followings = $followRepo->findBy(['follower' => $user]);
+        
         return $this->render('profil/index.html.twig', [
             'user' => $user,
             'equipes' => $equipes,
             'tournois' => $tournois,
             'jeux' => $jeux,
+            'followers' => $followers,
+            'followings' => $followings
         ]);
     }
 
@@ -67,7 +75,7 @@ class ProfilController extends AbstractController
 
     // Fonction qui permet d'afficher le profil d'un utilisateur avec ces informations
     #[Route('/profil/{id}', name: 'app_user_profil')]
-    public function userProfil(Utilisateur $user, EquipeRepository $equipeRepo): Response
+    public function userProfil(Utilisateur $user, EquipeRepository $equipeRepo, FollowRepository $followRepo): Response
     {
     // Check if the user exists
     if (!$user) {
@@ -106,11 +114,16 @@ class ProfilController extends AbstractController
         }
     }
 
+    $followers = $followRepo->findBy(['following' => $user]);
+    $followings = $followRepo->findBy(['follower' => $user]);
+
     return $this->render('profil/index.html.twig', [
         'user' => $user,
         'equipes' => $equipes,
         'tournois' => $tournois,
-        'alreadyFollow' => $alreadyFollow
+        'alreadyFollow' => $alreadyFollow,
+        'followers' => $followers,
+        'followings' => $followings
     ]);
     }
 
@@ -131,18 +144,38 @@ class ProfilController extends AbstractController
     }
 
     // Fonction qui permet d'inviter un utilisateur dans une équipe
-    #[Route('/api/invite-user', name: 'api_invite_user', methods: ['POST'])]
-    public function inviteUser(Request $request): Response
+    #[Route('/invite-user', name: 'invite_user')]
+    public function inviteUser(Request $request, EquipeRepository $equipeRepo, NotificationRepository $notificationRepo): Response
     {
         try {
+
+            $userId = $request->request->get('userId');
+            $equipeId = $request->request->get('teamId');
+
+            $equipe = $equipeRepo->find($equipeId);
+
             /** @var Utilisateur $user */
             $me = $this->getUser();
 
-            $data = json_decode($request->getContent(), true);
-            $userId = $data['userId'];
-
             /** @var Utilisateur $user */
             $him = $this->utilisateurRepo->find($userId);
+
+
+            // Verifie si l'utilisateur est déjà dans l'equipe
+            foreach ($equipe->getMembres() as $membre) {
+                if ($membre->getId() == $him->getId()) {
+                    $this->addFlash('error', 'Cet utilisateur est déjà dans l\'équipe');
+                    return $this->redirectToRoute('app_search_user');
+                }
+            }
+
+            // Verifie si l'invitation a déjà été envoyée
+            $alreadyExistNotification = $notificationRepo->findBy(['expediteur' => $me, 'destinataire' => $him, 'equipe' => $equipe]);
+
+            if($alreadyExistNotification){
+                $this->addFlash('error', 'Une invitation a déjà été envoyée à cet utilisateur');
+                return $this->redirectToRoute('app_search_user');
+            }
 
             $notification = new Notification();
             $notification->setTexte("L'utilisateur " . $me->getPseudo() . " vous a invité dans son équipe");
@@ -150,22 +183,19 @@ class ProfilController extends AbstractController
             $notification->setExpediteur($me);
             $notification->setDestinataire($him);
             
-            $notification->setEquipe($me->getEquipes()[0]);
+            $notification->setEquipe($equipe);
             
             $this->em->persist($notification);
             $this->em->flush();
 
-            return $this->json([
-                'code' => 200,
-                'success' => true,
-                'message' => 'Invitation envoyée'
-            ], 200);
+            $this->addFlash('success', 'Invitation envoyée !');
+
+            return $this->redirectToRoute('app_search_user');
         } catch (\Throwable $th) {
-            return $this->json([
-                'code' => 500,
-                'success' => false,
-                'message' => $th->getMessage()
-            ], 500);
+
+            $this->addFlash('error', 'Une erreur est survenue lors de l\'invitation');
+            return $this->redirectToRoute('app_search_user');
+
         }
     }
 
@@ -210,7 +240,6 @@ class ProfilController extends AbstractController
                     break;
                 }
             }
-
             // if already follow, remove follow
             if($alreadyFollow){
                 return $this->json([
@@ -220,7 +249,6 @@ class ProfilController extends AbstractController
                     'textContent' => 'Follow'
                 ], 200);
             }
-    
 
             $follow = new Follow();
             $follow->setFollower($me);

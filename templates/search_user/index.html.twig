@@ -29,10 +29,47 @@
                             </div>
                         </a>
                     </div>
-                    <div class="action-btn">
+
+                    
+                    {% if app.user %}
+                        
+                    
+                        <div class="action-btn">
+                            {% if equipes is not empty %}
+                                
+                                <div>
+                                    <a href="#" onclick="document.getElementById('inviteForm-{{ user.id }}').style.display='block'">Inviter dans mon équipe</a>
+                                    <div id="inviteForm-{{ user.id }}" style="display:none;">
+                                        <form action="{{ path('invite_user', {'id'}) }}" method="post">
+                                            <input type="hidden" name="userId" value="{{ user.id }}">
+                                            <select name="teamId">
+                                                {% for equipe in equipes %}
+                                                <option value="{{ equipe.id }}">{{ equipe.nomEquipe }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <input type="submit" value="Inviter">
+                                        </form>
+
+                                        <form action="{{ path('accept', {'id'}) }}" method="post">
+                                    
+                                            <input type="submit" value="accepter">
+                                        </form>
+
+                                        <form action="{{ path('decline', {'id': notification.id}) }}" method="post">
+                                            <input type="submit" value="Refuser">
+                                        </form>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div><a href="#" id="follow-user" data-user-id={{user.id}}>Follow</a></div>
+                        </div>
+                    
+                    {% endif %}
+                    
+                    {# <div class="action-btn">
                         <div><a href="#" id="invite-user" data-user-id={{user.id}}>Inviter dans mon équipe</a></div>
                         <div><a href="#" id="follow-user" data-user-id={{user.id}}>Follow</a></div>
-                    </div>
+                    </div> #}
                </div>
 
             {% endfor %}
