@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Validator\Constraints\Length;
 
 class RegistrationFormType extends AbstractType
 {
@@ -52,7 +53,17 @@ class RegistrationFormType extends AbstractType
                         'class' => 'form-pseudo',
                         'placeholder' => 'Pseudo',
                         'aria-label' => 'Pseudo'
-                    ]
+                    ],
+                    'constraints' => [
+                        new Length([
+                            'max' => 20,
+                            'maxMessage' => 'Votre pseudo ne peut pas dépasser {{ limit }} caractères',
+                        ]),
+                        new Regex([
+                            'pattern' => '/^[a-zA-Z0-9]*$/',
+                            'message' => 'Votre pseudo ne peut contenir que des lettres et des chiffres',
+                        ]),
+                    ],
                 ]
             )
             ->add('plainPassword', RepeatedType::class, [

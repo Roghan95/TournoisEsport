@@ -39,22 +39,27 @@
 			{{ tournoi.description | raw }}
 		</div>
 	</div>
-	<div id="participants" class="content" style="display:none;">
-		<p>JOUEURS INSCRITS (<span id="nbJoueurs">{{ tournoi.participantTournois | length }}</span>)</p>
-		{% for participant in tournoi.participantTournois %}
-		<a class="participant" href="{{ path('app_user_profil', {'id': participant.utilisateur.id}) }}">
-			<div class="list-participants">
-				{% if participant.utilisateur.photoFile %}
-				<img style="width: 40px; height:40px;"
-					src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="photo de profil">
-				{% else %}
-				<img style="width: 40px; height:40px;" src="/img/defaultProfile.png" alt="photo de profil">
-				{% endif %}
-				<p>{{ participant.utilisateur.pseudo }}</p>
-			</div>
-		</a>
-		{% endfor %}
+	{# Liste des participants #}
+	<div id="participants" class="content">
+		<div class="nb-inscrits">
+			<span>JOUEURS INSCRITS (<strong id="nbJoueurs">{{ tournoi.participantTournois | length }}</strong>)</span>
+		</div>
+		<div class="participant-container" >
+			{% for participant in tournoi.participantTournois %}
+				<a class="participant-tr" href="{{ path('app_user_profil', {'id': participant.utilisateur.id}) }}">
+					{% if participant.utilisateur.photoFile %}
+						<img src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="photo de profil">
+					<i class="fa-solid fa-xmark"></i>
+					{% else %}
+						<img src="/img/defaultProfile.png" alt="photo de profil">
+					{% endif %}
+						<span>{{ participant.utilisateur.pseudo }}</span>
+				</a>
+			{% endfor %}
+		</div>
 	</div>
+	{# ----------------- #}
+	{# Contenu Matchs #}
 	<div id="matchs" class="content" style="display:none;">
 		<p>Matchs</p>
 		<ul>
@@ -67,6 +72,7 @@
 		</ul>
 	</div>
 </div>
+{# -------------------- #}
 
 <div class="tr-join-status">
 	<div class="tr-status">
@@ -97,8 +103,6 @@
 					<button type="submit">Quitter</button>
 				</form>
 			{% endif %}
-
-
 		{% endif %}
 
 	</div>

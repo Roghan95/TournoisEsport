@@ -1,22 +1,3 @@
-// Toggle pour afficher/cacher la liste déroulante
-// function showDropdown() {
-//     document.getElementById("myDropdown").classList.toggle("show");
-// }
-
-// // Gérer la fermeture de la liste déroulante lorsque l'utilisateur clique en dehors
-// window.onclick = function (event) {
-//     if (!event.target.matches('.dropbtn')) {
-//         var dropdowns = document.getElementsByClassName("dropdown-content");
-//         var i;
-//         for (i = 0; i < dropdowns.length; i++) {
-//             var openDropdown = dropdowns[i];
-//             if (openDropdown.classList.contains('show')) {
-//                 openDropdown.classList.remove('show');
-//             }
-//         }
-//     }
-// }
-
 //? TAB BAR REGLES PARTICIPANTS MATCHS D'UN TOURNOI
 function openTab(tabName) {
     var i, tabcontent, tablinks;
@@ -32,12 +13,14 @@ function openTab(tabName) {
 
     document.getElementById(tabName).style.display = "block";
     event.currentTarget.className += " tab-active";
+    // console.log(tabName);
 }
 
 // Active le premier tab par défaut
 const tabRegles = document.getElementById("tab-regles");
 if (tabRegles != null) {
     tabRegles.click();
+    console.log(tabRegles);
 }
 // ---------------------------------------------------------------------------
 

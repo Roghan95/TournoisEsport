@@ -40,7 +40,7 @@
                                 <div>
                                     <a href="#" onclick="document.getElementById('inviteForm-{{ user.id }}').style.display='block'">Inviter dans mon équipe</a>
                                     <div id="inviteForm-{{ user.id }}" style="display:none;">
-                                        <form action="{{ path('invite_user', {'id'}) }}" method="post">
+                                        <form action="{{ path('invite_user') }}" method="post">
                                             <input type="hidden" name="userId" value="{{ user.id }}">
                                             <select name="teamId">
                                                 {% for equipe in equipes %}
@@ -50,14 +50,14 @@
                                             <input type="submit" value="Inviter">
                                         </form>
 
-                                        <form action="{{ path('accept', {'id'}) }}" method="post">
+                                        {# <form action="{{ path('accept', {'id'}) }}" method="post">
                                     
                                             <input type="submit" value="accepter">
                                         </form>
 
                                         <form action="{{ path('decline', {'id': notification.id}) }}" method="post">
                                             <input type="submit" value="Refuser">
-                                        </form>
+                                        </form> #}
                                     </div>
                                 </div>
                             {% endif %}
