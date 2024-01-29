@@ -603,18 +603,8 @@ button:disabled {
 
 
 @media (min-width: 768px) {
-
-  .mobile-header,
-  .top-menu .fa-xmark {
-    display: none;
-  }
-
-  .banner-theme-txt p {
-    display: block;
-  }
-
   #sidebar {
-    width: auto;
+    width: 25%;
     background-color: #2c3147;
     height: 100vh;
     position: sticky;

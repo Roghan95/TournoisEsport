@@ -1,24 +1,28 @@
-{% extends 'base.html.twig' %}
+{% extends 'base2.html.twig' %}
 
 {% block title %}Créer une équipe
 {% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/security.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+{% endblock %}
 {% block body %}
 	<h1>Créer une équipe</h1>
-
-
-	{{ form_start(form) }}
+	{{ form_start(form, {'attr': {'class': 'equipe-create-form'}}) }}
 	{{ form_row(form.jeu) }}
 	{{ form_row(form.nomEquipe) }}
+	{{ form_row(form.imageFile) }}
 	{# {{ form_row(form.description) }} #}
 	<textarea name="tournoi-description" id="tournoi-description"></textarea>
 	{# <button class="btn">{{ button_label|default('Enregistrer') }}</button> #}
-	{{ form_row(form.imageFile) }}
 	{{ form_row(form.submit) }}
 	{{ form_end(form) }} 
 
-
-{% endblock %}
 {% block javascripts %}
 	<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
 	<script src="{{ asset('js/tinymce.js') }}"></script>
 {% endblock %}
+{% endblock %}
+
+

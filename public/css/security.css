@@ -159,12 +159,14 @@ input[type=email]:focus {
 }
 
 .btn {
-    padding: 10px 15px;
+    width: fit-content !important;
+    margin-inline: auto;
+    padding: 10px 20px;
     transition: all 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #c92424;
+    background-color: #e90a0a;
     color: white;
 }
 
@@ -172,26 +174,28 @@ input[type=email]:focus {
 
 /* ----------- LOGIN --------------- */
 
+#tournoi {
+    width: 100%;
+}
+
 #tournoi>div {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
+
+
 
 .tox.tox-tinymce {
     width: 100%;
     height: auto;
 }
 
-.tr-form-wrapper {
-    padding: 20px;
-    background-color: rgba(52, 41, 174, 0.7);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
+.tox.tox-tinymce {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .tr-create-form {
@@ -234,6 +238,7 @@ option:hover {
     background-color: rgba(52, 41, 174, 0.7);
     border: 2px solid rgba(255, 255, 255, 0.5);
     color: white;
+    width: 100%;
 }
 
 #tournoi div input:focus {
@@ -243,6 +248,95 @@ option:hover {
     color: white;
 }
 
+.typeTournoi {
+    padding: 10px;
+    background-color: rgba(52, 41, 174, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    color: white;
+}
+
+.typeTournoi:focus {
+    outline: none;
+    border: 2px solid rgb(255, 255, 255);
+    background-color: #3329AE;
+    color: white;
+}
+
 .vich-image input {
     padding: 10px;
+}
+
+/* CREER UNE EQUIPE */
+
+.equipe-create-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.equipe-create-form>div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* .equipe-create-form>div label {
+    margin-bottom: 10px;
+} */
+
+#content h1 {
+    margin-bottom: 20px;
+}
+
+.required {
+    margin-bottom: 10px;
+}
+
+/*  Séléctionner le bouton du dernier div de la class equipe-create-form */
+.equipe-create-form>div:last-child>button {
+    padding: 10px;
+    background-color: rgba(52, 41, 174, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    color: white;
+}
+
+.equipe-create-form input {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(52, 41, 174, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    width: 100%;
+}
+
+/* .equipe-create-form button {} */
+
+#equipe_jeu {
+    padding: 10px;
+    background-color: rgba(52, 41, 174, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    color: white;
+    width: 100%;
+}
+
+.equipe-create-form input:focus {
+    outline: none;
+    border: 2px solid rgb(255, 255, 255);
+    background-color: #3329AE;
+    color: white;
+}
+
+#content {
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

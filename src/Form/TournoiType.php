@@ -59,6 +59,22 @@ class TournoiType extends AbstractType
                 ]
 
             ])
+            ->add('region', TextType::class, [
+                'label' => 'Région : ',
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Ex: Europe, Amérique du Nord, ...',
+                    'class' => 'regionTournoi'
+                ]
+            ])
+            ->add('lienTwitch', TextType::class, [
+                'label' => 'Lien Twitch : ',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Ex: https://www.twitch.tv/...',
+                    'class' => 'lienTwitch'
+                ]
+            ])
             // NbJoueursMax
             ->add('nbJoueursMax', IntegerType::class, [
                 'label' => 'Nombre de joueurs maximum * ',
@@ -78,6 +94,26 @@ class TournoiType extends AbstractType
                         'maxMessage' => 'Le nombre de joueurs ne peut pas dépasser {{ limit }}.'
                     ]),
                 ],
+            ])
+            ->add('jeu', EntityType::class, [
+                'class' => Jeu::class,
+                'choice_label' => 'nomJeu',
+                'label' => 'Jeu *:',
+                'placeholder' => 'Choisissez un jeu *: ',
+                'attr' => [
+                    'class' => 'jeuTournoi'
+                ]
+            ])
+            ->add('type', ChoiceType::class, [
+                'choices' => [
+                    'Solo' => 'solo',
+                    'Equipe' => 'equipe'
+                ],
+                'label' => 'Type de tournoi *: ',
+                'required' => true,
+                'attr' => [
+                    'class' => 'typeTournoi'
+                ]
             ])
             ->add('logoFile', VichImageType::class, [
                 'label' => 'Logo du tournoi (5Mo max) *: ',
@@ -121,42 +157,6 @@ class TournoiType extends AbstractType
                         'mimeTypesMessage' => 'Veuillez choisir un fichier de type png, jpeg, jpg, gif ou webp.',
                         'maxSizeMessage' => 'La taille du fichier ne doit pas dépasser 5Mo.'
                     ])
-                ]
-            ])
-            ->add('region', TextType::class, [
-                'label' => 'Région *: ',
-                'required' => true,
-                'attr' => [
-                    'placeholder' => 'Ex: Europe, Amérique du Nord, ...',
-                    'class' => 'regionTournoi'
-                ]
-            ])
-            ->add('lienTwitch', TextType::class, [
-                'label' => 'Lien Twitch : ',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Ex: https://www.twitch.tv/...',
-                    'class' => 'lienTwitch'
-                ]
-            ])
-            ->add('jeu', EntityType::class, [
-                'class' => Jeu::class,
-                'choice_label' => 'nomJeu',
-                'label' => 'Jeu',
-                'placeholder' => 'Choisissez un jeu *: ',
-                'attr' => [
-                    'class' => 'jeuTournoi'
-                ]
-            ])
-            ->add('type', ChoiceType::class, [
-                'choices' => [
-                    'Solo' => 'solo',
-                    'Equipe' => 'equipe'
-                ],
-                'label' => 'Type de tournoi *: ',
-                'required' => true,
-                'attr' => [
-                    'class' => 'typeTournoi'
                 ]
             ]);
     }

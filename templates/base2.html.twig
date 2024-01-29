@@ -25,10 +25,6 @@
     </header>
     <div class="overlay"></div>
     <main id="main-container">
-        {% block sidebar %}
-            {{ include ('include/sidebar.html.twig') }}
-        {% endblock %}
-
         <div id="content"> {% block body %}{% endblock %}
             {% for message in app.flashes('success') %}
             <div class="alert alert-success">
@@ -42,6 +38,9 @@
             </div>
             {% endfor %}
         </div>
+        {% block sidebar %}
+            {{ include ('include/sidebar.html.twig') }}
+        {% endblock %}
     </main>
     
     {% block javascripts %}
