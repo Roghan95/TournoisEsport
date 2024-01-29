@@ -433,6 +433,11 @@ body {
 .logo-nom a {
   color: white;
   padding-left: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  width: 100%;
 }
 
 .fa-regular .fa-message {
@@ -703,6 +708,14 @@ button:disabled {
 .nb-inscrits {
   color: rgba(255, 255, 255, 0.5);
   margin: 10px;
+}
+
+.participant-tr span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  width: 100%;
 }
 
 .participant-container {

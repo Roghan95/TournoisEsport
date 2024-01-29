@@ -46,7 +46,7 @@
 		</div>
 		<div class="participant-container" >
 			{% for participant in tournoi.participantTournois %}
-				<a class="participant-tr" href="{{ path('app_user_profil', {'id': participant.utilisateur.id}) }}">
+				<a title="{{ participant.utilisateur.pseudo }}" class="participant-tr" href="{{ path('app_user_profil', {'id': participant.utilisateur.id}) }}">
 					{% if participant.utilisateur.photoFile %}
 						<img src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="photo de profil">
 					<i class="fa-solid fa-xmark"></i>
