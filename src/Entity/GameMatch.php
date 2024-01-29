@@ -42,6 +42,12 @@ class GameMatch
     #[ORM\Column]
     private ?int $nbJoueursMax = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $nomMatch = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $startIn = null;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
@@ -173,6 +179,30 @@ class GameMatch
     public function setNbJoueursMax(int $nbJoueursMax): static
     {
         $this->nbJoueursMax = $nbJoueursMax;
+
+        return $this;
+    }
+
+    public function getNomMatch(): ?string
+    {
+        return $this->nomMatch;
+    }
+
+    public function setNomMatch(string $nomMatch): static
+    {
+        $this->nomMatch = $nomMatch;
+
+        return $this;
+    }
+
+    public function getStartIn(): ?\DateTimeImmutable
+    {
+        return $this->startIn;
+    }
+
+    public function setStartIn(\DateTimeImmutable $startIn): static
+    {
+        $this->startIn = $startIn;
 
         return $this;
     }

@@ -30,7 +30,7 @@
 				{{ include ('include/sidebar.html.twig') }}
 			{% endblock %}
 
-			<div id="content"> {% block body %}{% endblock %}
+			<div id="content"> 
 				{% for message in app.flashes('success') %}
 				<div class="alert alert-success">
 					{{ message }}
@@ -42,6 +42,8 @@
 					{{ message }}
 				</div>
 				{% endfor %}
+
+				{% block body %}{% endblock %}
 			</div>
 		</main>
 	</div>

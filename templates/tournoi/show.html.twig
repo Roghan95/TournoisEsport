@@ -7,9 +7,17 @@
 <div class="main-content">
 	<div id="ancre" class="head-trd">
 		<div class="logo-nom">
-			<img class="logo-trd" src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo du tournoi" />
-			<a href="">{{ tournoi.nomTournoi }}</a>
-		</div>
+            <img class="logo-trd" src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo du tournoi" />
+            <a style="overflow: hidden; white-space: normal; word-wrap: break-word;" href="{{ path('app_mon_profil', {'id' : tournoi.organisateur.id }) }}">
+                {{ tournoi.nomTournoi }} <span  class="created-by">par 
+                {% if app.user and tournoi.organisateur.id == app.user.id %}
+                    Vous
+                {% else %}
+                    {{ tournoi.organisateur.pseudo }}
+                {% endif %}
+                </span>
+            </a>
+        </div>
 
 		{% if app.user and tournoi.organisateur.id != app.user.id %}
 			<div class="contact-user">
@@ -32,7 +40,7 @@
 	<div id="regles" class="content">
 		<img class="banner-tr" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière du tournoi">
 		<hr class="line-tr">
-		<p id="title-propos-tr">A PROPOS DE CE TOURNOI : {{ tournoi.jeu | upper }}</p>
+		<p style="overflow: hidden; white-space: normal; word-wrap: break-word;" id="title-propos-tr">A PROPOS DE CE TOURNOI : {{ tournoi.jeu | upper }}</p>
 
 		{# Description du tournoi #}
 		<div class="tr-desc-regles">
@@ -46,15 +54,22 @@
 		</div>
 		<div class="participant-container" >
 			{% for participant in tournoi.participantTournois %}
-				<a title="{{ participant.utilisateur.pseudo }}" class="participant-tr" href="{{ path('app_user_profil', {'id': participant.utilisateur.id}) }}">
-					{% if participant.utilisateur.photoFile %}
-						<img src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="photo de profil">
-					<i class="fa-solid fa-xmark"></i>
-					{% else %}
-						<img src="/img/defaultProfile.png" alt="photo de profil">
-					{% endif %}
+				<div class="participant">
+					<a title="{{ participant.utilisateur.pseudo }}" class="participant-tr" href="{{ path('app_user_profil', {'id': participant.utilisateur.id}) }}">
+						{% if participant.utilisateur.photoFile %}
+							<img src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="photo de profil">
+						{% else %}
+							<img src="/img/defaultProfile.png" alt="photo de profil">
+						{% endif %}
 						<span>{{ participant.utilisateur.pseudo }}</span>
-				</a>
+						{% if app.user and app.user.id == tournoi.organisateur.id %}
+							<form class="delete-participant" action="{{ path('app_tournoi_delete_participant', {'id': participant.id}) }}" method="POST">
+								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ participant.id) }}">
+								<button title="Supprimer cet utilisateur" type="submit" class="delete-button"><i class="fa-solid fa-x"></i></button>
+							</form>
+						{% endif %}
+					</a>
+				</div>
 			{% endfor %}
 		</div>
 	</div>
@@ -62,6 +77,7 @@
 	{# Contenu Matchs #}
 	<div id="matchs" class="content" style="display:none;">
 		<p>Matchs</p>
+		<a href="{{ path('new_match', {'id': tournoi.id}) }}">Créer un nouveau match</a>
 		<ul>
 			{% for index, match in tournoi.getGameMatches %}
 			<li>
@@ -90,6 +106,7 @@
 	<div class="btn-join-tr">
 		<span id="rejoindre-tr">REJOINDRE</span>
 		{% if app.user %}
+		{% if app.user.id != tournoi.organisateur.id %}
 			{% if not isAlreadyParticipate and tournoi.nbJoueurs < tournoi.nbJoueursMax %}
 				<form action="{{ path('tournoi_participer', {'id': tournoi.id}) }}" method="POST">
 					<button type="submit">Participer</button>
@@ -97,13 +114,17 @@
 			{% elseif not isAlreadyParticipate and tournoi.nbJoueurs >= tournoi.nbJoueursMax %}
 				<button id="btnParticiper" disabled>Participer</button>
 			{% endif %}
-
-			{% if isAlreadyParticipate and app.user %}
+			{% if isAlreadyParticipate %}
 				<form action="{{ path('tournoi_quitter', {'id': tournoi.id}) }}" method="POST">
 					<button type="submit">Quitter</button>
 				</form>
 			{% endif %}
+		{% else %}
+			<form action="{{ path('app_tournoi_edit', {'id': tournoi.id}) }}" method="POST">
+				<button type="submit">Éditer le tournoi</button>
+			</form>
 		{% endif %}
+	{% endif %}
 
 	</div>
 </div>

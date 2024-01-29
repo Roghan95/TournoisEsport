@@ -236,10 +236,38 @@ details summary::-webkit-details-marker {
   border-radius: 50%;
 }
 
+.user-profil-pic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: none !important;
+}
+
+.link-edit-profil {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.profil-pic {
+  margin-top: 20px !important;
+  padding: 20px!important;
+}
+
+.link-edit-profil button {
+  padding: 5px 15px 5px 15px !important;
+  background: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+}
+
+.link-edit-profil button:hover {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  color: black !important;
+}
+
 .profil-menu {
   display: flex;
   align-items: center;
-  justify-content: center;
   width: 100%;
   background-color: #202430;
   position: absolute;
@@ -255,6 +283,10 @@ details summary::-webkit-details-marker {
 
 .logo-mobile {
   height: 15px;
+}
+
+.logo {
+  margin: 10px auto;
 }
 
 /* ------------------------------ */
@@ -417,6 +449,11 @@ body {
   border-radius: 5px;
 }
 
+.created-by {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+}
+
 .head-trd {
   display: flex;
   padding: 10px;
@@ -458,6 +495,21 @@ body {
 .head-flw {
   display: flex;
   align-items: center;
+}
+
+.delete-button{
+  position: absolute;
+  z-index: 1;
+  right: 0px;
+  top: 0px;
+  color: rgba(255, 255, 255, 0.5);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-button:hover{
+  color: white;
 }
 
 
@@ -676,9 +728,9 @@ button:disabled {
   border-top: 1px solid rgb(255, 0, 0);
   border-bottom: 1px solid rgb(255, 0, 0);
   width: 110px;
+  height: 110px;
   padding: 10px;
   border-radius: 5px;
-  height: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -687,6 +739,7 @@ button:disabled {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  position: relative;
 }
 
 .participant-tr img {
@@ -714,12 +767,6 @@ button:disabled {
   padding: 10px;
   gap: 10px;
 }
-
-/* #participants,
-#matchs,
-.tr-desc-regles {
-  min-height: 100vh;
-} */
 
 #wrapper {
   min-height: 100vh;

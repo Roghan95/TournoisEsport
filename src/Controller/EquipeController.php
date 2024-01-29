@@ -5,10 +5,11 @@ namespace App\Controller;
 use App\Entity\Equipe;
 use App\Form\EquipeType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class EquipeController extends AbstractController
 {
@@ -26,15 +27,21 @@ class EquipeController extends AbstractController
     }
 
     #[Route('/equipe/new', name: 'new_equipe')]
-    public function ajouter(Request $request): Response
-    { 
+    public function ajouter(Request $request, Security $security): Response
+    {
+        // Vérifie si l'utilisateur est connecté
+        $user = $security->getUser();
+        if (!$user) {
+            $this->addFlash('error', 'Vous devez être connecté pour créer une équipe');
+            return $this->redirectToRoute('app_login');
+        }
+    
         $equipe = new Equipe();
         $form = $this->createForm(EquipeType::class, $equipe);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $equipe->setProprietaire($this->getUser()); 
-
-            // dd($equipe);
+            $equipe->setProprietaire($user); 
+    
             $this->em->persist($equipe);
             $this->em->flush();
             return $this->redirectToRoute('app_mon_profil');

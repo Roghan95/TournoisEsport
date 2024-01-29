@@ -23,13 +23,13 @@ class GameMatchController extends AbstractController
     ) {
     }
 
-    #[Route('/game/match', name: 'app_game_match')]
-    public function index(): Response
-    {
-        return $this->render('game_match/index.html.twig', [
-            'controller_name' => 'GameMatchController',
-        ]);
-    }
+    // #[Route('/game/match', name: 'app_game_match')]
+    // public function index(): Response
+    // {
+    //     return $this->render('game_match/index.html.twig', [
+    //         'controller_name' => 'GameMatchController',
+    //     ]);
+    // }
 
     #[Route('/game/match/new/{id}', name: 'new_match')]
     public function new(Request $request, Tournoi $tournoi): Response
@@ -37,7 +37,6 @@ class GameMatchController extends AbstractController
         $match = new GameMatch();
         $form = $this->createForm(GameMatchType::class, $match);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $match->setTournoi($tournoi);
             $match->setStatut('pending');
@@ -47,8 +46,8 @@ class GameMatchController extends AbstractController
             return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('tournoi/new.html.twig', [
-            // 'match' => $match,
+        return $this->render('game_match/new.html.twig', [
+            'match' => $match,
             'form' => $form,
         ]);
     }

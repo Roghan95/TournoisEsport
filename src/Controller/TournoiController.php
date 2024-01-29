@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PseudoEnJeuRepository;
 use App\Repository\UtilisateurRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ParticipantTournoiRepository;
@@ -29,8 +30,16 @@ class TournoiController extends AbstractController
     }
     // Fonction permettant de crée un tournoi
     #[Route('/new', name: 'app_tournoi_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    public function new(Request $request, Security $security): Response
     {
+
+            // Vérifie si l'utilisateur est connecté
+        $user = $security->getUser();
+        if (!$user) {
+        $this->addFlash('error', 'Vous devez être connecté pour créer un tournoi');
+        return $this->redirectToRoute('app_login');
+        }
+
         $tournoi = new Tournoi();
         $form = $this->createForm(TournoiType::class, $tournoi);
         $form->handleRequest($request);
@@ -124,6 +133,7 @@ class TournoiController extends AbstractController
         return $this->render('tournoi/show.html.twig', [
             'tournoi' => $tournoi,
             'isAlreadyParticipate' => $isAlreadyParticipate,
+            'user' => $user,
         ]);
     }
 
@@ -131,6 +141,12 @@ class TournoiController extends AbstractController
     #[Route('/{id}/edit', name: 'app_tournoi_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Tournoi $tournoi, EntityManagerInterface $entityManager): Response
     {
+        // Vérifier si l'utilisateur est connecté et est l'organisateur du tournoi ou s'il a le rôle admin
+        $user = $this->getUser();
+        if (!$user || $user !== $tournoi->getOrganisateur() && !$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Vous n\'avez pas les droits nécessaires pour modifier ce tournoi');
+            return $this->redirectToRoute('app_home');
+        }
         $form = $this->createForm(TournoiType::class, $tournoi);
         $form->handleRequest($request);
     
@@ -179,16 +195,18 @@ class TournoiController extends AbstractController
     #[Route('/{id}/delete-participant', name: 'app_tournoi_delete_participant', methods: ['POST'])]
     public function deleteParticipant(Request $request, ParticipantTournoi $participantTournoi): Response
     {
+        $tournoiId = $participantTournoi->getTournoi()->getId();
+    
         if ($this->isCsrfTokenValid('delete' . $participantTournoi->getId(), $request->request->get('_token'))) {
             $this->em->remove($participantTournoi);
             $this->em->flush();
-
+    
             $this->addFlash('success', 'Le participant a bien été supprimé');
         } else {
             $this->addFlash('error', 'Le participant n\'a pas pu être supprimé');
         }
-
-        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+    
+        return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoiId], Response::HTTP_SEE_OTHER);
     }
 
 

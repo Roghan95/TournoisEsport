@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Equipe;
 use App\Entity\Follow;
+use App\Form\ProfilType;
 use App\Entity\Utilisateur;
 use App\Entity\Notification;
 use App\Repository\JeuRepository;
