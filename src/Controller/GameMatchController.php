@@ -2,19 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Tournoi;
 use App\Entity\GameMatch;
 use App\Entity\Participant;
-use App\Entity\ParticipantTournoi;
-use App\Entity\Tournoi;
-use App\Entity\Utilisateur;
 use App\Form\GameMatchType;
 use App\Repository\EquipeRepository;
+use App\Repository\TournoiRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Csrf\CsrfToken;
 
 class GameMatchController extends AbstractController
 {
@@ -43,7 +42,7 @@ class GameMatchController extends AbstractController
             $this->em->persist($match);
             $this->em->flush();
 
-            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoi->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('game_match/new.html.twig', [
@@ -53,6 +52,29 @@ class GameMatchController extends AbstractController
     }
 
     // Fonction permettant de rejoindre un match en tant que joueur ou équipe (selon le type de tournoi)
+    #[Route('/delete/match/{id}', name: 'delete_match')]
+    public function delete(GameMatch $match, Request $request, TournoiRepository $tournoiRepo): Response
+    {
+        /** @var Utilisateur $user */
+        $user = $this->getUser();
+        //  Vérification si l'utilisateur est bien le propriétaire du match
+        // $token = new CsrfToken('delete_match', $request->request->get('_csrf_token'));
+        // if (!$this->isCsrfTokenValid('delete_match', $token)) {
+        //     throw $this->createAccessDeniedException('Token CSRF invalide');
+        // }
+        $tournoi = $tournoiRepo->findOneBy(['id' => $match->getTournoi()->getId()]);
+        if ($user != $tournoi->getOrganisateur()) {
+            throw $this->createAccessDeniedException('Vous n\'êtes pas le propriétaire de ce match');
+        }
+        // Vérification du token CSRF
+
+        $this->em->remove($match);
+        $this->em->flush();
+
+        return $this->redirectToRoute('app_tournoi_show', ['id' => $match->getTournoi()->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    // // Fonction permettant de rejoindre un match en tant que joueur ou équipe (selon le type de tournoi)
     #[Route('/game/match/join/{id}', name: 'join_match')]
     public function join(Request $request, GameMatch $match, EquipeRepository $equipeRepo): Response
     {
@@ -85,10 +107,10 @@ class GameMatchController extends AbstractController
             }
         }
 
-        // Récupération de l'équipe de l'utilisateur pour le même jeu que le match
-        if ($match->getTypeMatch() != 'solo') {
-            $equipe = $equipeRepo->findOneBy(['proprietaire' => $user, 'jeu' => $match->getTournoi()->getJeu()]);
-        }
+        // // Récupération de l'équipe de l'utilisateur pour le même jeu que le match
+        // if ($match->getTypeMatch() != 'solo') {
+        //     $equipe = $equipeRepo->findOneBy(['proprietaire' => $user, 'jeu' => $match->getTournoi()->getJeu()]);
+        // }
 
         $participant->setEquipe($equipe);
         $this->em->persist($participant);

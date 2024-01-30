@@ -22,7 +22,7 @@ class GameMatchType extends AbstractType
                 'label' => 'Nom du match * ',
                 'required' => true,
                 'attr' => [
-                    'placeholder' => 'Match de League of Legends 5v5, ...',
+                    'placeholder' => 'Exemple : Match de League of Legends 5v5',
                     'class' => 'nomMatch'
                 ],
                 'constraints' => [
@@ -32,7 +32,7 @@ class GameMatchType extends AbstractType
                     new Length([
                         'min' => 3,
                         'minMessage' => 'Le nom du match doit contenir au moins {{ limit }} caractères',
-                        'max' => 55,
+                        'max' => 30,
                         'maxMessage' => 'Le nom du match ne peut pas dépasser {{ limit }} caractères',
                     ]),
                 ],

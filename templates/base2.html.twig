@@ -24,8 +24,8 @@
     </header>
     <div class="overlay"></div>
     <main id="main-container">
-        <div id="content"> {% block body %}{% endblock %}
-            {% for message in app.flashes('success') %}
+        <div id="content">
+          {% for message in app.flashes('success') %}
             <div class="alert alert-success">
                 {{ message }}
             </div>
@@ -37,6 +37,9 @@
             </div>
             {% endfor %}
         </div>
+
+        {% block body %}{% endblock %}
+        
         {% block sidebar %}
             {{ include ('include/sidebar.html.twig') }}
         {% endblock %}
@@ -61,7 +64,7 @@
             overlay.classList.remove('active');
         });
 
-        document.addEventListener('DOMContentLoaded', (event) => {
+        {# document.addEventListener('DOMContentLoaded', (event) => {
             const flashMessages = document.querySelectorAll('.alert');
 
             flashMessages.forEach((flashMessage) => {
@@ -69,7 +72,7 @@
                     flashMessage.style.display = 'none';
                 }, 4000);
             });
-        });
+        }); #}
     </script>
 <script>
     tarteaucitron.init({

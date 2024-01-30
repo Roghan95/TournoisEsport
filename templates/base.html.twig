@@ -25,6 +25,7 @@
 			<img class="logo-mobile" src="{{ asset('img/logo.png') }}" alt="Logo VictoryForge, accueil." />
 		</header>
 		<div class="overlay"></div>
+
 		<main id="main-container">
 			{% block sidebar %}
 				{{ include ('include/sidebar.html.twig') }}
@@ -106,7 +107,7 @@
 			"showAlertSmall": false, /* Show the small banner on bottom right */
 			"cookieslist": false, /* Show the cookie list */
 			
-			"showIcon": true, /* Show cookie icon to manage cookies */
+			"showIcon": false, /* Show cookie icon to manage cookies */
 			"iconSrc": "{{ asset('img/cookie.svg') }}", /* Optional: URL or base64 encoded image */
 			"iconPosition": "BottomRight", /* Position of the icon between BottomRight, BottomLeft, TopRight and TopLeft */
 

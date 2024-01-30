@@ -36,17 +36,9 @@ class GameMatch
     #[ORM\OneToMany(mappedBy: 'gameMatch', targetEntity: Participant::class, orphanRemoval: true)]
     private Collection $participants;
 
-    #[ORM\Column(length: 255)]
-    private ?string $typeMatch = null;
-
-    #[ORM\Column]
-    private ?int $nbJoueursMax = null;
 
     #[ORM\Column(length: 255)]
     private ?string $nomMatch = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $startIn = null;
 
     public function __construct()
     {
@@ -63,7 +55,7 @@ class GameMatch
             $this->setCreatedAt(new \DateTimeImmutable());
         }
     }
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -159,30 +151,6 @@ class GameMatch
         return $this;
     }
 
-    public function getTypeMatch(): ?string
-    {
-        return $this->typeMatch;
-    }
-
-    public function setTypeMatch(string $typeMatch): static
-    {
-        $this->typeMatch = $typeMatch;
-
-        return $this;
-    }
-
-    public function getNbJoueursMax(): ?int
-    {
-        return $this->nbJoueursMax;
-    }
-
-    public function setNbJoueursMax(int $nbJoueursMax): static
-    {
-        $this->nbJoueursMax = $nbJoueursMax;
-
-        return $this;
-    }
-
     public function getNomMatch(): ?string
     {
         return $this->nomMatch;
@@ -191,18 +159,6 @@ class GameMatch
     public function setNomMatch(string $nomMatch): static
     {
         $this->nomMatch = $nomMatch;
-
-        return $this;
-    }
-
-    public function getStartIn(): ?\DateTimeImmutable
-    {
-        return $this->startIn;
-    }
-
-    public function setStartIn(\DateTimeImmutable $startIn): static
-    {
-        $this->startIn = $startIn;
 
         return $this;
     }

@@ -32,12 +32,11 @@ class TournoiController extends AbstractController
     #[Route('/new', name: 'app_tournoi_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Security $security): Response
     {
-
-            // Vérifie si l'utilisateur est connecté
+        // Vérifie si l'utilisateur est connecté
         $user = $security->getUser();
         if (!$user) {
-        $this->addFlash('error', 'Vous devez être connecté pour créer un tournoi');
-        return $this->redirectToRoute('app_login');
+            $this->addFlash('error', 'Vous devez être connecté pour créer un tournoi');
+            return $this->redirectToRoute('app_login');
         }
 
         $tournoi = new Tournoi();
@@ -61,7 +60,7 @@ class TournoiController extends AbstractController
 
             $this->em->persist($tournoi);
             $this->em->flush();
-            
+
             $this->addFlash('success', 'Le tournoi a bien été créé');
             return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         } else {
@@ -104,7 +103,7 @@ class TournoiController extends AbstractController
             $this->em->persist($tournoi);
             $this->em->flush();
 
-            
+
             return $this->json(['success' => true], 200);
         } catch (\Throwable $th) {
             // Gérer les erreurs éventuelles
@@ -125,11 +124,11 @@ class TournoiController extends AbstractController
         if ($user) {
             $isAlreadyParticipate = $participantTournoiRepo->findOneBy(['tournoi' => $tournoi, 'utilisateur' => $user]);
         }
-    
+
         if ($tournoi === null) {
             throw $this->createNotFoundException('Le tournoi demandé n\'existe pas.');
         }
-        
+
         return $this->render('tournoi/show.html.twig', [
             'tournoi' => $tournoi,
             'isAlreadyParticipate' => $isAlreadyParticipate,
@@ -149,18 +148,18 @@ class TournoiController extends AbstractController
         }
         $form = $this->createForm(TournoiType::class, $tournoi);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $entityManager->flush();
-    
+
                 $this->addFlash('success', 'Le tournoi a bien été modifié');
                 return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
             } else {
                 $this->addFlash('error', 'Le tournoi n\'a pas pu être modifié');
             }
         }
-    
+
         return $this->render('tournoi/edit.html.twig', [
             'tournoi' => $tournoi,
             'form' => $form,
@@ -178,7 +177,7 @@ class TournoiController extends AbstractController
             if ($this->isCsrfTokenValid('delete' . $tournoi->getId(), $request->request->get('_token'))) {
                 $this->em->remove($tournoi);
                 $this->em->flush();
-    
+
                 $this->addFlash('success', 'Le tournoi a bien été supprimé');
             } else {
                 $this->addFlash('error', 'Le tournoi n\'a pas pu être supprimé');
@@ -186,26 +185,26 @@ class TournoiController extends AbstractController
         } else {
             $this->addFlash('error', 'Vous n\'avez pas les droits nécessaires pour supprimer ce tournoi');
         }
-    
+
         return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
     }
-    
+
 
     // Fonction permettant de supprimer un participant d'un tournoi
     #[Route('/{id}/delete-participant', name: 'app_tournoi_delete_participant', methods: ['POST'])]
     public function deleteParticipant(Request $request, ParticipantTournoi $participantTournoi): Response
     {
         $tournoiId = $participantTournoi->getTournoi()->getId();
-    
+
         if ($this->isCsrfTokenValid('delete' . $participantTournoi->getId(), $request->request->get('_token'))) {
             $this->em->remove($participantTournoi);
             $this->em->flush();
-    
+
             $this->addFlash('success', 'Le participant a bien été supprimé');
         } else {
             $this->addFlash('error', 'Le participant n\'a pas pu être supprimé');
         }
-    
+
         return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoiId], Response::HTTP_SEE_OTHER);
     }
 
@@ -223,25 +222,25 @@ class TournoiController extends AbstractController
             return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoi->getId()]);
         }
 
-        
+
         $participantTournoi = new ParticipantTournoi();
 
         // Vérifier le type du tournoi
         $typeTournoi = $tournoi->getType();
 
-        if($typeTournoi === 'equipe') {
+        if ($typeTournoi === 'equipe') {
 
             $equipe = $equipeRepo->findOneBy(['proprietaire' => $user, 'jeu' => $tournoi->getJeu()]);
-            if($equipe === null) {
+            if ($equipe === null) {
                 $this->addFlash('error', 'Vous ne possédez pas d\'équipe pour ce jeu');
                 return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoi->getId()]);
             }
-            
+
             $participantTournoi->setEquipe($equipe);
 
             //TODO Recuperer les membres de l'equipe et les ajouter au tournoi
         }
-        
+
         $participantTournoi->setTournoi($tournoi);
         $participantTournoi->setUtilisateur($user);
         $participantTournoi->setInGamePseudo($user->getPseudo());
@@ -277,26 +276,25 @@ class TournoiController extends AbstractController
         }
 
         // si c'est par équipe
-        if($typeTournoi === 'equipe'){
+        if ($typeTournoi === 'equipe') {
             // verifier si l'utilisateur est le propriétaire de l'équipe
             $equipe = $equipeRepo->findOneBy(['proprietaire' => $user, 'id' => $participantTournoi->getEquipe()->getId()]);
-            if(!$equipe){
+            if (!$equipe) {
                 $this->addFlash('error', 'Vous n\'êtes pas le propriétaire de l\'équipe');
                 return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoi->getId()]);
             }
 
             // Supprimer chaque membres de l'équipe du tournoi
-            foreach($equipe->getMembres() as $membre){
+            foreach ($equipe->getMembres() as $membre) {
                 $participantTournoi = $participantTournoiRepo->findOneBy(['tournoi' => $tournoi, 'utilisateur' => $membre]);
                 $this->em->remove($participantTournoi);
             }
-
-        }else{
+        } else {
             $this->em->remove($participantTournoi);
         }
-    
+
         $this->em->flush();
-    
+
         $this->addFlash('success', 'Vous avez quitté le tournoi');
         return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoi->getId()]);
     }

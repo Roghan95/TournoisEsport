@@ -76,20 +76,29 @@
 	{# ----------------- #}
 	{# Contenu Matchs #}
 	<div id="matchs" class="content" style="display:none;">
-		<p>Matchs</p>
-		<a href="{{ path('new_match', {'id': tournoi.id}) }}">Créer un nouveau match</a>
-		<ul>
-			{% for index, match in tournoi.getGameMatches %}
-			<li>
-				{{ index + 1 }}:
-				{{ match.dateDebut | format_datetime('short', 'short', locale='fr') }}
-			</li>
-			{% endfor %}
-		</ul>
+		<div class="nb-matchs">
+			<span class="tab-match-title">MATCHS (<strong>{{ tournoi.gameMatches | length }}</strong>)</span>
+			<a title="Ajouter un match" class="create-match" href="{{ path('new_match', {'id': tournoi.id}) }}"><i class="fa-regular fa-square-plus"></i></a>
+		</div>
+		{% for index, match in tournoi.getGameMatches %}
+			<div class="matchs">
+				<span title="{{ match.nomMatch }}" class="match-title">MATCH #{{ index + 1 }}<br> {{ match.nomMatch }}</span>
+				<span class="match-date-debut">Date de début : {{ match.dateDebut | format_datetime('short', 'short', locale='fr') }}</span>
+				{% if app.user is not null and app.user.id == tournoi.organisateur.id %}
+					<a href="{{path('delete_match', {'id' : match.id} )}}" class="match-link">
+						<button class="btn-match-participer" >Supprimer</button>
+					</a>
+				{% elseif app.user is not null and app.user %}
+					<a href="" class="match-link">
+						<button class="btn-match-participer">Participer</button>
+					</a>
+				{% endif %}
+			</div>
+		{% endfor %}
 	</div>
 </div>
 {# -------------------- #}
-
+{# Contenu Chat #}
 <div class="tr-join-status">
 	<div class="tr-status">
 		{% if tournoi.nbJoueurs < tournoi.nbJoueursMax %} 
