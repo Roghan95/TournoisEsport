@@ -1,5 +1,8 @@
 tinymce.init({
     selector: 'textarea#tournoi-description',
+    mobile: {
+        menubar: true
+    },
     plugins: [
         'advlist', 'autolink', 'link', 'image', 'lists', 'charmap', 'preview', 'anchor', 'pagebreak',
         'searchreplace', 'wordcount', 'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media',

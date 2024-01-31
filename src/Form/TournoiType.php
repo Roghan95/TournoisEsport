@@ -23,7 +23,7 @@ class TournoiType extends AbstractType
     {
         $builder
             ->add('nomTournoi', TextType::class, [
-                'label' => 'Titre * ',
+                'label' => 'Titre *: ',
                 'required' => true,
                 'attr' => [
                     'placeholder' => 'Tournoi de League of Legends, ...',
@@ -31,7 +31,7 @@ class TournoiType extends AbstractType
                 ]
             ])
             ->add('nomOrganisation', TextType::class, [
-                'label' => 'Nom de l\'organisation * ',
+                'label' => 'Nom de l\'organisation *: ',
                 'required' => true,
                 'attr' => [
                     'placeholder' => 'Riot Games, Blizzard, ...',
@@ -40,7 +40,7 @@ class TournoiType extends AbstractType
             ])
             ->add('dateDebut', DateTimeType::class, [
                 'input' => 'datetime_immutable',
-                'label' => 'Date de début * ',
+                'label' => 'Date de début *: ',
                 'required' => true,
                 'widget' => 'single_text',
                 'attr'   => [
@@ -50,7 +50,7 @@ class TournoiType extends AbstractType
             ])
             ->add('dateFin', DateTimeType::class, [
                 'input' => 'datetime_immutable',
-                'label' => 'Date de fin * ',
+                'label' => 'Date de fin *: ',
                 'required' => true,
                 'widget' => 'single_text',
                 'attr'   => [
@@ -77,7 +77,7 @@ class TournoiType extends AbstractType
             ])
             // NbJoueursMax
             ->add('nbJoueursMax', IntegerType::class, [
-                'label' => 'Nombre de joueurs maximum * ',
+                'label' => 'Nombre de joueurs maximum *: ',
                 'required' => true,
                 'attr' => [
                     'min' => 1,

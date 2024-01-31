@@ -2,9 +2,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const chat = document.getElementById('chat');
     const userId = chat.dataset.userId;
     const messageTextElem = document.getElementById('message-text');
+    const messageForm = document.getElementsByClassName('message-form');
     const sendMessageForm = document.getElementById('send-message-form');
     const messagesDiv = document.getElementById('messages');
     const roomItems = document.querySelectorAll('.room-item');
+    let roomElements = document.querySelector('.rooms');
+    let messageContainer = document.querySelector('.message-container');
+    let faSolid = document.querySelector('.fa-solid');
+    let faArrow = document.querySelector('.fa-arrow-left');
 
     messageTextElem.addEventListener('keypress', handleKeyPress);
     sendMessageForm.addEventListener('submit', handleSubmit);
@@ -22,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
     async function handleSubmit(e) {
         e.preventDefault();
         const roomId = sendMessageForm.dataset.roomId;
+        // On supprime les espaces vide au début et à la fin du message (trim())
         const messageText = messageTextElem.value.trim();
         if (!messageText) return;
 
@@ -131,6 +137,12 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             // Si la réponse n'est pas OK (statut HTTP 200-299), lance une erreur
             if (!response.ok) throw new Error('Failed to fetch messages');
+            // Passer les rooms en display none
+            roomElements.style.display = 'none';
+            messageContainer.style.display = 'flex';
+            // faSolid.style.display = 'none';
+            faArrow.style.display = 'block';
+
             // Renvoie la réponse convertie en JSON
             return await response.json();
             // Bloc catch pour gérer les erreurs

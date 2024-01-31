@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base2.html.twig' %}
 {% block title %}Profil
 {% endblock %}
 
@@ -7,7 +7,16 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Profil de {{ user.pseudo }}</h1>
+	<div class="profil-pic-pseudo-container">
+		{% if app.user and app.user.photo %}
+			<img src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">
+		{% elseif app.user %}
+			<img style="height: 80px; width: 80px;" src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
+		{% endif %}
+		<strong>{{ user.pseudo }}</strong>
+	</div>
+
+	<h1>{{ user.pseudo }}</h1>
 	{% if app.user and user.id != app.user.id %}
 	<div class="action-btn">
 		<div><a href="#" id="invite-user" data-user-id={{user.id}}>Inviter dans mon équipe</a></div>

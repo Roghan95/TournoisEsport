@@ -8,8 +8,8 @@
 	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 {% endblock %}
 {% block body %}
-	<h1>Créer une équipe</h1>
 	{{ form_start(form, {'attr': {'class': 'equipe-create-form'}}) }}
+	<h1 class="title-create-team">Créer une équipe</h1>
 	{{ form_row(form.jeu) }}
 	{{ form_row(form.nomEquipe) }}
 	{{ form_row(form.imageFile) }}

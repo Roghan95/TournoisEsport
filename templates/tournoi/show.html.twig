@@ -78,7 +78,9 @@
 	<div id="matchs" class="content" style="display:none;">
 		<div class="nb-matchs">
 			<span class="tab-match-title">MATCHS (<strong>{{ tournoi.gameMatches | length }}</strong>)</span>
+			{% if app.user and app.user.id == tournoi.organisateur.id %}
 			<a title="Ajouter un match" class="create-match" href="{{ path('new_match', {'id': tournoi.id}) }}"><i class="fa-regular fa-square-plus"></i></a>
+			{% endif %}
 		</div>
 		{% for index, match in tournoi.getGameMatches %}
 			<div class="matchs">

@@ -71,6 +71,10 @@ header {
 
 .match-date-debut {
   width: 50%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 div.overlay {
@@ -88,6 +92,9 @@ div.overlay.active {
   display: block;
 }
 
+.title-create-tr {
+  width: 100%;
+}
 
 #main-container {
   /* display: table; */
@@ -816,4 +823,21 @@ button:disabled {
   min-height: 100vh;
   position: relative;
   padding-bottom: 132px;
+}
+
+#base2-wrapper{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Profil de l'utilisateur */
+
+.profil-pic-pseudo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 120px;
+  background-color: #2C3147;
+  padding: 10px;
 }

@@ -1,11 +1,11 @@
 /* Style général du chat */
-
-
 #chat {
-    display: flex;
-    max-width: 800px;
-    margin: 20px auto;
+    /* display: flex; */
+    /* max-width: 800px; */
+    /* margin: 20px auto; */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    height: 100%;
 }
 
 #chat a {
@@ -15,51 +15,87 @@
 
 /* Style des salons de discussion */
 .rooms {
-    width: 30%;
-    border-right: 1px solid #ffffff4c;
+    width: 100%;
     overflow-y: auto;
 }
 
 .room-date {
-    font-size: 12px;
+    font-size: 11px;
     color: #878787;
     padding-top: 5px;
 }
 
-.room-item {
-    padding: 10px;
+.chat-title {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.2em;
+    font-weight: bold;
+    padding-bottom: 10px;
     border-bottom: 1px solid #ffffff4c;
+    margin-bottom: 10px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.room-item {
+    display: flex;
+    padding: 10px;
+    border: 1px solid #ffffff4c;
+    border-radius: 5px;
     cursor: pointer;
 }
 
+.pseudo-chat {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .room-item img {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    margin-right: 10px;
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    margin-right: 15px;
+}
+
+.rooms-container {
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .room-item-active {
     background-color: #2c3147;
     color: white;
+    border: 1px solid #3329AE;
 }
 
+.pseudo-chat:hover {
+    text-decoration: underline;
+}
 
 .room-item:hover {
-    background-color: #2c3147;
+    background-color: #3329AE;
+    border: 1px solid #ffffff4c;
     color: white;
     transition: all 0.2s ease-in-out;
+}
 
+.fa-arrow-left {
+    display: none;
 }
 
 /* Style du conteneur de messages */
 .message-container {
-    width: 70%;
-    display: flex;
+    width: 100%;
     flex-direction: column;
     /* height: 500px; */
-    height: 95vh;
+    height: 82vh;   
+    /* display: none; */
     /* Hauteur fixe pour le conteneur de messages */
+    display: none;
 }
 
 .last-message {
@@ -71,10 +107,8 @@
 
 #messages {
     flex-grow: 1;
-    padding: 10px;
     overflow-y: auto;
     height: calc(100% - 60px);
-    /* Hauteur ajustée pour laisser de la place au formulaire */
 }
 
 /* Style des messages */
@@ -93,7 +127,7 @@
 }
 
 .message-sent {
-    background-color: #2c3147;
+    background-color: #3329AE;
     align-self: flex-end;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -106,7 +140,7 @@
 }
 
 .message-received {
-    background-color: #606060;
+    background-color: rgba(255, 255, 255, 0.3);
     align-self: flex-start;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -138,6 +172,7 @@
     padding: 10px;
     background: #f7f7f7;
     border-top: 1px solid #ddd;
+    border-radius: 5px;
 }
 
 #send-message-form {
@@ -196,6 +231,20 @@
 }
 
 .room-avatar {
-    display: flex;
-    align-items: center;
+    width: 30%;
 }
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 70%;
+}
+
+/* .message-form {
+    display: none;
+}
+
+.message-form .show-form {
+    display: block;
+} */

@@ -167,7 +167,7 @@ input[type=email]:focus {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 100%;
     background-image: url(../img/bg-register.png);
     background-size: cover;
     background-repeat: no-repeat;
@@ -197,8 +197,6 @@ input[type=email]:focus {
 #tournoi>div {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding-bottom: 10px;
     padding-top: 10px;
 }
 
@@ -239,7 +237,7 @@ input[type=email]:focus {
 
 .login-form-container {
     padding-right: 20px;
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -266,11 +264,7 @@ input[type=email]:focus {
 .tox.tox-tinymce {
     width: 100%;
     height: auto;
-}
-
-.tox.tox-tinymce {
     margin-top: 20px;
-    margin-bottom: 20px;
 }
 
 .tr-create-form {
@@ -343,21 +337,34 @@ option:hover {
     padding: 10px;
 }
 
+
+.btn-create-tr {
+  padding: 10px 15px;
+  margin-top: 20px;
+}
+
+
 /* CREER UNE EQUIPE */
+
+.title-create-team {
+    width: 100%;
+    padding-bottom: 10px;
+}
 
 .equipe-create-form {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    padding: 20px;
+    height: 100%;
 }
 
 .equipe-create-form>div {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    margin-bottom: 10px;
 }
 
 /* .equipe-create-form>div label {

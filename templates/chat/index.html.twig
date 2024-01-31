@@ -9,31 +9,46 @@
 
 {% block body %}
 <div id="chat" data-user-id="{{ app.user.id }}" data-active-room-id="{{ roomId }}">
+    <h1 class="chat-title" >
+        <a href="{{ path('app_chat') }}">
+            <i class="fa-solid fa-arrow-left"></i> 
+        </a>
+            Chat >
+            {{ app.user.pseudo }}
+    </h1>
     <div class="rooms">
-        {% for room in rooms %}
-        <div class="room-item" data-room-id={{room.id}}>
-            {% for utilisateur in room.utilisateurs %}
-            {% if utilisateur.id != app.user.id %}
-            <div class="room-avatar">
-                {% if utilisateur.photo is not null %}
-                <img src="{{ vich_uploader_asset(utilisateur, 'photoFile') }}"
-                    alt="Photo de profil de {{ utilisateur.pseudo }}">
-                {% else %}
-                <img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil par défaut">
+        <div class="rooms-container">
+            {% for room in rooms %}
+            <div class="room-item" data-room-id={{room.id}}>
+                {% for utilisateur in room.utilisateurs %}
+                {% if utilisateur.id != app.user.id %}
+                <div class="room-avatar">
+                    {% if utilisateur.photo is not null %}
+                    <img src="{{ vich_uploader_asset(utilisateur, 'photoFile') }}"
+                        alt="Photo de profil de {{ utilisateur.pseudo }}">
+                    {% else %}
+                    <img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil par défaut">
+                    {% endif %}
+                </div>
+                    <div class="user-info">
+                        <span class="pseudo-chat">
+                            <a href="{{ path('app_mon_profil', {'id' : utilisateur.id}) }}">{{utilisateur.pseudo}}</a> :
+                        </span>
                 {% endif %}
-                <a class="room-pseudo" href="{{ path('app_mon_profil', {'id' : utilisateur.id}) }}">
-                    <h2>{{utilisateur.pseudo}} :</h2>
-                </a>
+                {% endfor %}
+                        {# Dernier message #}
+                        <p class="last-message" id="last-message-{{room.id}}">Dernier message : {{ room.lastMessage }}</p>
+                        {# Date du dernier message #}
+                        <p class="room-date">{{ room.createdAt|format_datetime('short', 'short', locale='fr') }}</p>
+                    </div>
             </div>
-            {% endif %}
             {% endfor %}
-            <p class="last-message" id="last-message-{{room.id}}">{{ room.lastMessage }}</p>
-            <p class="room-date">{{ room.createdAt|format_datetime('short', 'short', locale='fr') }}</p>
         </div>
-        {% endfor %}
     </div>
     <div class="message-container">
+        {# Div qu'on rempli de messages a chaque envoie de message #}
         <div id="messages"></div>
+        {# Formulaire d'envoie de message #}
         <div class="message-form">
             <form class="hide-form" id="send-message-form">
                 <textarea type="text" id="message-text" placeholder="Écrivez un message..."></textarea>
@@ -51,3 +66,4 @@
 {% block javascripts %}
 <script src="{{ asset('js/chat.js') }}"></script>
 {% endblock %}
+

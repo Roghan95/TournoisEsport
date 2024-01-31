@@ -25,6 +25,12 @@ class ChatController extends AbstractController
     {
         /** @var Utilisateur $user */
         $user = $this->getUser();
+
+        if (!$user) {
+            $this->addFlash('error', 'Vous devez être connecté pour accèder à cette page !');
+            return $this->redirectToRoute('app_login');
+        }
+
         $rooms = $this->roomRepo->findRoomsByUser($user);
 
         $roomId = $request->query->get('room');

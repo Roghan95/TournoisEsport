@@ -18,13 +18,14 @@
 	{% endblock %}
 </head>
 <body>
+<div id="base2-wrapper">
     <header class="mobile-header">
         <i class="fa-solid fa-bars"></i>
         <img class="logo-mobile" src="{{ asset('img/logo.png') }}" alt="Logo VictoryForge, accueil." />
     </header>
     <div class="overlay"></div>
     <main id="main-container">
-        <div id="content">
+        <div id="addflash-content">
           {% for message in app.flashes('success') %}
             <div class="alert alert-success">
                 {{ message }}
@@ -44,7 +45,7 @@
             {{ include ('include/sidebar.html.twig') }}
         {% endblock %}
     </main>
-    
+</div>
     {% block javascripts %}
     {# {{ encore_entry_script_tags('app') }} #}
     <script src="{{ asset('js/script.js') }}"></script>
@@ -64,15 +65,15 @@
             overlay.classList.remove('active');
         });
 
-        {# document.addEventListener('DOMContentLoaded', (event) => {
+        document.addEventListener('DOMContentLoaded', (event) => {
             const flashMessages = document.querySelectorAll('.alert');
 
             flashMessages.forEach((flashMessage) => {
                 setTimeout(() => {
                     flashMessage.style.display = 'none';
-                }, 4000);
+                }, 2000);
             });
-        }); #}
+        });
     </script>
 <script>
     tarteaucitron.init({
