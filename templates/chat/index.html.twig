@@ -24,10 +24,14 @@
                 {% if utilisateur.id != app.user.id %}
                 <div class="room-avatar">
                     {% if utilisateur.photo is not null %}
-                    <img src="{{ vich_uploader_asset(utilisateur, 'photoFile') }}"
-                        alt="Photo de profil de {{ utilisateur.pseudo }}">
+                    <figure>
+                        <img src="{{ vich_uploader_asset(utilisateur, 'photoFile') }}"
+                            alt="Photo de profil de {{ utilisateur.pseudo }}">
+                    </figure>
                     {% else %}
-                    <img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil par défaut">
+                    <figure>
+                        <img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil par défaut">
+                    </figure>
                     {% endif %}
                 </div>
                     <div class="user-info">
