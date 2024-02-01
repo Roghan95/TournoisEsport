@@ -35,11 +35,7 @@
 			</div>
 		{% endif %}
 	</div>
-	{% if app.user and user.id != app.user.id %}
-	<div class="action-btn">
-			
-	</div>
-	{% endif %}
+<div class="profil-content">
 	{% if app.user and user.id != app.user.id and not user.isBanned %}
 		<a href="#" id="invite-user" data-user-id={{user.id}}>Inviter dans mon équipe</a>
 	{% else %}
@@ -76,27 +72,27 @@
 			</div>
 		</div>
 	{% endif %}
+	<div class="box-tournois">
+		<h2>Mes tournois</h2>
 
-<h2>Mes tournois</h2>
+		{% for tournoi in tournois %}
+		<img style="width: clamp(30px, 50px, 50px);" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}"
+			alt="Logo d'un tournoi" />
+		{% endfor %}
 
-{% for tournoi in tournois %}
-<img style="width: clamp(30px, 50px, 50px);" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}"
-	alt="Logo d'un tournoi" />
-{% endfor %}
+		<h2>Mes followers</h2>
 
-<h2>Mes followers</h2>
+		{% for item in followers %}
+			<p>{{item.follower.pseudo}}</p>
+		{% endfor %}
 
-{% for item in followers %}
-	<p>{{item.follower.pseudo}}</p>
-{% endfor %}
+		<h2>Les personnes que je follow</h2>
 
-<h2>Les personnes que je follow</h2>
-
-{% for item in followings %}
-	<a href="">{{item.following.pseudo}}</a>
-{% endfor %}
-
-
+		{% for item in followings %}
+			<a href="">{{item.following.pseudo}}</a>
+		{% endfor %}
+	</div>
+</div>
 {% endblock %}
 
 {% block javascripts %}
