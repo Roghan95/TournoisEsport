@@ -43,6 +43,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
     });
+
 });
 
-
+// Fonction pour afficher le formulaire de modification de l'image de profil
+function displayEditProfilePic() {
+    const editProfilePic = document.getElementById('editProfilePic');
+    const style = window.getComputedStyle(editProfilePic);
+    if (style.getPropertyValue('display') ==='none') {
+        editProfilePic.classList.remove('edit-profil-pic-hidden');
+    } else {
+        editProfilePic.classList.add('edit-profil-pic-hidden');
+    }
+}

@@ -893,3 +893,44 @@ button:disabled {
   color: rgba(255, 255, 255, 0.5);
   font-size: 12px;
 }
+
+.titre-equipe {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#invite-user {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 20px;
+}
+
+#invite-user:hover {
+  color: white;
+}
+
+#profil-content {
+  padding: 10px;
+}
+
+.crt-team {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+}
+
+.crt-team:hover {
+  color: white;
+}
+
+.edit-profil-pic {
+  height: 100px;
+  background-color: white;
+}
+
+.edit-profil-pic-hidden {
+  display: none;
+}

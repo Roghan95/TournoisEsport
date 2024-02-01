@@ -245,7 +245,7 @@ class ProfilController extends AbstractController
                     'code' => 200,
                     'success' => true,
                     'message' => 'Vous ne suivez plus cet utilisateur',
-                    'textContent' => 'Follow'
+                    'textContent' => 'Suivre'
                 ], 200);
             }
 
@@ -263,7 +263,7 @@ class ProfilController extends AbstractController
                 'code' => 200,
                 'success' => true,
                 'message' => 'Vous suivez cet utilisateur',
-                'textContent' => 'Unfollow'
+                'textContent' => 'Ne plus suivre'
             ], 200);
         } catch (\Throwable $th) {
             return $this->json([
