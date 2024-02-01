@@ -8,8 +8,10 @@
 	<div id="ancre" class="head-trd">
 		<div class="logo-nom">
             <img class="logo-trd" src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo du tournoi" />
-            <a style="overflow: hidden; white-space: normal; word-wrap: break-word;" href="{{ path('app_mon_profil', {'id' : tournoi.organisateur.id }) }}">
-                {{ tournoi.nomTournoi }} <span  class="created-by">par 
+            <a title="Profil de l'organisateur {{ tournoi.organisateur.pseudo }}" style="overflow: hidden; white-space: normal; word-wrap: break-word;" href="{{ path('app_user_profil', {'id' : tournoi.organisateur.id }) }}">
+				
+                {{ tournoi.nomTournoi }} 
+				<span  class="created-by">par 
                 {% if app.user and tournoi.organisateur.id == app.user.id %}
                     Vous
                 {% else %}
@@ -22,7 +24,7 @@
 		{% if app.user and tournoi.organisateur.id != app.user.id %}
 			<div class="contact-user">
 				{# Icon pour contacter l'organisateur d'un tournoi #}
-				<i id="chat-icon" class="fa-regular fa-message chat-icon"
+				<i title="Contacter {{ tournoi.organisateur.pseudo }}" id="chat-icon" class="fa-regular fa-message chat-icon"
 					data-organisateur-id="{{ tournoi.organisateur.id }}"></i>
 			</div>
 		{% endif %}
@@ -38,7 +40,9 @@
 	</div>
 
 	<div id="regles" class="content">
-		<img class="banner-tr" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière du tournoi">
+		<figure>
+			<img class="banner-tr" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière du tournoi">
+		</figure>
 		<hr class="line-tr">
 		<p style="overflow: hidden; white-space: normal; word-wrap: break-word;" id="title-propos-tr">A PROPOS DE CE TOURNOI : {{ tournoi.jeu | upper }}</p>
 

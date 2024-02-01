@@ -837,7 +837,59 @@ button:disabled {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 120px;
+  height: 150px;
   background-color: #2C3147;
   padding: 10px;
+  position: relative;
+}
+
+.follow-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 5px;
+  padding: 0 15px 0 15px !important;
+  cursor: pointer;
+}
+
+#chat-icon:hover {
+  color: white;
+  cursor: pointer;
+}
+
+.follow-btn a:hover {
+  color: black;
+}
+
+.follow-btn:hover {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  color: black;
+}
+
+.contact-user-profil {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+}
+
+.contact-user-profil:hover {
+  color: white;
+}
+
+.title-mes-equipes {
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+}
+.member-pseudo {
+  width: 100%;
+  text-align: center;
+}
+
+.member-pseudo p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
 }

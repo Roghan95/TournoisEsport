@@ -9,72 +9,73 @@
 {% block body %}
 	<div class="profil-pic-pseudo-container">
 		{% if app.user and app.user.photo %}
-			<img src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">
+			<figure>
+				<img src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">
+			</figure>
 		{% elseif app.user %}
-			<img style="height: 80px; width: 80px;" src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
+			<figure>
+				<img style="height: 80px; width: 80px;" src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
+			</figure>
 		{% endif %}
-		<strong>{{ user.pseudo }}</strong>
+		<div class="member-pseudo">
+			<strong>{{ user.pseudo }}</strong>
+			<p>Membre depuis le {{ user.createdAt|format_date('short', locale='fr') }}</p>
+		</div>
+		{% if app.user and user.id != app.user.id %}
+				{% if alreadyFollow %}
+					<a href="#" class="follow-btn" id="follow-user" data-user-id={{user.id}}>Unfollow</a>
+				{% else %}
+					<a href="#" class="follow-btn" id="follow-user" data-user-id={{user.id}}>Follow</a>
+				{% endif %}
+		{% endif %}
+		{% if user.id != app.user.id %}
+			<div class="contact-user-profil">
+				{# Icon pour contacter l'organisateur d'un tournoi #}
+				<i title="Contacter {{ user.pseudo }}" id="chat-icon" class="fa-regular fa-message chat-icon" data-organisateur-id="{{ user.id }}"></i>
+			</div>
+		{% endif %}
 	</div>
-
-	<h1>{{ user.pseudo }}</h1>
 	{% if app.user and user.id != app.user.id %}
 	<div class="action-btn">
-		<div><a href="#" id="invite-user" data-user-id={{user.id}}>Inviter dans mon équipe</a></div>
-		<div>
-			<a href="#" id="follow-user" data-user-id={{user.id}}>
-				{% if alreadyFollow %}
-				Unfollow
-				{% else %}
-				Follow
-				{% endif %}
-			</a>
-		</div>
+			
 	</div>
 	{% endif %}
-<p>
-	Membre depuis le
-	{{ user.createdAt|format_date('short', locale='fr') }}
-</p>
-{% if user.isBanned == false %}
-
-{% if user.id != app.user.id %}
-<div class="contact-user">
-	{# Icon pour contacter l'organisateur d'un tournoi #}
-	<i id="chat-icon" class="fa-regular fa-message chat-icon" data-organisateur-id="{{ user.id }}"></i>
-</div>
-{% endif %}
-{% else %}
-<p>
-	L'utilisateur est banni jusqu'au :
-	{{ user.banExpireIn|format_date('full', locale='fr') }}
-</p>
-{% endif %}
-<div class="titre-equipe">
-	<h2>Mes équipes</h2>
-	<a href="{{ path('new_equipe') }}">Crée une équipe</a>
-</div>
-{% if equipes is empty %}
-<div class="no-equipe">
-	<p>Vous n'avez pas d'équipe</p>
-</div>
-{% else %}
-<div class="container-equipe">
-	{% for equipe in equipes %}
-	<div class="box-equipe">
-		{% if equipe.logo is not empty %}
-		<img src="{{ vich_uploader_asset(equipe, 'imageFile') }}" alt="Logo de l'équipe {{ equipe.nomEquipe }}" />
-		<h2>{{ equipe.nomEquipe }}</h2>
+	{% if app.user and user.id != app.user.id and not user.isBanned %}
+		<a href="#" id="invite-user" data-user-id={{user.id}}>Inviter dans mon équipe</a>
+	{% else %}
 		<p>
-			Membre depuis le
-			{{ equipe.createdAt|format_date('full', locale='fr') }}
+			L'utilisateur est banni jusqu'au :
+			{{ user.banExpireIn|format_date('full', locale='fr') }}
 		</p>
-		<a href="{{ path('app_search_user') }}">Inviter</a>
-		<a href="{{ path('equipe_quitter', { id: equipe.id }) }}">Quitter</a>
-		{% endif %}
-		{% endfor %}
-	</div>
-</div>
-{% endif %}
+	{% endif %}
+		<div class="titre-equipe">
+			<h2 class="title-mes-equipes">Mes équipes</h2>
+			<a href="{{ path('new_equipe') }}">Crée une équipe</a>
+		</div>
+	{% if equipes is empty %}
+		<div class="no-equipe">
+			<p>Vous n'avez pas d'équipe</p>
+		</div>
+	{% else %}
+		<div class="container-equipe">
+			{% for equipe in equipes %}
+			<div class="box-equipe">
+				{% if equipe.logo is not empty %}
+					<figure>
+						<img src="{{ vich_uploader_asset(equipe, 'imageFile') }}" alt="Logo de l'équipe {{ equipe.nomEquipe }}" />
+					</figure>
+					<h2>{{ equipe.nomEquipe }}</h2>
+					<p>
+						Membre depuis le
+						{{ equipe.createdAt|format_date('full', locale='fr') }}
+					</p>
+					<a href="{{ path('app_search_user') }}">Inviter</a>
+					<a href="{{ path('equipe_quitter', { id: equipe.id }) }}">Quitter</a>
+				{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
 
 <h2>Mes tournois</h2>
 
