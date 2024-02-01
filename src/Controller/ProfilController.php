@@ -32,7 +32,7 @@ class ProfilController extends AbstractController
 
         // Check if user is logged in
         if (!$user) {
-        return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_login');
         }
 
         $equipes = $equipeRepo->findBy(['proprietaire' => $user]);
@@ -43,7 +43,7 @@ class ProfilController extends AbstractController
 
         $followers = $followRepo->findBy(['following' => $user]);
         $followings = $followRepo->findBy(['follower' => $user]);
-        
+
         return $this->render('profil/index.html.twig', [
             'user' => $user,
             'equipes' => $equipes,
@@ -78,57 +78,57 @@ class ProfilController extends AbstractController
     #[Route('/profil/{id}', name: 'app_user_profil')]
     public function userProfil(Utilisateur $user, EquipeRepository $equipeRepo, FollowRepository $followRepo): Response
     {
-    // Check if the user exists
-    if (!$user) {
-        throw $this->createNotFoundException('L\'utilisateur demandé n\'existe pas.');
-    }
+        // Check if the user exists
+        if (!$user) {
+            throw $this->createNotFoundException('L\'utilisateur demandé n\'existe pas.');
+        }
 
-    $equipes = $equipeRepo->findBy(['proprietaire' => $user]);
+        $equipes = $equipeRepo->findBy(['proprietaire' => $user]);
 
-    // Check if the teams exist
-    if (!$equipes) {
-        $this->addFlash('error', 'Aucune équipe trouvée pour cet utilisateur.');
-    }
+        // Check if the teams exist
+        if (!$equipes) {
+            $this->addFlash('error', 'Aucune équipe trouvée pour cet utilisateur.');
+        }
 
-    $tournois = $user->getMesTournois();
+        $tournois = $user->getMesTournois();
 
-    // Check if the tournaments exist
-    if (!$tournois) {
-        $this->addFlash('error', 'Aucun tournoi trouvé pour cet utilisateur.');
-    }
+        // Check if the tournaments exist
+        if (!$tournois) {
+            $this->addFlash('error', 'Aucun tournoi trouvé pour cet utilisateur.');
+        }
 
-    $alreadyFollow = false;
+        $alreadyFollow = false;
 
-    // Check if user is logged in before trying to access User object
-    if ($this->getUser()) {
-        /** @var Utilisateur $me */
-        $me = $this->getUser();
+        // Check if user is logged in before trying to access User object
+        if ($this->getUser()) {
+            /** @var Utilisateur $me */
+            $me = $this->getUser();
 
-        // verify if getFollows contains $user
-        $follows = $me->getFollows();
-        foreach ($follows as $key => $follow) {
-            if ($follow->getFollowing()->getId() == $user->getId()) {
-                $alreadyFollow = true;
-                // stop loop
-                break;
+            // verify if getFollows contains $user
+            $follows = $me->getFollows();
+            foreach ($follows as $key => $follow) {
+                if ($follow->getFollowing()->getId() == $user->getId()) {
+                    $alreadyFollow = true;
+                    // stop loop
+                    break;
+                }
             }
         }
+
+        $followers = $followRepo->findBy(['following' => $user]);
+        $followings = $followRepo->findBy(['follower' => $user]);
+
+        return $this->render('profil/index.html.twig', [
+            'user' => $user,
+            'equipes' => $equipes,
+            'tournois' => $tournois,
+            'alreadyFollow' => $alreadyFollow,
+            'followers' => $followers,
+            'followings' => $followings
+        ]);
     }
 
-    $followers = $followRepo->findBy(['following' => $user]);
-    $followings = $followRepo->findBy(['follower' => $user]);
 
-    return $this->render('profil/index.html.twig', [
-        'user' => $user,
-        'equipes' => $equipes,
-        'tournois' => $tournois,
-        'alreadyFollow' => $alreadyFollow,
-        'followers' => $followers,
-        'followings' => $followings
-    ]);
-    }
-
-    
     // Fonction pour qui permet de supprimer une équipe
     #[Route('/equipe/supprimer/{id}', name: 'equipe_supprimer')]
     public function deleteTeam(Equipe $equipe): Response
@@ -173,7 +173,7 @@ class ProfilController extends AbstractController
             // Verifie si l'invitation a déjà été envoyée
             $alreadyExistNotification = $notificationRepo->findBy(['expediteur' => $me, 'destinataire' => $him, 'equipe' => $equipe]);
 
-            if($alreadyExistNotification){
+            if ($alreadyExistNotification) {
                 $this->addFlash('error', 'Une invitation a déjà été envoyée à cet utilisateur');
                 return $this->redirectToRoute('app_search_user');
             }
@@ -183,9 +183,9 @@ class ProfilController extends AbstractController
             $notification->setType("invitationForTeam");
             $notification->setExpediteur($me);
             $notification->setDestinataire($him);
-            
+
             $notification->setEquipe($equipe);
-            
+
             $this->em->persist($notification);
             $this->em->flush();
 
@@ -196,7 +196,6 @@ class ProfilController extends AbstractController
 
             $this->addFlash('error', 'Une erreur est survenue lors de l\'invitation');
             return $this->redirectToRoute('app_search_user');
-
         }
     }
 
@@ -227,7 +226,7 @@ class ProfilController extends AbstractController
             /** @var Utilisateur $user */
             $him = $this->utilisateurRepo->find($userId);
 
-        
+
             $alreadyFollow = false; // if already follow default false
             $follows = $me->getFollows(); // get all follows
             // verify if getFollows contains $user
@@ -242,7 +241,7 @@ class ProfilController extends AbstractController
                 }
             }
             // if already follow, remove follow
-            if($alreadyFollow){
+            if ($alreadyFollow) {
                 return $this->json([
                     'code' => 200,
                     'success' => true,

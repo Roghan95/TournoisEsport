@@ -91,11 +91,11 @@
 .message-container {
     width: 100%;
     flex-direction: column;
-    /* height: 500px; */
-    height: 82vh;   
-    /* display: none; */
-    /* Hauteur fixe pour le conteneur de messages */
+    /* height: 82vh;    */
     display: none;
+    position: relative;
+    /* padding-bottom: 71px; */
+    height: calc(100vh - 131px - 91px);
 }
 
 .last-message {
@@ -173,6 +173,10 @@
     background: #f7f7f7;
     border-top: 1px solid #ddd;
     border-radius: 5px;
+    position: fixed;
+    bottom: 0;
+    margin-right: 20px;
+    margin-bottom: 20px;
 }
 
 #send-message-form {
