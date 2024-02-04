@@ -8,11 +8,11 @@
 
 {% block body %}
 <section class="profil-pic-pseudo-container">
-	{% if app.user and app.user.photo %}
+	{% if user and user.photo %}
 		<figure>
-			<img src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">
+			<img class="profilPic-cr" src="{{ vich_uploader_asset(user, 'photoFile') }}" alt="Photo de profil">
 		</figure>
-	{% elseif app.user %}
+	{% elseif user %}
 		<figure>
 			<img style="height: 80px; width: 80px;" src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
 		</figure>
@@ -21,7 +21,7 @@
 		<span>
 			{{ user.pseudo }}
 			{% if app.user and user.id != app.user.id and not user.isBanned %}
-				<a title="Inviter l'utilisateur {{ user.pseudo }} dans votre équipe" 
+				<a title="Inviter {{ user.pseudo }} dans votre équipe"
 					href="#" id="invite-user" data-user-id={{user.id}}>
 					<i class="fa-solid fa-user-plus"></i>
 				</a>
@@ -49,11 +49,16 @@
 	</section>
 <section id="profil-content">
 	<div class="titre-equipe">
+		{% if user == app.user %}
 		<h2 class="title-mes-equipes">Mes équipes</h2>
-		<a class="crt-team" title="Créer une équipe" href="{{ path('new_equipe') }}">
-			Créer une équipe 
-				<i class="fa-regular fa-square-plus"></i>
-		</a>
+			<a class="crt-team" title="Créer une équipe" href="{{ path('new_equipe') }}">
+				Créer une équipe 
+					<i class="fa-regular fa-square-plus"></i>
+			</a>
+		{% else %}
+		<h2 class="title-mes-equipes">Equipes de {{ user.pseudo }}</h2>
+		{% endif %}
+
 	</div>
 	{% if equipes is empty %}
 		<div class="no-equipe">

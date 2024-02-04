@@ -129,10 +129,32 @@ class TournoiController extends AbstractController
             throw $this->createNotFoundException('Le tournoi demandé n\'existe pas.');
         }
 
+        $isTournoiByEquipe = $tournoi->getType() === 'equipe' ? true : false;
+        
+
+        $participantsTournoi = $participantTournoiRepo->findBy(['tournoi' => $tournoi]);
+
+        // group participants by team
+        $participantsByTeam = [];
+        
+        if ($isTournoiByEquipe) {
+            foreach ($participantsTournoi as $participant) {
+                $equipe = $participant->getEquipe();
+                if ($equipe) {
+                    $participantsByTeam[$equipe->getId()]['participants'][] = $participant;
+                    $participantsByTeam[$equipe->getId()]['equipe'] = $equipe;
+                    $participantsByTeam[$equipe->getId()]['nomEquipe'] = $equipe->getNomEquipe();
+                    $participantsByTeam[$equipe->getId()]['logo'] = $equipe->getLogo();
+                }
+            }
+        }
+       
         return $this->render('tournoi/show.html.twig', [
             'tournoi' => $tournoi,
             'isAlreadyParticipate' => $isAlreadyParticipate,
             'user' => $user,
+            'isTournoiByEquipe' => $isTournoiByEquipe,
+            'participantsByTeam' => $participantsByTeam,
         ]);
     }
 
@@ -222,35 +244,36 @@ class TournoiController extends AbstractController
             return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoi->getId()]);
         }
 
-
-        $participantTournoi = new ParticipantTournoi();
-
         // Vérifier le type du tournoi
         $typeTournoi = $tournoi->getType();
 
+        $equipe = $equipeRepo->findOneBy(['proprietaire' => $user, 'jeu' => $tournoi->getJeu()]);
         if ($typeTournoi === 'equipe') {
 
-            $equipe = $equipeRepo->findOneBy(['proprietaire' => $user, 'jeu' => $tournoi->getJeu()]);
             if ($equipe === null) {
                 $this->addFlash('error', 'Vous ne possédez pas d\'équipe pour ce jeu');
                 return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoi->getId()]);
             }
 
-            $participantTournoi->setEquipe($equipe);
-
-            //TODO Recuperer les membres de l'equipe et les ajouter au tournoi
+            $membres = $equipe->getMembres();
+            foreach ($membres as $membre){
+                $participantTournoi = new ParticipantTournoi();
+                $participantTournoi->setEquipe($equipe);
+                $participantTournoi->setTournoi($tournoi);
+                $participantTournoi->setUtilisateur($membre);
+                $participantTournoi->setInGamePseudo($membre->getPseudo());
+                $this->em->persist($participantTournoi);
+            }
+ 
         }
 
+        $participantTournoi = new ParticipantTournoi();
+        $participantTournoi->setEquipe($equipe);
         $participantTournoi->setTournoi($tournoi);
         $participantTournoi->setUtilisateur($user);
         $participantTournoi->setInGamePseudo($user->getPseudo());
         $this->em->persist($participantTournoi);
         $this->em->flush();
-
-        // On ajoute le participant au tournoi
-        //$tournoi->addParticipantTournoi($participantTournoi);
-
-        //$this->em->persist($tournoi);
 
         $this->addFlash('success', 'Vous participez au tournoi');
         return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoi->getId()]);
@@ -286,12 +309,13 @@ class TournoiController extends AbstractController
 
             // Supprimer chaque membres de l'équipe du tournoi
             foreach ($equipe->getMembres() as $membre) {
-                $participantTournoi = $participantTournoiRepo->findOneBy(['tournoi' => $tournoi, 'utilisateur' => $membre]);
-                $this->em->remove($participantTournoi);
+                $participantTournoiMembre = $participantTournoiRepo->findOneBy(['tournoi' => $tournoi, 'utilisateur' => $membre]);
+                $this->em->remove($participantTournoiMembre);
             }
-        } else {
-            $this->em->remove($participantTournoi);
-        }
+        } 
+        
+        $this->em->remove($participantTournoi);
+        
 
         $this->em->flush();
 

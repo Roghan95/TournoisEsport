@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let dateSpan = document.createElement('span');
 
         // Attribution du contenu textuel aux éléments HTML créés
-        pseudoSpan.textContent = message.expediteur.pseudo;
+        pseudoSpan.textContent = message.expediteur.pseudo + " : ";
         textSpan.textContent = message.texteMessage;
         dateSpan.textContent = new Date(message.createdAt).toLocaleDateString("fr", { hour: '2-digit', minute: '2-digit' });
 

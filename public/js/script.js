@@ -26,28 +26,32 @@ if (tabRegles != null) {
 
 // ---------------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('chat-icon').addEventListener('click', function () {
-        const organisateurId = this.dataset.organisateurId;
-        // console.log('organisateurId', organisateurId);
-        fetch('/chat/create-room', {
-            method: 'POST',
-            body: JSON.stringify({ userId: organisateurId }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.roomId) {
-                    window.location.href = `/chat?room=${data.roomId}`;
+    const chatIcon = document.getElementById('chat-icon');
+    if(chatIcon != null){
+        chatIcon.addEventListener('click', function () {
+            const organisateurId = this.dataset.organisateurId;
+            // console.log('organisateurId', organisateurId);
+            fetch('/chat/create-room', {
+                method: 'POST',
+                body: JSON.stringify({ userId: organisateurId }),
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-            });
-    });
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.roomId) {
+                        window.location.href = `/chat?room=${data.roomId}`;
+                    }
+                });
+        });
+    }
 
 });
 
 // Fonction pour afficher le formulaire de modification de l'image de profil
 function displayEditProfilePic() {
+    console.log('displayEditProfilePic');
     const editProfilePic = document.getElementById('editProfilePic');
     const style = window.getComputedStyle(editProfilePic);
     if (style.getPropertyValue('display') ==='none') {

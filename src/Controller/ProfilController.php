@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Equipe;
 use App\Entity\Follow;
+use App\Form\ProfilType;
 use App\Entity\Utilisateur;
 use App\Entity\Notification;
 use App\Repository\JeuRepository;
@@ -24,7 +25,7 @@ class ProfilController extends AbstractController
     }
 
     #[Route('/profil', name: 'app_mon_profil')]
-    public function index(EquipeRepository $equipeRepo, JeuRepository $jeuRepo, FollowRepository $followRepo): Response
+    public function index(EquipeRepository $equipeRepo, JeuRepository $jeuRepo, FollowRepository $followRepo, Request $request): Response
     {
         /** @var Utilisateur $user */
         $user = $this->getUser();
@@ -43,13 +44,21 @@ class ProfilController extends AbstractController
         $followers = $followRepo->findBy(['following' => $user]);
         $followings = $followRepo->findBy(['follower' => $user]);
 
+        $form = $this->createForm(ProfilType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+                $this->em->flush();
+        }
+    
         return $this->render('profil/index.html.twig', [
             'user' => $user,
             'equipes' => $equipes,
             'tournois' => $tournois,
             'jeux' => $jeux,
             'followers' => $followers,
-            'followings' => $followings
+            'followings' => $followings,
+            'profilType' => $form->createView()
         ]);
     }
 
@@ -75,7 +84,7 @@ class ProfilController extends AbstractController
 
     // Fonction qui permet d'afficher le profil d'un utilisateur avec ces informations
     #[Route('/profil/{id}', name: 'app_user_profil')]
-    public function userProfil(Utilisateur $user, EquipeRepository $equipeRepo, FollowRepository $followRepo): Response
+    public function userProfil(Utilisateur $user, EquipeRepository $equipeRepo, FollowRepository $followRepo, Request $request): Response
     {
         // Check if the user exists
         if (!$user) {
@@ -116,14 +125,22 @@ class ProfilController extends AbstractController
 
         $followers = $followRepo->findBy(['following' => $user]);
         $followings = $followRepo->findBy(['follower' => $user]);
+        
+        $form = $this->createForm(ProfilType::class, $user);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->flush();
+        }
+        
         return $this->render('profil/index.html.twig', [
             'user' => $user,
             'equipes' => $equipes,
             'tournois' => $tournois,
             'alreadyFollow' => $alreadyFollow,
             'followers' => $followers,
-            'followings' => $followings
+            'followings' => $followings,
+            'profilType' => $form->createView()
         ]);
     }
 

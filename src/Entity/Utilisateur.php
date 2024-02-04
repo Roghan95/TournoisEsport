@@ -2,23 +2,25 @@
 
 namespace App\Entity;
 
-use App\Repository\UtilisateurRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Serializable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[Vich\Uploadable]
-class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, Serializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -112,8 +114,8 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhotoFile(?File $photoFile = null): void
     {
         $this->photoFile = $photoFile;
+        if ($this->photoFile instanceof UploadedFile) {
 
-        if (null !== $photoFile) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
@@ -455,5 +457,33 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->banExpireIn = $banExpireIn;
 
         return $this;
+    }
+
+    public function serialize() {
+
+        return serialize(array(
+            $this->id,
+            $this->email,
+            $this->pseudo,
+            $this->password,
+            $this->isVerified,
+            $this->photo,
+            $this->isBanned,
+            $this->banExpireIn,
+        )); 
+    }
+        
+    public function unserialize($serialized) {
+        
+        list (
+            $this->id,
+            $this->email,
+            $this->pseudo,
+            $this->password,
+            $this->isVerified,
+            $this->photo,
+            $this->isBanned,
+            $this->banExpireIn,
+        ) = unserialize($serialized);
     }
 }

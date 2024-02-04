@@ -27,37 +27,33 @@ document.addEventListener('DOMContentLoaded', function () {
     //         .catch(error => console.error('Error:', error));
     // });
 
-    followBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        let userId = followBtn.dataset.userId;
-        console.log('userId', userId);
-        fetch('/api/follow-user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "userId": userId,
+    if(followBtn != null){
+        followBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            let userId = followBtn.dataset.userId;
+            console.log('userId', userId);
+            fetch('/api/follow-user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "userId": userId,
+                })
             })
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('reponse:', data);
-                let result = data.success;
-                let text = data.textContent;
-                console.log('result', result);
-                if (result == true) {
-                    changeFollowBtnState(text);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    });
-
-    function changeInviteBtnState(){
-        inviteBtn.classList.add("disabled");
-        inviteBtn.innerHTML = "Invitation envoyée";
+                .then(response => response.json())
+                .then(data => {
+                    console.log('reponse:', data);
+                    let result = data.success;
+                    let text = data.textContent;
+                    console.log('result', result);
+                    if (result == true) {
+                        changeFollowBtnState(text);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
     }
-
     function changeFollowBtnState(text){
         followBtn.classList.add("disabled");
         followBtn.innerHTML = text;

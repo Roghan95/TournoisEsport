@@ -5,19 +5,19 @@
 	<hr />
 	<div class="user-profil-pic">
 		{% if app.user and app.user.photo %}
-			<a class="profil-pic" href="{{ path('app_mon_profil', {'id' : utilisateur.id}) }}">
-				<img src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">		
+			<a href="{{ path('app_mon_profil', {'id' : app.user.id}) }}">
+				<img class="profilPic-cr" src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">		
 			</a>
 		{% elseif app.user %}
 			<a class="profil-pic" href="{{ path('app_mon_profil') }}">
-				<img style="height: 100px; width: 100px;" src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
+				<img class="profilPic-cr" src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
 			</a>
 		{% endif %}
 		<button onclick="displayEditProfilePic()">Personnaliser</button>
 		<div id="editProfilePic" class="edit-profil-pic edit-profil-pic-hidden">
-			{# {{ form_start(formEditProfilPic, {'attr': {'class': 'profil-pic-edit'}}) }}
-			{{ form_widget(formEditProfilPic) }}
-			{{ form_end(formEditProfilPic) }} #}
+			{{ form_start(profilType) }}
+			{{ form_widget(profilType.photoFile) }}
+			{{ form_end(profilType) }}
 		</div>
 	</div>
 	<div class="profil-menu">

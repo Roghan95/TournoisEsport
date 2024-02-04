@@ -54,27 +54,60 @@
 	{# Liste des participants #}
 	<div id="participants" class="content">
 		<div class="nb-inscrits">
-			<span>JOUEURS INSCRITS (<strong id="nbJoueurs">{{ tournoi.participantTournois | length }}</strong>)</span>
+			{% if isTournoiByEquipe %}
+				<span>ÉQUIPES INSCRITES (<strong id="nbJoueurs">{{ participantsByTeam | length }}</strong>)</span>
+			{% else %}
+				<span>JOUEURS INSCRITS (<strong id="nbJoueurs">{{ tournoi.participantTournois | length }}</strong>)</span>
+			{% endif %}
 		</div>
 		<div class="participant-container" >
-			{% for participant in tournoi.participantTournois %}
-				<div class="participant">
-					<a title="{{ participant.utilisateur.pseudo }}" class="participant-tr" href="{{ path('app_user_profil', {'id': participant.utilisateur.id}) }}">
-						{% if participant.utilisateur.photoFile %}
-							<img src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="photo de profil">
+			{% if isTournoiByEquipe %}
+				{% for item in participantsByTeam %}
+						{% if item['logo'] %}
+							<img style="width: 30px; height:30px;" src="{{ vich_uploader_asset(item['equipe'], 'imageFile') }}" alt="Logo de l'équipe">
 						{% else %}
-							<img src="/img/defaultProfile.png" alt="photo de profil">
+							<img style="width: 30px; height:30px;" src="/img/defaultProfile.png" alt="photo de profil">
 						{% endif %}
-						<span>{{ participant.utilisateur.pseudo }}</span>
-						{% if app.user and app.user.id == tournoi.organisateur.id %}
-							<form class="delete-participant" action="{{ path('app_tournoi_delete_participant', {'id': participant.id}) }}" method="POST">
-								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ participant.id) }}">
-								<button title="Supprimer cet utilisateur" type="submit" class="delete-button"><i class="fa-solid fa-x"></i></button>
-							</form>
-						{% endif %}
-					</a>
-				</div>
-			{% endfor %}
+					<h3>{{item['nomEquipe']}}</h3>
+					{% for participant in item['participants'] %}
+						<div class="participant">
+							<a title="{{ participant.utilisateur.pseudo }}" class="participant-tr" href="{{ path('app_user_profil', {'id': participant.utilisateur.id}) }}">
+								{% if participant.utilisateur.photo %}
+									<img src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="photo de profil">
+								{% else %}
+									<img src="/img/defaultProfile.png" alt="photo de profil">
+								{% endif %}
+								<span>{{ participant.utilisateur.pseudo }}</span>
+								{% if app.user and app.user.id == tournoi.organisateur.id %}
+									<form class="delete-participant" action="{{ path('app_tournoi_delete_participant', {'id': participant.id}) }}" method="POST">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ participant.id) }}">
+										<button title="Supprimer cet utilisateur" type="submit" class="delete-button"><i class="fa-solid fa-x"></i></button>
+									</form>
+								{% endif %}
+							</a>
+						</div>
+					{% endfor %}
+				{% endfor %}
+			{% else %}
+				{% for participant in tournoi.participantTournois %}
+					<div class="participant">
+						<a title="{{ participant.utilisateur.pseudo }}" class="participant-tr" href="{{ path('app_user_profil', {'id': participant.utilisateur.id}) }}">
+							{% if participant.utilisateur.photo %}
+								<img src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="Photo de profil">
+							{% else %}
+								<img src="/img/defaultProfile.png" alt="Photo de profil">
+							{% endif %}
+							<span>{{ participant.utilisateur.pseudo }}</span>
+							{% if app.user and app.user.id == tournoi.organisateur.id %}
+								<form class="delete-participant" action="{{ path('app_tournoi_delete_participant', {'id': participant.id}) }}" method="POST">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ participant.id) }}">
+									<button title="Supprimer cet utilisateur" type="submit" class="delete-button"><i class="fa-solid fa-x"></i></button>
+								</form>
+							{% endif %}
+						</a>
+					</div>
+				{% endfor %}
+			{% endif %}
 		</div>
 	</div>
 	{# ----------------- #}
@@ -104,7 +137,7 @@
 	</div>
 </div>
 {# -------------------- #}
-{# Contenu Chat #}
+{# Contenu Enregistrement #}
 <div class="tr-join-status">
 	<div class="tr-status">
 		{% if tournoi.nbJoueurs < tournoi.nbJoueursMax %} 

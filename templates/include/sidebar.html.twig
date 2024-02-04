@@ -71,19 +71,19 @@
 	</div>
 	<div class="profil-menu">
 		{% if app.user and app.user.photo %}
-		<a href="{{ path('app_mon_profil', {'id' : utilisateur.id}) }}">
-			<img src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">
-			<p>{{ app.user.pseudo }}</p>
-		</a>
+			<a href="{{ path('app_mon_profil', {'id' : app.user.id}) }}">
+				<img src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">
+				<p>{{ app.user.pseudo }}</p>
+			</a>
 		{% elseif app.user %}
-		<a href="{{ path('app_mon_profil') }}">
-			<img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
-			<p class="profile-link">{{ app.user.pseudo }}
-				<span class="material-symbols-outlined">
-					chevron_right
-				</span>
-			</p>
-		</a>
+			<a href="{{ path('app_mon_profil') }}">
+				<img src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
+				<p class="profile-link">{{ app.user.pseudo }}
+					<span class="material-symbols-outlined">
+						chevron_right
+					</span>
+				</p>
+			</a>
 		{% endif %}
 	</div>
 </div>
