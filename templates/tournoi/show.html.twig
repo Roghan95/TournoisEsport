@@ -116,27 +116,18 @@
 		<div class="nb-matchs">
 			<span class="tab-match-title">MATCHS (<strong>{{ tournoi.gameMatches | length }}</strong>)</span>
 			{% if app.user and app.user.id == tournoi.organisateur.id %}
-			<a title="Ajouter un match" class="create-match" href="{{ path('new_match', {'id': tournoi.id}) }}"><i class="fa-regular fa-square-plus"></i></a>
+			<a title="Planifier un match" class="create-match" href="{{ path('new_match', {'id': tournoi.id}) }}">Planifier un match <i class="fa-regular fa-square-plus"></i></a>
 			{% endif %}
 		</div>
 		{% for index, match in tournoi.getGameMatches %}
 			<div class="matchs">
 				<span title="{{ match.nomMatch }}" class="match-title">MATCH #{{ index + 1 }}<br> {{ match.nomMatch }}</span>
 				<span class="match-date-debut">Date de début : {{ match.dateDebut | format_datetime('short', 'short', locale='fr') }}</span>
-				{% if app.user is not null and app.user.id == tournoi.organisateur.id %}
-					<a href="{{path('delete_match', {'id' : match.id} )}}" class="match-link">
-						<button class="btn-match-participer" >Supprimer</button>
-					</a>
-				{% elseif app.user is not null and app.user %}
-					<a href="" class="match-link">
-						<button class="btn-match-participer">Participer</button>
-					</a>
-				{% endif %}
 			</div>
 		{% endfor %}
 	</div>
 </div>
-{# -------------------- #}
+{# ---------------------- #}
 {# Contenu Enregistrement #}
 <div class="tr-join-status">
 	<div class="tr-status">

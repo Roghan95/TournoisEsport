@@ -73,7 +73,11 @@
 		{% if app.user and app.user.photo %}
 			<a href="{{ path('app_mon_profil', {'id' : app.user.id}) }}">
 				<img src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">
-				<p>{{ app.user.pseudo }}</p>
+				<p class="profile-link">{{ app.user.pseudo }}
+					<span class="material-symbols-outlined">
+						chevron_right
+					</span>
+				</p>
 			</a>
 		{% elseif app.user %}
 			<a href="{{ path('app_mon_profil') }}">

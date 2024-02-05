@@ -25,6 +25,10 @@
     </header>
     <div class="overlay"></div>
     <main id="main-container">
+        {% block sidebar %}
+            {{ include ('include/sidebar.html.twig') }}
+        {% endblock %}
+
         <div id="addflash-content">
           {% for message in app.flashes('success') %}
             <div class="alert alert-success">
@@ -40,10 +44,6 @@
         </div>
 
         {% block body %}{% endblock %}
-        
-        {% block sidebar %}
-            {{ include ('include/sidebar.html.twig') }}
-        {% endblock %}
     </main>
 </div>
     {% block javascripts %}
@@ -71,7 +71,7 @@
             flashMessages.forEach((flashMessage) => {
                 setTimeout(() => {
                     flashMessage.style.display = 'none';
-                }, 2000);
+                }, 3000);
             });
         });
     </script>

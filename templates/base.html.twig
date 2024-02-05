@@ -43,9 +43,8 @@
 					{{ message }}
 				</div>
 				{% endfor %}
-
-				{% block body %}{% endblock %}
 			</div>
+			{% block body %}{% endblock %}
 		</main>
 	</div>
 	{# <footer>
@@ -80,14 +79,14 @@
 			});
 
 			document.addEventListener('DOMContentLoaded', (event) => {
-				const flashMessages = document.querySelectorAll('.alert');
+                const flashMessages = document.querySelectorAll('.alert');
 
-				flashMessages.forEach((flashMessage) => {
-					setTimeout(() => {
-						flashMessage.style.display = 'none';
-					}, 4000);
-				});
-			});
+                flashMessages.forEach((flashMessage) => {
+                    setTimeout(() => {
+                        flashMessage.style.display = 'none';
+                    }, 3000);
+                });
+            });
 	</script>
 	<script src="{{ asset('tarteaucitron/tarteaucitron.js') }}"></script>
 	<script>

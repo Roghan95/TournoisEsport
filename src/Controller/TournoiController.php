@@ -63,8 +63,6 @@ class TournoiController extends AbstractController
 
             $this->addFlash('success', 'Le tournoi a bien été créé');
             return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
-        } else {
-            $this->addFlash('error', 'Le tournoi n\'a pas pu être créé');
         }
 
         return $this->render('tournoi/new.html.twig', [

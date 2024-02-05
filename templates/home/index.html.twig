@@ -1,4 +1,4 @@
-{% extends 'base2.html.twig' %}
+{% extends 'base.html.twig' %}
 {% block title %}
 VictoryForge | Tournois en ligne
 {% endblock %}
@@ -89,6 +89,17 @@ VictoryForge | Tournois en ligne
 	</div>
 	{{ knp_pagination_render(tournois) }}
 </div>
+<footer>
+	<p>&copy; 2024 VictoryForge, Inc</p>
+	<div class="user-utilities">
+		<a href="">
+			Conditions d'utilisation
+		</a>
+		<a href="">
+			Politique de confidentialité
+		</a>
+	</div>
+</footer>
 
 {% endblock %}
 

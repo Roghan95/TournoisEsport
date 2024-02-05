@@ -122,6 +122,11 @@ class TournoiType extends AbstractType
                     'class' => 'logoTournoi',
                     'placeholder' => 'jpg, png, jpeg, gif, webp',
                 ],
+                'download_uri' => false, // Ne pas afficher l'image existante
+                'allow_delete' => false, // Ne pas afficher le bouton de suppression
+                'delete_label' => 'Supprimer la photo', // Changer le label du bouton de suppression
+                'download_label' => false, // Changer le label du bouton de téléchargement
+                'image_uri' => false, // Ne pas afficher l'image existante
                 'constraints' => [
                     new File([
                         'maxSize' => '5024k',
@@ -144,6 +149,11 @@ class TournoiType extends AbstractType
                     'class' => 'banniereTournoi',
                     'placeholder' => 'jpg, png, jpeg, gif, webp'
                 ],
+                'download_uri' => false, // Ne pas afficher l'image existante
+                'allow_delete' => false, // Ne pas afficher le bouton de suppression
+                'delete_label' => 'Supprimer la photo', // Changer le label du bouton de suppression
+                'download_label' => false, // Changer le label du bouton de téléchargement
+                'image_uri' => false, // Ne pas afficher l'image existante
                 'constraints' => [
                     new File([
                         'maxSize' => '5024k',
