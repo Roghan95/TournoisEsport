@@ -18,15 +18,7 @@
 		</figure>
 	{% endif %}
 	<div class="member-pseudo">
-		<span>
-			{{ user.pseudo }}
-			{% if app.user and user.id != app.user.id and not user.isBanned %}
-				<a title="Inviter {{ user.pseudo }} dans votre équipe"
-					href="#" id="invite-user" data-user-id={{user.id}}>
-					<i class="fa-solid fa-user-plus"></i>
-				</a>
-			{% endif %}
-		</span>
+		<span>{{ user.pseudo }}</span>
 		<p>Membre depuis le {{ user.createdAt|format_date('short', locale='fr') }}</p>
 	</div>
 	<div class="member-info">
@@ -46,7 +38,7 @@
 			<i title="Contacter {{ user.pseudo }}" id="chat-icon" class="fa-regular fa-message chat-icon" data-organisateur-id="{{ user.id }}"></i>
 		</div>
 	{% endif %}
-	</section>
+</section>
 <section id="profil-content">
 	<div class="titre-equipe">
 		{% if user == app.user %}

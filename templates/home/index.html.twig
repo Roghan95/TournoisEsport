@@ -25,11 +25,11 @@ VictoryForge | Tournois en ligne
 	<details id="jeux-dropdown">
 		<summary>
 			{% if selectedJeu != null %}
-			<img class="logo-jeu" src="{{ vich_uploader_asset(selectedJeu, 'logoFile') }}"
-				alt="{{ selectedJeu.nomJeu }}">
-			{{ selectedJeu.nomJeu }}
+				<img class="logo-jeu" src="{{ vich_uploader_asset(selectedJeu, 'logoFile') }}"
+					alt="{{ selectedJeu.nomJeu }}">
+				{{ selectedJeu.nomJeu }}
 			{% else %}
-			Sélectionnez un jeu
+				Sélectionnez un jeu
 			{% endif %}
 			<i class="fa-solid fa-chevron-down"></i>
 			<i class="fa-solid fa-chevron-up" style="display:none;"></i>
@@ -71,9 +71,9 @@ VictoryForge | Tournois en ligne
 						<div class="tr-item-line"></div>
 						<div class="tr-region">
 							{% if tournoi.region is not null %}
-							<p>{{tournoi.region}}</p>
+								<p>{{tournoi.region}}</p>
 							{% else %}
-							<p>Monde</p>
+								<p>Monde</p>
 							{% endif %}
 						</div>
 						<div class="tr-item-line"></div>
@@ -106,5 +106,4 @@ VictoryForge | Tournois en ligne
 {% block javascripts %}
 {# {{ encore_entry_script_tags('app') }} #}
 <script src="{{ asset('js/select_jeu.js') }}"></script>
-
 {% endblock %}

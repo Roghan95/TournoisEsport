@@ -4,7 +4,7 @@
 
 <div class="tr-form-wrapper">
     {{ form_start(form, {'attr': {'class': 'tr-create-form'}}) }}
-    {# <h1 class="title-create-tr">Créer un tournoi</h1> #}
+    <h1 class="title-create-tr">Créer un tournoi</h1>
         {{ form_widget(form) }}
         <textarea name="tournoi-description" id="tournoi-description"></textarea>
         <button class="btn-create-tr">{{ button_label|default('Valider') }}</button>

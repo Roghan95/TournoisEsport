@@ -34,37 +34,51 @@ class TournoiController extends AbstractController
     {
         // Vérifie si l'utilisateur est connecté
         $user = $security->getUser();
+        // Si l'utilisateur n'est pas connecté, affiche un message d'erreur et redirige vers la page de connexion
         if (!$user) {
             $this->addFlash('error', 'Vous devez être connecté pour créer un tournoi');
             return $this->redirectToRoute('app_login');
         }
 
+        // Crée une nouvelle instance de Tournoi
         $tournoi = new Tournoi();
+        // Crée un formulaire pour le nouveau tournoi
         $form = $this->createForm(TournoiType::class, $tournoi);
+        // Gère la requête du formulaire
         $form->handleRequest($request);
 
+        // Si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
+            // Récupère l'utilisateur connecté
             $user = $this->getUser();
+            // Si l'utilisateur n'est pas connecté, affiche un message d'erreur et redirige vers la page de connexion
             if (!$user) {
                 $this->addFlash('error', 'Vous devez être connecté pour créer un tournoi');
                 return $this->redirectToRoute('app_login');
             }
+            // Si la date de début du tournoi est postérieure à la date de fin, affiche un message d'erreur et redirige vers la page de création de tournoi
             if ($tournoi->getDateDebut() > $tournoi->getDateFin()) {
                 $this->addFlash('error', 'La date de début doit être antérieure à la date de fin');
                 return $this->redirectToRoute('app_tournoi_new');
             }
+            // Récupère la description du tournoi à partir de la requête
             $description = $request->request->get('tournoi-description');
 
+            // Définit la description et l'organisateur du tournoi
             $tournoi->setDescription($description);
             $tournoi->setOrganisateur($this->getUser());
 
+            // Persiste le tournoi dans la base de données
             $this->em->persist($tournoi);
+            // Enregistre les changements dans la base de données
             $this->em->flush();
 
+            // Affiche un message de succès et redirige vers la page d'accueil
             $this->addFlash('success', 'Le tournoi a bien été créé');
             return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
+        // Rend la vue du formulaire de création de tournoi
         return $this->render('tournoi/new.html.twig', [
             'tournoi' => $tournoi,
             'form' => $form,

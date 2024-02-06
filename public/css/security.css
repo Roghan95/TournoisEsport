@@ -423,3 +423,11 @@ option:hover {
     justify-content: center;
     align-items: center;
 }
+
+#search {
+    border: 2px solid #ffffff7a;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #3329AE;
+    color: white;
+}
