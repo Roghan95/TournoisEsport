@@ -201,27 +201,27 @@ class TournoiController extends AbstractController
     }
 
     // Fonction permettant de supprimer un tournoi
-    #[Route('/{id}', name: 'app_tournoi_delete', methods: ['POST'])]
-    public function delete(Request $request, Tournoi $tournoi): Response
-    {
-        $user = $this->getUser();
-        // Vérifie d'abord si l'utilisateur est connecté et est l'organisateur du tournoi ou s'il a le rôle admin
-        if ($user && $user === $tournoi->getOrganisateur() || $this->isGranted('ROLE_ADMIN')) {
-            // Ensuite, vérifie le token CSRF
-            if ($this->isCsrfTokenValid('delete' . $tournoi->getId(), $request->request->get('_token'))) {
-                $this->em->remove($tournoi);
-                $this->em->flush();
+    // #[Route('/{id}', name: 'app_tournoi_delete', methods: ['POST'])]
+    // public function delete(Request $request, Tournoi $tournoi): Response
+    // {
+    //     $user = $this->getUser();
+    //     // Vérifie d'abord si l'utilisateur est connecté et est l'organisateur du tournoi ou s'il a le rôle admin
+    //     if ($user && $user === $tournoi->getOrganisateur() || $this->isGranted('ROLE_ADMIN')) {
+    //         // Ensuite, vérifie le token CSRF
+    //         if ($this->isCsrfTokenValid('delete' . $tournoi->getId(), $request->request->get('_token'))) {
+    //             $this->em->remove($tournoi);
+    //             $this->em->flush();
 
-                $this->addFlash('success', 'Le tournoi a bien été supprimé');
-            } else {
-                $this->addFlash('error', 'Le tournoi n\'a pas pu être supprimé');
-            }
-        } else {
-            $this->addFlash('error', 'Vous n\'avez pas les droits nécessaires pour supprimer ce tournoi');
-        }
+    //             $this->addFlash('success', 'Le tournoi a bien été supprimé');
+    //         } else {
+    //             $this->addFlash('error', 'Le tournoi n\'a pas pu être supprimé');
+    //         }
+    //     } else {
+    //         $this->addFlash('error', 'Vous n\'avez pas les droits nécessaires pour supprimer ce tournoi');
+    //     }
 
-        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
-    }
+    //     return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+    // }
 
 
     // Fonction permettant de supprimer un participant d'un tournoi
@@ -230,19 +230,20 @@ class TournoiController extends AbstractController
     {
         $tournoiId = $participantTournoi->getTournoi()->getId();
 
-        if ($this->isCsrfTokenValid('delete' . $participantTournoi->getId(), $request->request->get('_token'))) {
+        // if ($this->isCsrfTokenValid('delete' . $participantTournoi->getId(), $request->request->get('_token'))) {
             $this->em->remove($participantTournoi);
             $this->em->flush();
-
+        
             $this->addFlash('success', 'Le participant a bien été supprimé');
-        } else {
-            $this->addFlash('error', 'Le participant n\'a pas pu être supprimé');
-        }
+        // } else {
+            // $this->addFlash('error', 'Le participant n\'a pas pu être supprimé');
+        // }
 
         return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoiId], Response::HTTP_SEE_OTHER);
     }
 
 
+    // Fonction permettant de participer à un tournoi
     #[Route('/{id}/participer', name: 'tournoi_participer', methods: ['POST'])]
     public function participer(Tournoi $tournoi, EquipeRepository $equipeRepo, ParticipantTournoiRepository $participantTournoiRepo)
     {

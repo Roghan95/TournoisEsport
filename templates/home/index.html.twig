@@ -10,100 +10,102 @@ VictoryForge | Tournois en ligne
 
 
 {% block body %}
-<div class="banner-theme">
-	<div class="banner-theme-txt">
-		<h1>
-			CREER, CONCOURIR, CONQUERIR
-		</h1>
-		<p>
-			VictoryForge : Votre destination e-sport pour des tournois intenses, des équipes de compétition et des défis
-			passionnants. Rejoignez la compétition, montez sur le podium de la victoire.
-		</p>
-	</div>
-</div>
-<div class="filter">
-	<details id="jeux-dropdown">
-		<summary>
-			{% if selectedJeu != null %}
-				<img class="logo-jeu" src="{{ vich_uploader_asset(selectedJeu, 'logoFile') }}"
-					alt="{{ selectedJeu.nomJeu }}">
-				{{ selectedJeu.nomJeu }}
-			{% else %}
-				Sélectionnez un jeu
-			{% endif %}
-			<i class="fa-solid fa-chevron-down"></i>
-			<i class="fa-solid fa-chevron-up" style="display:none;"></i>
-		</summary>
-		<ul class="jeux-liste">
-			{% for jeu in jeux %}
-			<li data-value="{{ jeu.id }}">
-				<img class="not-selected-nom-jeu" style="width: 70px; height: 70px;"
-					src="{{ vich_uploader_asset(jeu, 'logoFile') }}" alt="{{ jeu.nomJeu }}">
-				<p class="nomJeu">{{ jeu.nomJeu }}</p>
-			</li>
-			{% endfor %}
-		</ul>
-	</details>
-</div>
-<div class="tr-main-wrapper">
-	<h1 id="find-tr-h3">Trouver des tournois</h1>
-	<div class="tr-content">
-		<div class="tournois-list">
-			{% for tournoi in tournois %}
-			<a href="{{ path('app_tournoi_show', {'id' : tournoi.id }) }}">
-				<div class="tournament-item">
-					<div class="tr-container">
-						<div class="tr-banner">
-							<img class="tournoi-img" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}"
-								alt="Bannière tournoi" />
-							<p>{{ tournoi.nomTournoi }}</p>
-						</div>
-						<div class="tournament-time">
-							<p class="tr-calendar">
-								<span class="material-symbols-outlined">calendar_month</span>
-								{{ tournoi.dateDebut | format_datetime(locale='fr', pattern="EE dd MMM") }}
-							</p>
-							<p class="tr-schedule">
-								<span class="material-symbols-outlined">schedule</span>
-								{{ tournoi.dateDebut | format_datetime('none', 'short', locale='fr') }}
-							</p>
-						</div>
-						<div class="tr-item-line"></div>
-						<div class="tr-region">
-							{% if tournoi.region is not null %}
-								<p>{{tournoi.region}}</p>
-							{% else %}
-								<p>Monde</p>
-							{% endif %}
-						</div>
-						<div class="tr-item-line"></div>
-						<div class="organisateur-info">
-							<img class="logo-organisateur" src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo organisateur">
-							<p>{{ tournoi.nomOrganisation }}</p>
-						</div>
-					</div>
-				</div>
-			</a>
-			{% endfor %}
+<div class="main-home">
+	<div class="banner-theme">
+		<div class="banner-theme-txt">
+			<h1>
+				CREER, CONCOURIR, CONQUERIR
+			</h1>
+			<p>
+				VictoryForge : <br>Votre destination e-sport pour des tournois intenses, des équipes de compétition et des défis
+				passionnants. Rejoignez la compétition, montez sur le podium de la victoire.
+			</p>
 		</div>
 	</div>
-	{{ knp_pagination_render(tournois) }}
-</div>
-<footer>
-	<p>&copy; 2024 VictoryForge, Inc</p>
-	<div class="user-utilities">
-		<a href="">
-			Conditions d'utilisation
-		</a>
-		<a href="">
-			Politique de confidentialité
-		</a>
+	<div class="filter">
+		<details id="jeux-dropdown">
+			<summary>
+				{% if selectedJeu != null %}
+					<img class="logo-jeu" src="{{ vich_uploader_asset(selectedJeu, 'logoFile') }}"
+						alt="{{ selectedJeu.nomJeu }}">
+					{{ selectedJeu.nomJeu }}
+				{% else %}
+					Sélectionnez un jeu
+				{% endif %}
+					<i class="fa-solid fa-chevron-down"></i>
+					<i class="fa-solid fa-chevron-up" style="display:none;"></i>
+			</summary>
+			<ul class="jeux-liste">
+				{% for jeu in jeux %}
+					<li data-value="{{ jeu.id }}">
+						<img class="not-selected-nom-jeu" style="width: 70px; height: 70px;"
+							src="{{ vich_uploader_asset(jeu, 'logoFile') }}" alt="{{ jeu.nomJeu }}">
+						<p class="nomJeu">{{ jeu.nomJeu }}</p>
+					</li>
+				{% endfor %}
+			</ul>
+		</details>
 	</div>
-</footer>
+	<div class="tr-main-wrapper">
+		<h1 id="find-tr-h3">Trouver des tournois</h1>
+		<div class="tr-content">
+			<div class="tournois-list">
+				{% for tournoi in tournois %}
+				<a href="{{ path('app_tournoi_show', {'id' : tournoi.id }) }}">
+					<div class="tournament-item">
+						<div class="tr-container">
+							<div class="tr-banner">
+								<img class="tournoi-img" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}"
+									alt="Bannière tournoi" />
+								<p>{{ tournoi.nomTournoi }}</p>
+							</div>
+							<div class="tournament-time">
+								<p class="tr-calendar">
+									<span class="material-symbols-outlined">calendar_month</span>
+									{{ tournoi.dateDebut | format_datetime(locale='fr', pattern="EE dd MMM") }}
+								</p>
+								<p class="tr-schedule">
+									<span class="material-symbols-outlined">schedule</span>
+									{{ tournoi.dateDebut | format_datetime('none', 'short', locale='fr') }}
+								</p>
+							</div>
+							<div class="tr-item-line"></div>
+							<div class="tr-region">
+								{% if tournoi.region is not null %}
+									<p>{{tournoi.region}}</p>
+								{% else %}
+									<p>Monde</p>
+								{% endif %}
+							</div>
+							<div class="tr-item-line"></div>
+							<div class="organisateur-info">
+								<img class="logo-organisateur" src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo organisateur">
+								<p>{{ tournoi.nomOrganisation }}</p>
+							</div>
+						</div>
+					</div>
+				</a>
+				{% endfor %}
+			</div>
+		</div>
+		{{ knp_pagination_render(tournois) }}
+	</div>
+	<footer>
+		<p>&copy; 2024 VictoryForge, Inc</p>
+		<div class="user-utilities">
+			<a href="">
+				Conditions d'utilisation
+			</a>
+			<span> | </span>
+			<a href="">
+				Politique de confidentialité
+			</a>
+		</div>
+	</footer>
+</div>
 
 {% endblock %}
 
 {% block javascripts %}
-{# {{ encore_entry_script_tags('app') }} #}
 <script src="{{ asset('js/select_jeu.js') }}"></script>
 {% endblock %}

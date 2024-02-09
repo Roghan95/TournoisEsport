@@ -81,7 +81,7 @@
 								{% if app.user and app.user.id == tournoi.organisateur.id %}
 									<form class="delete-participant" action="{{ path('app_tournoi_delete_participant', {'id': participant.id}) }}" method="POST">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ participant.id) }}">
-										<button title="Supprimer cet utilisateur" type="submit" class="delete-button"><i class="fa-solid fa-x"></i></button>
+										<button title="Supprimer cet utilisateur" type="submit" class="delete-button" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')"><i class="fa-solid fa-x"></i></button>
 									</form>
 								{% endif %}
 							</a>
@@ -101,7 +101,7 @@
 							{% if app.user and app.user.id == tournoi.organisateur.id %}
 								<form class="delete-participant" action="{{ path('app_tournoi_delete_participant', {'id': participant.id}) }}" method="POST">
 									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ participant.id) }}">
-									<button title="Supprimer cet utilisateur" type="submit" class="delete-button"><i class="fa-solid fa-x"></i></button>
+									<button title="Supprimer cet utilisateur" type="submit" class="delete-button" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')"><i class="fa-solid fa-x"></i></button>
 								</form>
 							{% endif %}
 						</a>
@@ -164,8 +164,8 @@
 			</form>
 		{% endif %}
 	{% endif %}
-
 	</div>
 </div>
+
 {% endblock %}
 
