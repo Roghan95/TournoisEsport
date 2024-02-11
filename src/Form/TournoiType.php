@@ -77,7 +77,7 @@ class TournoiType extends AbstractType
             ])
             // NbJoueursMax
             ->add('nbJoueursMax', IntegerType::class, [
-                'label' => 'Nombre de joueurs maximum *: ',
+                'label' => 'Nb de joueurs max *: ',
                 'required' => true,
                 'attr' => [
                     'min' => 1,
@@ -116,7 +116,7 @@ class TournoiType extends AbstractType
                 ]
             ])
             ->add('logoFile', VichImageType::class, [
-                'label' => 'Logo du tournoi (5Mo max) *: ',
+                'label' => 'Logo *: ',
                 'required' => true,
                 'attr' => [
                     'class' => 'logoTournoi',
@@ -143,7 +143,7 @@ class TournoiType extends AbstractType
                 ]
             ])
             ->add('banniereTrFile', VichImageType::class, [
-                'label' => 'Bannière (5Mo max) *: ',
+                'label' => 'Bannière *: ',
                 'required' => true,
                 'attr' => [
                     'class' => 'banniereTournoi',

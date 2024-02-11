@@ -252,3 +252,58 @@
 .message-form .show-form {
     display: block;
 } */
+
+/* Breakpoint desktop */
+
+@media (min-width: 768px) { 
+    /* .chat-title {
+        width: calc(100% - 300px);
+    } */
+
+    .rooms {
+        display: flex !important;
+        /* width: 100% !important; */
+    }
+
+    .rooms-item {
+        display: flex !important;
+        /* width: 100% !important; */
+    }
+
+    .rooms-container {
+        width: 100% !important;
+    }
+
+    .message-container {
+        display: flex;
+        position: fixed;
+        width: calc(100% - 25% - 300px);
+        right: 0;
+        top: 0;
+        flex-direction: column;
+        height: calc(100% - 100px);
+        padding: 40px 40px 0 40px;
+    }
+
+    #send-message-form {
+        width: 100%;
+    
+    }
+
+    .message-form {
+        width: calc(100% - 31% - 300px);
+        margin-left: 20px;
+        /* display: none; */
+    }
+
+    #chat {
+        margin-left: 300px;
+        width: 25%;
+    }
+
+    #messages {
+        /* height: auto; */
+        /* width: calc(100% - 25% - 120px); */
+        padding: 10px;
+    }
+}

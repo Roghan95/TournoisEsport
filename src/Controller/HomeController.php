@@ -42,7 +42,7 @@ class HomeController extends AbstractController
             $tournois = $paginator->paginate(
                 $data,
                 $request->query->getInt('page', 1),
-                12
+                8
             );
             // Si l'id du jeu n'est pas null ou vide, on récupère les tournois du jeu
         } else {
@@ -50,7 +50,7 @@ class HomeController extends AbstractController
             $tournois = $paginator->paginate(
                 $data,
                 $request->query->getInt('page', 1),
-                12
+                8
             );
         }
         // On récupère tous les jeux

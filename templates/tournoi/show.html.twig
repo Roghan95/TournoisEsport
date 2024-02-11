@@ -60,6 +60,10 @@
 				<span>JOUEURS INSCRITS (<strong id="nbJoueurs">{{ tournoi.participantTournois | length }}</strong>)</span>
 			{% endif %}
 		</div>
+		{% if participantsByTeam | length == 0 and tournoi.participantTournois | length == 0 %}
+			<span class="tab-match-title">PAS DE PARTICIPANTS ACTUELLEMENT</span>
+		{% else %}
+		{% endif %}
 		<div class="participant-container" >
 			{% if isTournoiByEquipe %}
 				{% for item in participantsByTeam %}
@@ -119,6 +123,10 @@
 			<a title="Planifier un match" class="create-match" href="{{ path('new_match', {'id': tournoi.id}) }}">Planifier un match <i class="fa-regular fa-square-plus"></i></a>
 			{% endif %}
 		</div>
+		{% if tournoi.gameMatches | length == 0 %}
+			<span class="tab-match-title">PAS DE MATCHS ACTUELLEMENT</span>
+		{% else %}
+		{% endif %}
 		{% for index, match in tournoi.getGameMatches %}
 			<div class="matchs">
 				<span title="{{ match.nomMatch }}" class="match-title">MATCH #{{ index + 1 }}<br> {{ match.nomMatch }}</span>

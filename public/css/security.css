@@ -272,7 +272,95 @@ input[type=email]:focus {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 10px;
+}
+
+.tr-create-form>div {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.tr-create-form>div input:focus {
+    outline: none;
+    border: 2px solid rgb(255, 255, 255);
+    background-color: #3329AE;
+    color: white;
+}
+
+#tournoi_region:focus {
+    outline: none;
+    border: 2px solid rgb(255, 255, 255);
+    background-color: #3329AE;
+    color: white;
+}
+
+#tournoi_nbJoueursMax {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(52, 41, 174, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    width: 100%;
+}
+
+#tournoi_nbJoueursMax:focus {
+    outline: none;
+    border: 2px solid rgb(255, 255, 255);
+    background-color: #3329AE;
+    color: white;
+}
+
+#tournoi_lienTwitch:focus {
+    outline: none;
+    border: 2px solid rgb(255, 255, 255);
+    background-color: #3329AE;
+    color: white;
+}
+
+.format-jeu {
+    padding: 10px;
+    background-color: rgba(52, 41, 174, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    color: white;
+    width: 100%;
+}
+
+.format-jeu:focus {
+    outline: none;
+    border: 2px solid rgb(255, 255, 255);
+    background-color: #3329AE;
+    color: white;
+}
+
+.format-jeu div input {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+#tournoi_jeu {
+    width: 100%;
+}
+
+#tournoi_lienTwitch {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(52, 41, 174, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    width: 100%;
+    outline: none;
+}
+
+#tournoi_region {
+    padding: 10px;
+    background-color: rgba(52, 41, 174, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    color: white;
+    width: 100%;
+    outline: none;
 }
 
 .jeuTournoi {
@@ -302,6 +390,40 @@ option:hover {
 
 }
 
+
+#tournoi_banniereTrFile_file {
+    padding: 10px;
+    background-color: rgba(52, 41, 174, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    color: white;
+    width: 100%;
+}
+
+#tournoi_banniereTrFile_file:focus {
+    outline: none;
+    border: 2px solid rgb(255, 255, 255);
+    background-color: #3329AE;
+    color: white;
+}
+
+
+#tournoi_logoFile_file {
+    padding: 10px;
+    background-color: rgba(52, 41, 174, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    color: white;
+    width: 100%;
+}
+
+#tournoi_logoFile_file:focus {
+    outline: none;
+    border: 2px solid rgb(255, 255, 255);
+    background-color: #3329AE;
+    color: white;
+}
+
 #tournoi div input {
     padding: 10px;
     border-radius: 5px;
@@ -324,6 +446,7 @@ option:hover {
     border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 5px;
     color: white;
+    width: 100%;
 }
 
 .typeTournoi:focus {
@@ -331,6 +454,12 @@ option:hover {
     border: 2px solid rgb(255, 255, 255);
     background-color: #3329AE;
     color: white;
+}
+
+.tr-logo-banniere {
+    display: flex;
+    gap: 10px;
+    width: 100%;
 }
 
 .vich-image input {
@@ -430,4 +559,81 @@ option:hover {
     border-radius: 5px;
     background-color: #3329AE;
     color: white;
+}
+
+.tr-name {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+.date-time {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+.date-time input {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(52, 41, 174, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    width: 100%;
+}
+
+
+.tr-name input {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(52, 41, 174, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    width: 100%;
+}
+
+.tr-form-wrapper {
+    /* padding: 10px; */
+    height: 100%;
+}
+
+@media (min-width: 768px) { 
+    .tr-create-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0 255px 50px 255px;
+        margin-left: 300px;
+        height: 100%;
+        /* padding: 20px; */
+    }
+
+    #tournoi_banniereTrFile_file {
+        width: 100%;
+    }
+
+    .date-time>div {
+        width: 100%;
+        gap: 10px;
+    }
+
+    #tournoi_dateFin {
+        width: 100% !important;
+    }
+
+    .tr-create-form > div {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .tr-name>div {
+        width: 100%;
+        gap: 10px;
+    }
+
+    .tr-logo-banniere>div {
+        width: 100%;
+        gap: 10px;
+    }
 }
