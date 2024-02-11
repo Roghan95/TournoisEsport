@@ -468,8 +468,8 @@ option:hover {
 
 
 .btn-create-tr {
-  padding: 10px 15px;
-  margin-top: 20px;
+    padding: 10px 15px;
+    margin-top: 20px;
 }
 
 
@@ -486,7 +486,7 @@ option:hover {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    height: 100%;
+    height: auto;
 }
 
 .equipe-create-form>div {
@@ -597,15 +597,21 @@ option:hover {
     height: 100%;
 }
 
-@media (min-width: 768px) { 
+.tr-create-form h1 {
+    text-align: start;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+@media (min-width: 768px) {
     .tr-create-form {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 0 255px 50px 255px;
+        padding: 50px 255px 50px 255px;
         margin-left: 300px;
-        height: 100%;
+        height: auto;
         /* padding: 20px; */
     }
 
@@ -622,9 +628,14 @@ option:hover {
         width: 100% !important;
     }
 
-    .tr-create-form > div {
+    .tr-create-form>div {
         width: 100%;
         margin-bottom: 10px;
+    }
+
+    .tr-create-form h1 {
+        text-align: start;
+        width: 100%;
     }
 
     .tr-name>div {
@@ -636,4 +647,13 @@ option:hover {
         width: 100%;
         gap: 10px;
     }
+
+    .equipe-create-form {
+        margin-left: 300px;
+        padding: 50px 255px 50px 255px !important;
+    }
+
+    /* .tr-form-wrapper {
+        margin-left: 300px;
+    } */
 }

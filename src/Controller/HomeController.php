@@ -42,7 +42,7 @@ class HomeController extends AbstractController
             $tournois = $paginator->paginate(
                 $data,
                 $request->query->getInt('page', 1),
-                8
+                6
             );
             // Si l'id du jeu n'est pas null ou vide, on récupère les tournois du jeu
         } else {
@@ -50,14 +50,14 @@ class HomeController extends AbstractController
             $tournois = $paginator->paginate(
                 $data,
                 $request->query->getInt('page', 1),
-                8
+                6
             );
         }
         // On récupère tous les jeux
         $jeux = $jeuRepository->findAll();
         $selectedJeu = null;
 
-        if($jeuId != null){
+        if ($jeuId != null) {
             foreach ($jeux as $key => $jeu) {
                 if ($jeu->getId() == $jeuId) {
                     // Trouver le jeu sélectionné

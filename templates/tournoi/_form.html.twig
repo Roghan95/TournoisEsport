@@ -4,28 +4,29 @@
 
 <div class="tr-form-wrapper">
     {{ form_start(form, {'attr': {'class': 'tr-create-form'}}) }}
-        <div class="tr-name">
-            {{ form_row(form.nomTournoi) }}
-            {{ form_row(form.nomOrganisation) }}
-        </div>
-        <div class="date-time">
-            {{ form_row(form.dateDebut) }}
-            {{ form_row(form.dateFin) }}
-        </div>
-        {{ form_row(form.region) }}
-        {{ form_row(form.lienTwitch) }}
-        <div class="format-jeu">
-            {{ form_row(form.jeu) }}
-            {{ form_row(form.type) }}
-            {{ form_row(form.nbJoueursMax) }}
-        </div>
-        <div class="tr-logo-banniere">
-            {{ form_row(form.logoFile) }}
-            {{ form_row(form.banniereTrFile) }}
-        </div>
-        <textarea name="tournoi-description" id="tournoi-description"></textarea>
-        {# Ajout d'un bouton de soumission #}
-        <button class="btn-create-tr">{{ button_label|default('Valider') }}</button>
+    <h1>Créer un tournoi</h1>
+    <div class="tr-name">
+        {{ form_row(form.nomTournoi) }}
+        {{ form_row(form.nomOrganisation) }}
+    </div>
+    <div class="date-time">
+        {{ form_row(form.dateDebut) }}
+        {{ form_row(form.dateFin) }}
+    </div>
+    {{ form_row(form.region) }}
+    {{ form_row(form.lienTwitch) }}
+    <div class="format-jeu">
+        {{ form_row(form.jeu) }}
+        {{ form_row(form.type) }}
+        {{ form_row(form.nbJoueursMax) }}
+    </div>
+    <div class="tr-logo-banniere">
+        {{ form_row(form.logoFile) }}
+        {{ form_row(form.banniereTrFile) }}
+    </div>
+    <textarea name="tournoi-description" id="tournoi-description"></textarea>
+    {# Ajout d'un bouton de soumission #}
+    <button class="btn-create-tr">{{ button_label|default('Valider') }}</button>
 
     {{ form_end(form) }}
 </div>
