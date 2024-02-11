@@ -615,6 +615,22 @@ option:hover {
         /* padding: 20px; */
     }
 
+    .login-form {
+        width: 450px;
+    }
+
+    .login-form-container {
+        margin-left: 300px;
+    }
+
+    .register-form {
+        width: 450px;
+    }
+
+    .form-center {
+        margin-left: 300px;
+    }
+
     #tournoi_banniereTrFile_file {
         width: 100%;
     }

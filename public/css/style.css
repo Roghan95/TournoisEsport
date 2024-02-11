@@ -986,15 +986,12 @@ footer {
 
 /* Base 2 */
 #addflash-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 1px;
-  z-index: 100;
   position: absolute;
-  top: 10px;
+  z-index: 100;
+  top: 70px;
+  background-color: #2c3147;
+  width: 100%;
+  text-align: center;
 }
 
 .alert-success {
@@ -1176,8 +1173,6 @@ footer {
     height: 175px;
   }
 
-
-
 }
 
 @media (min-width: 1200px) {
@@ -1190,8 +1185,4 @@ footer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
-}
-
-.hide-message-form{
-  display: none !important;
 }

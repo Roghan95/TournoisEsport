@@ -94,9 +94,9 @@ class ProfilController extends AbstractController
         $equipes = $equipeRepo->findBy(['proprietaire' => $user]);
 
         // Check if the teams exist
-        if (!$equipes) {
-            $this->addFlash('error', 'Aucune équipe trouvée pour cet utilisateur.');
-        }
+        // if (!$equipes) {
+        //     $this->addFlash('error', 'Aucune équipe trouvée pour cet utilisateur.');
+        // }
 
         $tournois = $user->getMesTournois();
 

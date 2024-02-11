@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let messageContainer = document.querySelector('.message-container');
     let faSolid = document.querySelector('.fa-solid');
     let faArrow = document.querySelector('.fa-arrow-left');
-
-    messageForm.classList.add('hide-message-form');
+    
+    messageContainer.style.display = 'none';
 
     messageTextElem.addEventListener('keypress', handleKeyPress);
     sendMessageForm.addEventListener('submit', handleSubmit);

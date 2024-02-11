@@ -29,19 +29,21 @@
             {{ include ('include/sidebar.html.twig') }}
         {% endblock %}
 
-        <div id="addflash-content">
-          {% for message in app.flashes('success') %}
-            <div class="alert alert-success">
-                {{ message }}
+        {% block message %}
+            <div id="addflash-content">
+                {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+                {% endfor %}
+    
+                {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-
-            {% for message in app.flashes('error') %}
-            <div class="alert alert-danger">
-                {{ message }}
-            </div>
-            {% endfor %}
-        </div>
+        {% endblock %}
 
         {% block body %}{% endblock %}
     </main>
@@ -68,7 +70,7 @@
         document.addEventListener('DOMContentLoaded', (event) => {
             const flashMessages = document.querySelectorAll('.alert');
 
-            flashMessages.forEach((flashMessage) => {
+         flashMessages.forEach((flashMessage) => {
                 setTimeout(() => {
                     flashMessage.style.display = 'none';
                 }, 3000);
