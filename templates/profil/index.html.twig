@@ -29,6 +29,7 @@
 				<a href="#" class="follow-btn" id="follow-user" data-user-id={{user.id}}>Suivre</a>
 			{% endif %}
 				{% if alreadyFollow == true %}
+					{# <span>Vous suis</span> #}
 				{% endif %}
 		{% endif %}
 	</div>
@@ -48,9 +49,8 @@
 					<i class="fa-regular fa-square-plus"></i>
 			</a>
 		{% else %}
-		<h2 class="title-mes-equipes">Equipes de {{ user.pseudo }}</h2>
+			<h2 class="title-mes-equipes">Equipes de {{ user.pseudo }}</h2>
 		{% endif %}
-
 	</div>
 	{% if equipes is empty %}
 		<div class="no-equipe">
@@ -64,13 +64,13 @@
 				<figure>
 					<img src="{{ vich_uploader_asset(equipe, 'imageFile') }}" alt="Logo de l'équipe {{ equipe.nomEquipe }}" />
 				</figure>
-				<h2>{{ equipe.nomEquipe }}</h2>
+				{# <h2>{{ equipe.nomEquipe }}</h2>
 				<p>
 					Membre depuis le
 					{{ equipe.createdAt|format_date('full', locale='fr') }}
 				</p>
 				<a href="{{ path('app_search_user') }}">Inviter</a>
-				<a href="{{ path('equipe_quitter', { id: equipe.id }) }}">Quitter</a>
+				<a href="{{ path('equipe_quitter', { id: equipe.id }) }}">Quitter</a> #}
 			{% endif %}
 			{% endfor %}
 		</div>
@@ -78,25 +78,52 @@
 
 	{% endif %}
 	<article class="box-tournois">
-		<h2>Mes tournois</h2>
-		{% for tournoi in tournois %}
-			<img style="width: clamp(30px, 50px, 50px);" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}"
-				alt="Logo d'un tournoi" />
-		{% endfor %}
+		<details class="details-profil-tr">
+			{% if user.id != app.user.id %}
+				<summary>Les tournois de {{ user.pseudo }}</summary>
+			{% else %}
+				<summary>Mes tournois</summary>
+			{% endif %}
+			{% for tournoi in tournois %}
+			<ul>
+				<li class="profil-mes-tr">
+					<img src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo d'un tournoi" />
+					<a href="{{ path('app_tournoi_show', {'id' : tournoi.id}) }}">{{ tournoi.nomTournoi }}</a>
+				</li>
+			</ul>
+			{% endfor %}
+		</details>
 	</article>
 
 	<article class="box-followers">
-		<h2>Mes followers</h2>
-
-		{% for item in followers %}
-			<p>{{item.follower.pseudo}}</p>
-		{% endfor %}
-
-		<h2>Les personnes que je follow</h2>
-
-		{% for item in followings %}
-			<a href="">{{item.following.pseudo}}</a>
-		{% endfor %}
+		<details>
+			{% if user.id != app.user.id %}
+				<summary>Les followers de {{ user.pseudo }}</summary>
+			{% else %}
+				<summary>Mes followers</summary>
+			{% endif %}
+			{% for item in followers %}
+				<ul>
+					<li>
+						<a href="{{ path('app_user_profil', {'id' : user.id}) }}">{{ item.follower.pseudo }}</a>
+					</li>
+				</ul>
+			{% endfor %}
+		</details>
+		<details>
+			{% if user.id != app.user.id %}
+				<summary>Les personnes suivies par {{ user.pseudo }}</summary>
+			{% else %}
+				<summary>Les personnes que je suis</summary>
+			{% endif %}
+			{% for item in followings %}
+				<ul>
+					<li>
+						<a href="{{ path('app_user_profil', {'id' : user.id}) }}">{{item.following.pseudo}}</a>
+					</li>
+				</ul>
+			{% endfor %}
+		</details>
 	</article>
 
 </section>

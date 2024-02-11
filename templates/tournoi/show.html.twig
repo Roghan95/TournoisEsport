@@ -8,8 +8,8 @@
 	<div id="ancre" class="head-trd">
 		<div class="logo-nom">
             <img class="logo-trd" src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo du tournoi" />
-            <a title="Profil de l'organisateur {{ tournoi.organisateur.pseudo }}" style="overflow: hidden; white-space: normal; word-wrap: break-word;" href="{{ path('app_user_profil', {'id' : tournoi.organisateur.id }) }}">
-				
+            <a title="Profil de l'organisateur {{ tournoi.organisateur.pseudo }}" style="overflow: hidden; white-space: normal; word-wrap: break-word;" 
+			href="{{ path('app_user_profil', {'id' : tournoi.organisateur.id }) }}">
                 {{ tournoi.nomTournoi }} 
 				<span  class="created-by">par 
                 {% if app.user and tournoi.organisateur.id == app.user.id %}
