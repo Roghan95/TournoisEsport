@@ -1185,3 +1185,7 @@ footer {
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+.hide-message-form{
+  display: none !important;
+}

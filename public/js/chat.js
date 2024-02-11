@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let faSolid = document.querySelector('.fa-solid');
     let faArrow = document.querySelector('.fa-arrow-left');
 
+    messageForm.classList.add('hide-message-form');
+
     messageTextElem.addEventListener('keypress', handleKeyPress);
     sendMessageForm.addEventListener('submit', handleSubmit);
     roomItems.forEach(room => room.addEventListener('click', handleRoomClick));
