@@ -230,14 +230,10 @@ class TournoiController extends AbstractController
     {
         $tournoiId = $participantTournoi->getTournoi()->getId();
 
-        // if ($this->isCsrfTokenValid('delete' . $participantTournoi->getId(), $request->request->get('_token'))) {
             $this->em->remove($participantTournoi);
             $this->em->flush();
         
             $this->addFlash('success', 'Le participant a bien été supprimé');
-        // } else {
-            // $this->addFlash('error', 'Le participant n\'a pas pu être supprimé');
-        // }
 
         return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoiId], Response::HTTP_SEE_OTHER);
     }

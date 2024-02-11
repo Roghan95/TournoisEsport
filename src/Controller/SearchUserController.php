@@ -17,7 +17,7 @@ class SearchUserController extends AbstractController
         $search = $request->query->get('search');
 
         // Filtrer le champ de recherche contre les injections XSS
-        $search = htmlspecialchars($search);
+        $search = filter_input(INPUT_GET, 'search', FILTER_SANITIZE_STRING);
 
         $equipes = $equipeRepo->findBy(['proprietaire' => $this->getUser()]);
         if ($search != null) {
