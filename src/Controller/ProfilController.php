@@ -48,9 +48,9 @@ class ProfilController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-                $this->em->flush();
+            $this->em->flush();
         }
-    
+
         return $this->render('profil/index.html.twig', [
             'user' => $user,
             'equipes' => $equipes,
@@ -125,14 +125,14 @@ class ProfilController extends AbstractController
 
         $followers = $followRepo->findBy(['following' => $user]);
         $followings = $followRepo->findBy(['follower' => $user]);
-        
+
         $form = $this->createForm(ProfilType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
         }
-        
+
         return $this->render('profil/index.html.twig', [
             'user' => $user,
             'equipes' => $equipes,

@@ -14,7 +14,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class NotificationController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $em, private NotificationRepository $notificationRepo)
-    {}
+    {
+    }
 
     #[Route('/notifications', name: 'app_notification')]
     public function index(): Response
