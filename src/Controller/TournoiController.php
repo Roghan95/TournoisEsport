@@ -118,7 +118,7 @@ class TournoiController extends AbstractController
 
             return $this->json(['success' => true], 200);
         } catch (\Throwable $th) {
-            // Gérer les erreurs éventuelles
+            // Gérer les erreurs éventuelles et retourner un message d'erreur
             return new JsonResponse(['success' => false, 'error' => $th->getMessage()], 400);
         }
     }
@@ -142,13 +142,13 @@ class TournoiController extends AbstractController
         }
 
         $isTournoiByEquipe = $tournoi->getType() === 'equipe' ? true : false;
-        
+
 
         $participantsTournoi = $participantTournoiRepo->findBy(['tournoi' => $tournoi]);
 
         // group participants by team
         $participantsByTeam = [];
-        
+
         if ($isTournoiByEquipe) {
             foreach ($participantsTournoi as $participant) {
                 $equipe = $participant->getEquipe();
@@ -160,7 +160,7 @@ class TournoiController extends AbstractController
                 }
             }
         }
-       
+
         return $this->render('tournoi/show.html.twig', [
             'tournoi' => $tournoi,
             'isAlreadyParticipate' => $isAlreadyParticipate,
@@ -230,10 +230,10 @@ class TournoiController extends AbstractController
     {
         $tournoiId = $participantTournoi->getTournoi()->getId();
 
-            $this->em->remove($participantTournoi);
-            $this->em->flush();
-        
-            $this->addFlash('success', 'Le participant a bien été supprimé');
+        $this->em->remove($participantTournoi);
+        $this->em->flush();
+
+        $this->addFlash('success', 'Le participant a bien été supprimé');
 
         return $this->redirectToRoute('app_tournoi_show', ['id' => $tournoiId], Response::HTTP_SEE_OTHER);
     }
@@ -265,7 +265,7 @@ class TournoiController extends AbstractController
             }
 
             $membres = $equipe->getMembres();
-            foreach ($membres as $membre){
+            foreach ($membres as $membre) {
                 $participantTournoi = new ParticipantTournoi();
                 $participantTournoi->setEquipe($equipe);
                 $participantTournoi->setTournoi($tournoi);
@@ -273,7 +273,6 @@ class TournoiController extends AbstractController
                 $participantTournoi->setInGamePseudo($membre->getPseudo());
                 $this->em->persist($participantTournoi);
             }
- 
         }
 
         $participantTournoi = new ParticipantTournoi();
@@ -321,10 +320,10 @@ class TournoiController extends AbstractController
                 $participantTournoiMembre = $participantTournoiRepo->findOneBy(['tournoi' => $tournoi, 'utilisateur' => $membre]);
                 $this->em->remove($participantTournoiMembre);
             }
-        } 
-        
+        }
+
         $this->em->remove($participantTournoi);
-        
+
 
         $this->em->flush();
 
