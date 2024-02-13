@@ -1,5 +1,14 @@
 {% extends 'base2.html.twig' %}
 
+{% block meta %}
+    <meta name="description" content="Réinitialisation du mot de passe">
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/security.css') }}">
+{% endblock %}
+
 {% block title %}Réinitialisation du mot de passe{% endblock %}
 
 {% block body %}

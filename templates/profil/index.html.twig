@@ -1,5 +1,10 @@
 {% extends 'base2.html.twig' %}
+
 {% block title %}Profil
+{% endblock %}
+
+{% block meta %}
+	<meta name="description" content="Profil de {{ user.pseudo }}">
 {% endblock %}
 
 {% block sidebar %}

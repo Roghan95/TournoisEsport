@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{% block meta %}
+	<meta name="description" content="Tournoi {{ tournoi.nomTournoi }} organisé par {{ tournoi.organisateur.pseudo }} sur VictoryForge.">
+{% endblock %}
 {% block title %}Tournoi
 {% endblock %}
 
