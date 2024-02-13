@@ -16,6 +16,7 @@ class SearchUserController extends AbstractController
     {
         // Récupère la valeur de la requête 'search' à partir de l'URL
         $search = $request->query->get('search');
+<<<<<<< HEAD
     
         // Utilise filter_input pour nettoyer la valeur de 'search' contre les injections XSS
         // INPUT_GET indique que nous récupérons la valeur à partir d'une requête GET
@@ -23,6 +24,12 @@ class SearchUserController extends AbstractController
         $search = filter_input(INPUT_GET, 'search', FILTER_SANITIZE_STRING);
     
         // Récupère toutes les équipes dont l'utilisateur actuellement connecté est le propriétaire
+=======
+
+        // Filtrer le champ de recherche contre les injections XSS
+        $search = filter_input(INPUT_GET, 'search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+>>>>>>> 644164c8c3a7016ca78277d5bc93e251bb23db4e
         $equipes = $equipeRepo->findBy(['proprietaire' => $this->getUser()]);
     
         // Si 'search' n'est pas null, c'est-à-dire si l'utilisateur a entré quelque chose dans le champ de recherche

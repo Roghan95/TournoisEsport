@@ -1133,8 +1133,21 @@ footer {
     padding-bottom: 0;
   }
 
+  .profil-pic-pseudo-container {
+    margin-left: 300px;
+  }
+
   .title-organisation {
     width: calc(100% - 200px);
+  }
+
+  .recherche-wrapper {
+    margin-left: 300px;
+    padding: 20px;
+  }
+
+  #profil-content {
+    margin-left: 300px;
   }
 
   .head-trd {

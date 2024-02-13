@@ -129,7 +129,7 @@ class TournoiType extends AbstractType
                 'image_uri' => false, // Ne pas afficher l'image existante
                 'constraints' => [
                     new File([
-                        'maxSize' => '5024k',
+                        'maxSize' => '2024k',
                         'mimeTypes' => [
                             'image/png',
                             'image/jpeg',
@@ -156,7 +156,7 @@ class TournoiType extends AbstractType
                 'image_uri' => false, // Ne pas afficher l'image existante
                 'constraints' => [
                     new File([
-                        'maxSize' => '5024k',
+                        'maxSize' => '2024k',
                         'mimeTypes' => [
                             'image/png',
                             'image/jpeg',
