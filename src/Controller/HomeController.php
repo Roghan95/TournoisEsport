@@ -53,18 +53,24 @@ class HomeController extends AbstractController
                 6
             );
         }
+
         // On récupère tous les jeux
         $jeux = $jeuRepository->findAll();
+        // On initialise la variable $selectedJeu à null
         $selectedJeu = null;
 
         if ($jeuId != null) {
+            // Parcourt chaque jeu dans le tableau $jeux
             foreach ($jeux as $key => $jeu) {
+                // Si l'ID du jeu actuel correspond à $jeuId
                 if ($jeu->getId() == $jeuId) {
-                    // Trouver le jeu sélectionné
+                    // Le jeu actuel est le jeu sélectionné, donc on le stocke dans $selectedJeu
                     $selectedJeu = $jeu;
 
-                    // Retirer le jeu sélectionné de la liste
+                    // On retire le jeu sélectionné du tableau $jeux pour éviter de le traiter à nouveau
                     unset($jeux[$key]);
+        
+                    // On arrête la boucle car on a trouvé le jeu recherché
                     break;
                 }
             }

@@ -1,9 +1,19 @@
 {% extends 'base.html.twig' %}
-{% block title %}Profil
+
+{% block meta %}
+	<meta name="description" content="Paramètres du compte">
+{% endblock %}
+
+{% block title %}
+	Paramètres du compte
+{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
 {% endblock %}
 
 {% block sidebar %}
-{# {{ include ('include/profil_sidebar.html.twig') }} #}
+{{ include ('include/profil_sidebar.html.twig', {'profilType': profilType}) }}
 {% endblock %}
 
 {% block body %}

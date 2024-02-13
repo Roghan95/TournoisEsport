@@ -11,7 +11,7 @@
 				Accueil
 			</a>
 			{% if app.user == null %}
-			<a href="{{ path('app_login') }}">
+			{# <a href="{{ path('app_login') }}">
 				<span class="material-symbols-outlined">
 					contract_edit
 				</span>
@@ -22,7 +22,7 @@
 					add_circle
 				</span>
 				Crée une équipe
-			</a>
+			</a> #}
 			{% else %}
 			<a href="{{ path('app_tournoi_new') }}" {% if app.request.attributes.get('_route')=='app_tournoi_new' %}
 				class="nav-item-active" {% endif %}>

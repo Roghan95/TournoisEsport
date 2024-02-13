@@ -62,11 +62,29 @@ class ProfilController extends AbstractController
         ]);
     }
 
-    // Fonction qui permet d'afficher les paramètres du profil
+    // Fonction permettant d'afficher le formulaire de modification de photo de profil dans la vue param_acc.html.twig
     #[Route('/profil/param', name: 'app_mon_profil_param')]
-    public function profilParam(): Response
+    public function profilParam(Request $request): Response
     {
-        return $this->render('profil/param_acc.html.twig', []);
+        $user = $this->getUser();
+
+        if(!$user) {
+            return $this->redirectToRoute('app_login');
+            $this->addFlash('error', 'Vous devez être connecté pour accéder à cette page');
+        }
+
+        // Créez une instance duformulaire profilType
+        $profilType = $this->createForm(ProfilType::class, $user);
+        $profilType->handleRequest($request);
+
+        if ($profilType->isSubmitted() && $profilType->isValid()) {
+            $this->em->flush();
+        }
+
+        // Rend la vue avec le formulaire ProfilType
+        return $this->render('profil/param_acc.html.twig', [
+            'profilType' => $profilType->createView(),
+        ]);
     }
 
     // Fonction pour qui permet de quitter une équipe
@@ -75,6 +93,11 @@ class ProfilController extends AbstractController
     {
         /** @var Utilisateur $user */
         $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $user->removeEquipe($equipe);
 
         $this->em->flush();

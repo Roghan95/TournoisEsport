@@ -82,7 +82,6 @@ class TournoiType extends AbstractType
                 'attr' => [
                     'min' => 1,
                     'max' => 1000,
-                    'step' => 1,
                     'class' => 'nombreJoueursMax',
                     'placeholder' => 'Autorisé entre 1 et 1000 joueurs.'
                 ],
