@@ -18,7 +18,7 @@
 
     <form action="{{ path('app_search_user') }}" method="get">
         <input type="text" name="search" id="search" placeholder="Rechercher un utilisateur">
-        <input type="submit" value="Rechercher">
+        <input class="btn" type="submit" value="Rechercher">
     </form>
 
     {% if users is not empty %}

@@ -28,15 +28,17 @@
 	</div>
 	<div class="member-info">
 		{% if app.user and user.id != app.user.id %}
+		<div class="btn-follow">
 			{% if alreadyFollow %}
-				<a href="#" class="follow-btn" id="follow-user" data-user-id={{user.id}}>Ne plus suivre</a>
+				<a href="#" class="follow-btn" id="follow-user" data-user-id={{ user.id }}>Ne plus suivre</a>
 			{% else %}
-				<a href="#" class="follow-btn" id="follow-user" data-user-id={{user.id}}>Suivre</a>
+				<a href="#" class="follow-btn" id="follow-user" data-user-id={{ user.id }}>Suivre</a>
 			{% endif %}
-				{% if alreadyFollow == true %}
-					{# <span>Vous suis</span> #}
-				{% endif %}
+		</div>
 		{% endif %}
+			{% if app.user != user and followers == true %}
+				<span class="following-true">Vous suis</span>
+			{% endif %}
 	</div>
 	{% if user.id != app.user.id %}
 		<div class="contact-user-profil">

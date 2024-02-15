@@ -398,10 +398,22 @@ details summary::-webkit-details-marker {
   background-color: #ddd;
 }
 
+.following-true {
+  padding: 1px 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  font-size: 14px;
+}
+
 /* Show the dropdown menu */
 .show {
   display: block;
 }
+
+.settings-container {
+  padding: 10px;
+}
+
 
 .tournament-time {
   display: flex;
@@ -580,6 +592,12 @@ body {
   justify-content: center;
 }
 
+.tab-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .tab-container .tab {
   cursor: pointer;
   padding: 10px;
@@ -605,8 +623,12 @@ body {
   margin: 10px 0 10px 0;
 }
 
+.tab-twitch {
+  height: max-content;
+}
+
 .tab-active {
-  border-bottom: 2px solid rgb(255, 0, 0);
+  border-bottom: 1px solid rgb(255, 0, 0);
 }
 
 .tab:hover {
@@ -621,8 +643,14 @@ body {
 
 .banner-tr {
   width: 100%;
-
 }
+
+/* .member-info {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 5px;
+} */
 
 /* MODAL PARTICIPATION TOURNOI */
 .modal {
@@ -825,13 +853,17 @@ button:disabled {
   flex-direction: column;
 }
 
+#notifs-wrapper {
+  padding: 10px;
+}
+
 /* Profil de l'utilisateur */
 
 .profil-pic-pseudo-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 150px;
+  height: auto;
   background-color: #2C3147;
   padding: 10px;
   position: relative;
@@ -931,7 +963,7 @@ button:disabled {
 }
 
 #follow-user {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .cr-equipe-profil {
@@ -1010,8 +1042,6 @@ footer {
   border: 1px solid #FF3F3F;
 }
 
-.user-utilities {}
-
 .user-utilities a {
   color: white;
 }
@@ -1027,6 +1057,22 @@ footer {
   border-radius: 50%;
 }
 
+.nom-orga-twitch {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.logo-twitch {
+  width: 30px;
+  height: 30px;
+  filter: grayscale(100%);
+}
+
+.logo-twitch:hover {
+  filter: grayscale(0%);
+}
+
 /* Resposive Version Desktop */
 
 @media (min-width: 768px) {
@@ -1037,6 +1083,11 @@ footer {
     position: fixed;
     top: 0;
     left: 0;
+  }
+
+  #notifs-wrapper {
+    margin-left: 300px;
+    padding: 20px;
   }
 
   .main-home {
@@ -1184,6 +1235,11 @@ footer {
 
   .tournoi-img {
     height: 175px;
+  }
+
+  .settings-container {
+    margin-left: 300px;
+    padding: 20px;
   }
 
 }

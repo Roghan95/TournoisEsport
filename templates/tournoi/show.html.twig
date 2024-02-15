@@ -32,16 +32,23 @@
 			</div>
 		{% endif %}
 	</div>
+
 	<h2 class="title-organisation">{{ tournoi.nomOrganisation | upper }}</h2>
+	{# ---------------------- #}
+	{# Contenu Tabs #}
 	<div class="tab-bar">
 		<div class="tab-container">
 			<div class="tab" id="tab-regles" onclick="openTab('regles')">REGLES</div>
 			<div class="tab" onclick="openTab('participants')">PARTICIPANTS</div>
 			<div class="tab" onclick="openTab('matchs')">MATCHS</div>
-			<!-- Plus de tabs si nécessaire -->
+			<a class="tab-twitch" href="{{ tournoi.lienTwitch }}" target="_blank">
+				<img class="logo-twitch" alt="Chaîne twitch de {{ tournoi.organisateur.pseudo }}\{{ tournoi.lienTwitch }}" 
+				src="{{ asset('img/twitchlogo.png') }}">
+			</a>
 		</div>
 	</div>
-
+	{# ---------------------- #}
+	{# Contenu Regles #}
 	<div id="regles" class="content">
 		<figure>
 			<img class="banner-tr" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière du tournoi">

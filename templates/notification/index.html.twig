@@ -4,26 +4,31 @@
     <meta name="description" content="Vos notifications">
 {% endblock %}
 
-{% block title %}Vos notifications{% endblock %}
+{% block title %}
+    Vos notifications
+{% endblock %}
+
 {% block sidebar %}
 	{{ include ('include/profil_sidebar.html.twig') }}
 {% endblock %}
+
 {% block body %}
 
+<div id="notifs-wrapper">
 <h1>Les notifications</h1>
-<br>
-{% for notif in notifications %}
-    <hr>
-    <div>
-        <p>{{ notif.texte }}</p>
-        <p>{{ notif.createdAt|date('d/m/Y H:i') }}</p>
-        <form action="{{ path('decline_invitation', {'id': notif.id}) }}" method="post">    
-            <input type="submit" value="Refuser">
-        </form>
-        <form action="{{ path('accept_invitation', {'id': notif.id}) }}" method="post">    
-            <input type="submit" value="Accepter">
-        </form>
-    </div>
-    <hr>
-{% endfor %}
+
+    {% for notif in notifications %}
+        <div class="notifs">
+            <span>{{ notif.texte }}</p>
+            <span>{{ notif.createdAt|date('d/m/Y H:i') }}</p>
+            <form action="{{ path('accept_invitation', {'id': notif.id}) }}" method="post">    
+                <input type="submit" value="Accepter">
+            </form>
+            <form action="{{ path('decline_invitation', {'id': notif.id}) }}" method="post">    
+                <input type="submit" value="Refuser">
+            </form>
+        </div>
+    {% endfor %}
+</div>
+
 {% endblock %}

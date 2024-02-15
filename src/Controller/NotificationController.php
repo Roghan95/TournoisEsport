@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\ProfilType;
 use App\Entity\Notification;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UtilisateurRepository;
@@ -18,16 +19,27 @@ class NotificationController extends AbstractController
     }
 
     #[Route('/notifications', name: 'app_notification')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        if (!$this->getUser()) {
+        $user = $this->getUser();
+        if (!$user) {
             $this->addFlash('error', 'Vous devez être connecté pour accéder à cette page');
             return $this->redirectToRoute('app_login');
         }
+
         $notifications = $this->notificationRepo->findBy(['destinataire' => $this->getUser(), 'statut' => 'pending'], ['createdAt' => 'DESC']);
+
+        // Créez une instance duformulaire profilType
+        $profilType = $this->createForm(ProfilType::class, $user);
+        $profilType->handleRequest($request);
+
+        if ($profilType->isSubmitted() && $profilType->isValid()) {
+                $this->em->flush();
+        }
 
         return $this->render('notification/index.html.twig', [
             'notifications' => $notifications,
+            'profilType' => $profilType->createView(),
         ]);
     }
 
@@ -52,4 +64,25 @@ class NotificationController extends AbstractController
 
         return $this->redirectToRoute('app_notification');
     }
+
+        // // Fonction permettant d'afficher le formulaire de modification de photo de profil dans la vue param_acc.html.twig
+        // #[Route('/notifications/notif', name: 'app_notification')]
+        // public function profilNotif(Request $request): Response
+        // {
+        //     $user = $this->getUser();
+    
+        //     if(!$user) {
+        //         return $this->redirectToRoute('app_login');
+        //         $this->addFlash('error', 'Vous devez être connecté pour accéder à cette page');
+        //     }
+    
+        //     if ($profilType->isSubmitted() && $profilType->isValid()) {
+        //         $this->em->flush();
+        //     }
+    
+        //     // Rend la vue avec le formulaire ProfilType
+        //     return $this->render('notification/index.html.twig', [
+        //         'profilType' => $profilType->createView(),
+        //     ]);
+        // }
 }
