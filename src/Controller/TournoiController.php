@@ -26,8 +26,7 @@ class TournoiController extends AbstractController
         private EntityManagerInterface $em,
         private TournoiRepository $tournoiRepo,
         private UtilisateurRepository $utilisateurRepo
-    ) {
-    }
+    ) {}
     // Fonction permettant de crée un tournoi
     #[Route('/new', name: 'app_tournoi_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Security $security): Response

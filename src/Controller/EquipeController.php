@@ -13,9 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class EquipeController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $em)
-    {
-    }
+    public function __construct(private EntityManagerInterface $em) {}
 
     #[Route('/equipe', name: 'app_equipe')]
     public function index(): Response
@@ -35,13 +33,13 @@ class EquipeController extends AbstractController
             $this->addFlash('error', 'Vous devez être connecté pour créer une équipe');
             return $this->redirectToRoute('app_login');
         }
-    
+
         $equipe = new Equipe();
         $form = $this->createForm(EquipeType::class, $equipe);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $equipe->setProprietaire($user); 
-    
+            $equipe->setProprietaire($user);
+
             $this->em->persist($equipe);
             $this->em->flush();
             return $this->redirectToRoute('app_mon_profil');

@@ -20,9 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProfilController extends AbstractController
 {
-    public function __construct(private UtilisateurRepository $utilisateurRepo, private EntityManagerInterface $em, private EquipeRepository $equipeRepo)
-    {
-    }
+    public function __construct(private UtilisateurRepository $utilisateurRepo, private EntityManagerInterface $em, private EquipeRepository $equipeRepo) {}
 
     #[Route('/profil', name: 'app_mon_profil')]
     public function index(EquipeRepository $equipeRepo, JeuRepository $jeuRepo, FollowRepository $followRepo, Request $request): Response
@@ -68,7 +66,7 @@ class ProfilController extends AbstractController
     {
         $user = $this->getUser();
 
-        if(!$user) {
+        if (!$user) {
             return $this->redirectToRoute('app_login');
             $this->addFlash('error', 'Vous devez être connecté pour accéder à cette page');
         }

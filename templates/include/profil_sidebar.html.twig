@@ -1,12 +1,12 @@
 <div id="sidebar">
 	<a href="{{ path('app_home') }}" class="logo">
-	<img src="{{ asset('img/logo.png') }}" alt="Logo victoryforge" />
+		<img src="{{ asset('img/logo.png') }}" alt="Logo victoryforge"/>
 	</a>
-	<hr />
+	<hr/>
 	<div class="user-profil-pic">
 		{% if app.user and app.user.photo %}
 			<a href="{{ path('app_mon_profil', {'id' : app.user.id}) }}">
-				<img class="profilPic-cr" src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">		
+				<img class="profilPic-cr" src="{{ vich_uploader_asset(app.user, 'photoFile') }}" alt="Photo de profil">
 			</a>
 		{% elseif app.user %}
 			<a class="profil-pic" href="{{ path('app_mon_profil') }}">
@@ -31,31 +31,28 @@
 				</a>
 			</li>
 			<li>
-				<a href="{{ path('app_mon_profil') }}" {% if app.request.attributes.get('_route')=='app_mon_profil' %}
-				class="nav-item-active" {% endif %}>
-				<span class="material-symbols-outlined">
-					person
-				</span>
-				Profil
-			</a>
+				<a href="{{ path('app_mon_profil') }}" {% if app.request.attributes.get('_route')=='app_mon_profil' %} class="nav-item-active" {% endif %}>
+					<span class="material-symbols-outlined">
+						person
+					</span>
+					Profil
+				</a>
 			</li>
 			<li>
-				<a href="{{ path('app_mon_profil_param') }}" {% if app.request.attributes.get('_route')=='app_mon_profil_param' %}
-				class="nav-item-active" {% endif %}>
-				<span class="material-symbols-outlined">
-					settings
-				</span>
-				Paramètres du compte
-			</a>
+				<a href="{{ path('app_mon_profil_param') }}" {% if app.request.attributes.get('_route')=='app_mon_profil_param' %} class="nav-item-active" {% endif %}>
+					<span class="material-symbols-outlined">
+						settings
+					</span>
+					Paramètres du compte
+				</a>
 			</li>
 			<li>
-				<a href="{{ path('app_notification') }}" {% if app.request.attributes.get('_route')=='app_notification' %}
-				class="nav-item-active" {% endif %}>
-				<span class="material-symbols-outlined">
-					notifications
-				</span>
-				Notifications
-			</a>
+				<a href="{{ path('app_notification') }}" {% if app.request.attributes.get('_route')=='app_notification' %} class="nav-item-active" {% endif %}>
+					<span class="material-symbols-outlined">
+						notifications
+					</span>
+					Notifications
+				</a>
 			</li>
 			<li>
 				<a href="{{ path('app_logout') }}">

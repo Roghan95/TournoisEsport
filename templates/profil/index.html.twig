@@ -12,131 +12,133 @@
 {% endblock %}
 
 {% block body %}
-<section class="profil-pic-pseudo-container">
-	{% if user and user.photo %}
-		<figure>
-			<img class="profilPic-cr" src="{{ vich_uploader_asset(user, 'photoFile') }}" alt="Photo de profil">
-		</figure>
-	{% elseif user %}
-		<figure>
-			<img style="height: 80px; width: 80px;" src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
-		</figure>
-	{% endif %}
-	<div class="member-pseudo">
-		<span>{{ user.pseudo }}</span>
-		<p>Membre depuis le {{ user.createdAt|format_date('short', locale='fr') }}</p>
-	</div>
-	<div class="member-info">
-		{% if app.user and user.id != app.user.id %}
-		<div class="btn-follow">
-			{% if alreadyFollow %}
-				<a href="#" class="follow-btn" id="follow-user" data-user-id={{ user.id }}>Ne plus suivre</a>
-			{% else %}
-				<a href="#" class="follow-btn" id="follow-user" data-user-id={{ user.id }}>Suivre</a>
-			{% endif %}
-		</div>
+	<section class="profil-pic-pseudo-container">
+		{% if user and user.photo %}
+			<figure>
+				<img class="profilPic-cr" src="{{ vich_uploader_asset(user, 'photoFile') }}" alt="Photo de profil">
+			</figure>
+		{% elseif user %}
+			<figure>
+				<img style="height: 80px; width: 80px;" src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
+			</figure>
 		{% endif %}
+		<div class="member-pseudo">
+			<span>{{ user.pseudo }}</span>
+			<p>Membre depuis le
+				{{ user.createdAt|format_date('short', locale='fr') }}</p>
+		</div>
+		<div class="member-info">
+			{% if app.user and user.id != app.user.id %}
+				<div class="btn-follow">
+					{% if alreadyFollow %}
+						<a href="#" class="follow-btn" id="follow-user" data-user-id={{ user.id }}>Ne plus suivre</a>
+					{% else %}
+						<a href="#" class="follow-btn" id="follow-user" data-user-id={{ user.id }}>Suivre</a>
+					{% endif %}
+				</div>
+			{% endif %}
 			{% if app.user != user and followers == true %}
 				<span class="following-true">Vous suis</span>
 			{% endif %}
-	</div>
-	{% if user.id != app.user.id %}
-		<div class="contact-user-profil">
-			{# Icon pour contacter l'organisateur d'un tournoi #}
-			<i title="Contacter {{ user.pseudo }}" id="chat-icon" class="fa-regular fa-message chat-icon" data-organisateur-id="{{ user.id }}"></i>
 		</div>
-	{% endif %}
-</section>
-<section id="profil-content">
-	<div class="titre-equipe">
-		{% if user == app.user %}
-		<h2 class="title-mes-equipes">Mes équipes</h2>
-			<a class="crt-team" title="Créer une équipe" href="{{ path('new_equipe') }}">
-				Créer une équipe 
-					<i class="fa-regular fa-square-plus"></i>
-			</a>
-		{% else %}
-			<h2 class="title-mes-equipes">Equipes de {{ user.pseudo }}</h2>
+		{% if user.id != app.user.id %}
+			<div
+				class="contact-user-profil">
+				{# Icon pour contacter l'organisateur d'un tournoi #}
+				<i title="Contacter {{ user.pseudo }}" id="chat-icon" class="fa-regular fa-message chat-icon" data-organisateur-id="{{ user.id }}"></i>
+			</div>
 		{% endif %}
-	</div>
-	{% if equipes is empty %}
-		<div class="no-equipe">
-			<p>Vous n'avez pas d'équipe</p>
+	</section>
+	<section id="profil-content">
+		<div class="titre-equipe">
+			{% if user == app.user %}
+				<h2 class="title-mes-equipes">Mes équipes</h2>
+				<a class="crt-team" title="Créer une équipe" href="{{ path('new_equipe') }}">
+					Créer une équipe
+					<i class="fa-regular fa-square-plus"></i>
+				</a>
+			{% else %}
+				<h2 class="title-mes-equipes">Equipes de
+					{{ user.pseudo }}</h2>
+			{% endif %}
 		</div>
-	{% else %}
-	<article class="container-equipe">
-		{% for equipe in equipes %}
-		<div class="box-equipe">
-			{% if equipe.logo is not empty %}
-				<figure>
-					<img src="{{ vich_uploader_asset(equipe, 'imageFile') }}" alt="Logo de l'équipe {{ equipe.nomEquipe }}" />
-				</figure>
-				{# <h2>{{ equipe.nomEquipe }}</h2>
-				<p>
-					Membre depuis le
-					{{ equipe.createdAt|format_date('full', locale='fr') }}
-				</p>
-				<a href="{{ path('app_search_user') }}">Inviter</a>
-				<a href="{{ path('equipe_quitter', { id: equipe.id }) }}">Quitter</a> #}
-			{% endif %}
-			{% endfor %}
-		</div>
-	</article>
+		{% if equipes is empty %}
+			<div class="no-equipe">
+				<p>Vous n'avez pas d'équipe</p>
+			</div>
+		{% else %}
+			<article class="container-equipe">
+				{% for equipe in equipes %}
+					<div class="box-equipe">
+						{% if equipe.logo is not empty %}
+							<figure>
+								<img src="{{ vich_uploader_asset(equipe, 'imageFile') }}" alt="Logo de l'équipe {{ equipe.nomEquipe }}"/>
+							</figure>
+							{# <h2>{{ equipe.nomEquipe }}</h2>
+											<p>
+												Membre depuis le
+												{{ equipe.createdAt|format_date('full', locale='fr') }}
+											</p>
+											<a href="{{ path('app_search_user') }}">Inviter</a>
+											<a href="{{ path('equipe_quitter', { id: equipe.id }) }}">Quitter</a> #}
+						{% endif %}
+					{% endfor %}
+				</div>
+			</article>
 
-	{% endif %}
-	<article class="box-tournois">
-		<details class="details-profil-tr">
-			{% if user.id != app.user.id %}
-				<summary>Les tournois de {{ user.pseudo }}</summary>
-			{% else %}
-				<summary>Mes tournois</summary>
-			{% endif %}
-			{% for tournoi in tournois %}
-			<ul>
-				<li class="profil-mes-tr">
-					<img src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo d'un tournoi" />
-					<a href="{{ path('app_tournoi_show', {'id' : tournoi.id}) }}">{{ tournoi.nomTournoi }}</a>
-				</li>
-			</ul>
-			{% endfor %}
-		</details>
-	</article>
+		{% endif %}
+		<article class="box-tournois">
+			<details class="details-profil-tr">
+				{% if user.id != app.user.id %}
+					<summary>Les tournois de
+						{{ user.pseudo }}</summary>
+				{% else %}
+					<summary>Mes tournois</summary>
+				{% endif %}
+				{% for tournoi in tournois %}
+					<ul>
+						<li class="profil-mes-tr">
+							<img src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo d'un tournoi"/>
+							<a href="{{ path('app_tournoi_show', {'id' : tournoi.id}) }}">{{ tournoi.nomTournoi }}</a>
+						</li>
+					</ul>
+				{% endfor %}
+			</details>
+		</article>
 
-	<article class="box-followers">
-		<details>
-			{% if user.id != app.user.id %}
-				<summary>Les followers de {{ user.pseudo }}</summary>
-			{% else %}
-				<summary>Mes followers</summary>
-			{% endif %}
-			{% for item in followers %}
-				<ul>
-					<li>
-						<a href="{{ path('app_user_profil', {'id' : user.id}) }}">{{ item.follower.pseudo }}</a>
-					</li>
-				</ul>
-			{% endfor %}
-		</details>
-		<details>
-			{% if user.id != app.user.id %}
-				<summary>Les personnes suivies par {{ user.pseudo }}</summary>
-			{% else %}
-				<summary>Les personnes que je suis</summary>
-			{% endif %}
-			{% for item in followings %}
-				<ul>
-					<li>
-						<a href="{{ path('app_user_profil', {'id' : user.id}) }}">{{item.following.pseudo}}</a>
-					</li>
-				</ul>
-			{% endfor %}
-		</details>
-	</article>
+		<article class="box-followers">
+			<details>
+				{% if user.id != app.user.id %}
+					<summary>Les followers de
+						{{ user.pseudo }}</summary>
+				{% else %}
+					<summary>Mes followers</summary>
+				{% endif %}
+				{% for item in followers %}
+					<ul>
+						<li><ahref="{{ path('app_user_profil', {'id' : user.id}) }}">{{ item.follower.pseudo }}</a></li>
+					</ul>
+				{% endfor %}
+			</details>
+			<details>
+				{% if user.id != app.user.id %}
+					<summary>Les personnes suivies par
+						{{ user.pseudo }}</summary>
+				{% else %}
+					<summary>Les personnes que je suis</summary>
+				{% endif %}
+				{% for item in followings %}
+					<ul>
+						<li><ahref="{{ path('app_user_profil', {'id' : user.id}) }}">{{item.following.pseudo}}</a></li>
+					</ul>
+				{% endfor %}
+			</details>
+		</article>
 
-</section>
+	</section>
 
 {% endblock %}
-	{# JavaScript #}
+{# JavaScript #}
 {% block javascripts %}
 	<script src="{{ asset('js/script.js') }}"></script>
 	<script src="{{ asset('js/profil.js') }}"></script>

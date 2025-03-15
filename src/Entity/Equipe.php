@@ -23,11 +23,11 @@ class Equipe
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank (message: "Le nom de l'équipe ne peut pas être vide")]
+    #[Assert\NotBlank(message: "Le nom de l'équipe ne peut pas être vide")]
     private ?string $nomEquipe = null;
 
     #[Vich\UploadableField(mapping: 'equipe_image', fileNameProperty: 'logo')]
-    private ?File $imageFile = null;    
+    private ?File $imageFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $logo = null;
@@ -194,7 +194,7 @@ class Equipe
         return $this;
     }
 
-    
+
     public function getJeu(): ?Jeu
     {
         return $this->jeu;
@@ -203,19 +203,18 @@ class Equipe
     public function setJeu(?Jeu $jeu): static
     {
         $this->jeu = $jeu;
-        
+
         return $this;
     }
-    
+
     public function getLogoPath(): ?string
     {
         return 'uploads/equipes/' . $this->getLogo();
     }
-    
-    
+
+
     public function __toString(): string
     {
         return $this->getNomEquipe();
     }
-    
 }

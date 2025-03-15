@@ -12,9 +12,7 @@ use Symfony\Component\Mercure\Update;
 class MessageController extends AbstractController
 {
 
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
-    }
+    public function __construct(private EntityManagerInterface $entityManager) {}
 
     #[Route('/message', name: 'app_message')]
     public function index(): Response

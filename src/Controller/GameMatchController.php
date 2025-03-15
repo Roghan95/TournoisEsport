@@ -19,8 +19,7 @@ class GameMatchController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
     // #[Route('/game/match', name: 'app_game_match')]
     // public function index(): Response

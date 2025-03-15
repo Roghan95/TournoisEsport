@@ -7,183 +7,192 @@
 {% endblock %}
 
 {% block body %}
-<div class="main-content">
-	<div id="ancre" class="head-trd">
-		<div class="logo-nom">
-            <img class="logo-trd" src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo du tournoi" />
-            <a title="Profil de l'organisateur {{ tournoi.organisateur.pseudo }}" style="overflow: hidden; white-space: normal; word-wrap: break-word;" 
-			href="{{ path('app_user_profil', {'id' : tournoi.organisateur.id }) }}">
-                {{ tournoi.nomTournoi }} 
-				<span  class="created-by">par 
-                {% if app.user and tournoi.organisateur.id == app.user.id %}
-                    Vous
-                {% else %}
-                    {{ tournoi.organisateur.pseudo }}
-                {% endif %}
-                </span>
-            </a>
-        </div>
-
-		{% if app.user and tournoi.organisateur.id != app.user.id %}
-			<div class="contact-user">
-				{# Icon pour contacter l'organisateur d'un tournoi #}
-				<i title="Contacter {{ tournoi.organisateur.pseudo }}" id="chat-icon" class="fa-regular fa-message chat-icon"
-					data-organisateur-id="{{ tournoi.organisateur.id }}"></i>
+	<div class="main-content">
+		<div id="ancre" class="head-trd">
+			<div class="logo-nom">
+				<img class="logo-trd" src="{{ vich_uploader_asset(tournoi, 'logoFile') }}" alt="Logo du tournoi"/>
+				<a title="Profil de l'organisateur {{ tournoi.organisateur.pseudo }}" style="overflow: hidden; white-space: normal; word-wrap: break-word;" href="{{ path('app_user_profil', {'id' : tournoi.organisateur.id }) }}">
+					{{ tournoi.nomTournoi }}
+					<span class="created-by">par
+						{% if app.user and tournoi.organisateur.id == app.user.id %}
+							Vous
+						{% else %}
+							{{ tournoi.organisateur.pseudo }}
+						{% endif %}
+					</span>
+				</a>
 			</div>
-		{% endif %}
-	</div>
 
-	<h2 class="title-organisation">{{ tournoi.nomOrganisation | upper }}</h2>
-	{# ---------------------- #}
-	{# Contenu Tabs #}
-	<div class="tab-bar">
-		<div class="tab-container">
-			<div class="tab" id="tab-regles" onclick="openTab('regles')">REGLES</div>
-			<div class="tab" onclick="openTab('participants')">PARTICIPANTS</div>
-			<div class="tab" onclick="openTab('matchs')">MATCHS</div>
-			<a class="tab-twitch" href="{{ tournoi.lienTwitch }}" target="_blank">
-				<img class="logo-twitch" alt="Chaîne twitch de {{ tournoi.organisateur.pseudo }}\{{ tournoi.lienTwitch }}" 
-				src="{{ asset('img/twitchlogo.png') }}">
-			</a>
-		</div>
-	</div>
-	{# ---------------------- #}
-	{# Contenu Regles #}
-	<div id="regles" class="content">
-		<figure>
-			<img class="banner-tr" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière du tournoi">
-		</figure>
-		<hr class="line-tr">
-		<p style="overflow: hidden; white-space: normal; word-wrap: break-word;" id="title-propos-tr">A PROPOS DE CE TOURNOI : {{ tournoi.jeu | upper }}</p>
-
-		{# Description du tournoi #}
-		<div class="tr-desc-regles">
-			{{ tournoi.description | raw }}
-		</div>
-	</div>
-	{# Liste des participants #}
-	<div id="participants" class="content">
-		<div class="nb-inscrits">
-			{% if isTournoiByEquipe %}
-				<span>ÉQUIPES INSCRITES (<strong id="nbJoueurs">{{ participantsByTeam | length }}</strong>)</span>
-			{% else %}
-				<span>JOUEURS INSCRITS (<strong id="nbJoueurs">{{ tournoi.participantTournois | length }}</strong>)</span>
+			{% if app.user and tournoi.organisateur.id != app.user.id %}
+				<div
+					class="contact-user">
+					{# Icon pour contacter l'organisateur d'un tournoi #}
+					<i title="Contacter {{ tournoi.organisateur.pseudo }}" id="chat-icon" class="fa-regular fa-message chat-icon" data-organisateur-id="{{ tournoi.organisateur.id }}"></i>
+				</div>
 			{% endif %}
 		</div>
-		{% if participantsByTeam | length == 0 and tournoi.participantTournois | length == 0 %}
-			<span class="tab-match-title">PAS DE PARTICIPANTS ACTUELLEMENT</span>
-		{% else %}
-		{% endif %}
-		<div class="participant-container" >
-			{% if isTournoiByEquipe %}
-				{% for item in participantsByTeam %}
+
+		<h2 class="title-organisation">{{ tournoi.nomOrganisation | upper }}</h2>
+		{# ---------------------- #}
+		{# Contenu Tabs #}
+		<div class="tab-bar">
+			<div class="tab-container">
+				<div class="tab" id="tab-regles" onclick="openTab('regles')">REGLES</div>
+				<div class="tab" onclick="openTab('participants')">PARTICIPANTS</div>
+				<div class="tab" onclick="openTab('matchs')">MATCHS</div>
+				<a class="tab-twitch" href="{{ tournoi.lienTwitch }}" target="_blank">
+					<img class="logo-twitch" alt="Chaîne twitch de {{ tournoi.organisateur.pseudo }}\{{ tournoi.lienTwitch }}" src="{{ asset('img/twitchlogo.png') }}">
+				</a>
+			</div>
+		</div>
+		{# ---------------------- #}
+		{# Contenu Regles #}
+		<div id="regles" class="content">
+			<figure>
+				<img class="banner-tr" src="{{ vich_uploader_asset(tournoi, 'banniereTrFile') }}" alt="Bannière du tournoi">
+			</figure>
+			<hr class="line-tr">
+			<p style="overflow: hidden; white-space: normal; word-wrap: break-word;" id="title-propos-tr">A PROPOS DE CE TOURNOI :
+				{{ tournoi.jeu | upper }}</p>
+
+			{# Description du tournoi #}
+			<div class="tr-desc-regles">
+				{{ tournoi.description | raw }}
+			</div>
+		</div>
+		{# Liste des participants #}
+		<div id="participants" class="content">
+			<div class="nb-inscrits">
+				{% if isTournoiByEquipe %}
+					<span>ÉQUIPES INSCRITES (<strong id="nbJoueurs">{{ participantsByTeam | length }}</strong>)</span>
+				{% else %}
+					<span>JOUEURS INSCRITS (<strong id="nbJoueurs">{{ tournoi.participantTournois | length }}</strong>)</span>
+				{% endif %}
+			</div>
+			{% if participantsByTeam | length == 0 and tournoi.participantTournois | length == 0 %}
+				<span class="tab-match-title">PAS DE PARTICIPANTS ACTUELLEMENT</span>
+				{% else %}
+			{% endif %}
+			<div class="participant-container">
+				{% if isTournoiByEquipe %}
+					{% for item in participantsByTeam %}
 						{% if item['logo'] %}
 							<img style="width: 30px; height:30px;" src="{{ vich_uploader_asset(item['equipe'], 'imageFile') }}" alt="Logo de l'équipe">
 						{% else %}
 							<img style="width: 30px; height:30px;" src="/img/defaultProfile.png" alt="photo de profil">
 						{% endif %}
-					<h3>{{item['nomEquipe']}}</h3>
-					{% for participant in item['participants'] %}
+						<h3>{{item['nomEquipe']}}</h3>
+						{% for participant in item['participants'] %}
+							<div class="participant">
+								<a title="{{ participant.utilisateur.pseudo }}" class="participant-tr" href="{{ path('app_user_profil', {'id': participant.utilisateur.id}) }}">
+									{% if participant.utilisateur.photo %}
+										<img src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="photo de profil">
+									{% else %}
+										<img src="/img/defaultProfile.png" alt="photo de profil">
+									{% endif %}
+									<span>{{ participant.utilisateur.pseudo }}</span>
+									{% if app.user and app.user.id == tournoi.organisateur.id %}
+										<form class="delete-participant" action="{{ path('app_tournoi_delete_participant', {'id': participant.id}) }}" method="POST">
+											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ participant.id) }}">
+											<button title="Supprimer cet utilisateur" type="submit" class="delete-button" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">
+												<i class="fa-solid fa-x"></i>
+											</button>
+										</form>
+									{% endif %}
+								</a>
+							</div>
+						{% endfor %}
+					{% endfor %}
+				{% else %}
+					{% for participant in tournoi.participantTournois %}
 						<div class="participant">
 							<a title="{{ participant.utilisateur.pseudo }}" class="participant-tr" href="{{ path('app_user_profil', {'id': participant.utilisateur.id}) }}">
 								{% if participant.utilisateur.photo %}
-									<img src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="photo de profil">
+									<img src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="Photo de profil">
 								{% else %}
-									<img src="/img/defaultProfile.png" alt="photo de profil">
+									<img src="/img/defaultProfile.png" alt="Photo de profil">
 								{% endif %}
 								<span>{{ participant.utilisateur.pseudo }}</span>
 								{% if app.user and app.user.id == tournoi.organisateur.id %}
 									<form class="delete-participant" action="{{ path('app_tournoi_delete_participant', {'id': participant.id}) }}" method="POST">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ participant.id) }}">
-										<button title="Supprimer cet utilisateur" type="submit" class="delete-button" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')"><i class="fa-solid fa-x"></i></button>
+										<button title="Supprimer cet utilisateur" type="submit" class="delete-button" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">
+											<i class="fa-solid fa-x"></i>
+										</button>
 									</form>
 								{% endif %}
 							</a>
 						</div>
 					{% endfor %}
-				{% endfor %}
-			{% else %}
-				{% for participant in tournoi.participantTournois %}
-					<div class="participant">
-						<a title="{{ participant.utilisateur.pseudo }}" class="participant-tr" href="{{ path('app_user_profil', {'id': participant.utilisateur.id}) }}">
-							{% if participant.utilisateur.photo %}
-								<img src="{{ vich_uploader_asset(participant.utilisateur, 'photoFile') }}" alt="Photo de profil">
-							{% else %}
-								<img src="/img/defaultProfile.png" alt="Photo de profil">
-							{% endif %}
-							<span>{{ participant.utilisateur.pseudo }}</span>
-							{% if app.user and app.user.id == tournoi.organisateur.id %}
-								<form class="delete-participant" action="{{ path('app_tournoi_delete_participant', {'id': participant.id}) }}" method="POST">
-									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ participant.id) }}">
-									<button title="Supprimer cet utilisateur" type="submit" class="delete-button" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')"><i class="fa-solid fa-x"></i></button>
-								</form>
-							{% endif %}
-						</a>
-					</div>
-				{% endfor %}
-			{% endif %}
-		</div>
-	</div>
-	{# ----------------- #}
-	{# Contenu Matchs #}
-	<div id="matchs" class="content" style="display:none;">
-		<div class="nb-matchs">
-			<span class="tab-match-title">MATCHS (<strong>{{ tournoi.gameMatches | length }}</strong>)</span>
-			{% if app.user and app.user.id == tournoi.organisateur.id %}
-			<a title="Planifier un match" class="create-match" href="{{ path('new_match', {'id': tournoi.id}) }}">Planifier un match <i class="fa-regular fa-square-plus"></i></a>
-			{% endif %}
-		</div>
-		{% if tournoi.gameMatches | length == 0 %}
-			<span class="tab-match-title">PAS DE MATCHS ACTUELLEMENT</span>
-		{% else %}
-		{% endif %}
-		{% for index, match in tournoi.getGameMatches %}
-			<div class="matchs">
-				<span title="{{ match.nomMatch }}" class="match-title">MATCH #{{ index + 1 }}<br> {{ match.nomMatch }}</span>
-				<span class="match-date-debut">Date de début : {{ match.dateDebut | format_datetime('short', 'short', locale='fr') }}</span>
+				{% endif %}
 			</div>
-		{% endfor %}
-	</div>
-</div>
-{# ---------------------- #}
-{# Contenu Enregistrement #}
-<div class="tr-join-status">
-	<div class="tr-status">
-		{% if tournoi.nbJoueurs < tournoi.nbJoueursMax %} 
-		<h4>ENREGISTREMENT OUVERT</h4>
-			{% else %}
-			<h4>ENREGISTREMENT FERMEE</h4>
+		</div>
+		{# ----------------- #}
+		{# Contenu Matchs #}
+		<div id="matchs" class="content" style="display:none;">
+			<div class="nb-matchs">
+				<span class="tab-match-title">MATCHS (<strong>{{ tournoi.gameMatches | length }}</strong>)</span>
+				{% if app.user and app.user.id == tournoi.organisateur.id %}
+					<a title="Planifier un match" class="create-match" href="{{ path('new_match', {'id': tournoi.id}) }}">Planifier un match
+						<i class="fa-regular fa-square-plus"></i>
+					</a>
+				{% endif %}
+			</div>
+			{% if tournoi.gameMatches | length == 0 %}
+				<span class="tab-match-title">PAS DE MATCHS ACTUELLEMENT</span>
+				{% else %}
 			{% endif %}
-			<p id="nbJoueurs">{{ tournoi.participantTournois | length }} / {{ tournoi.nbJoueursMax }} Joueurs
-				enregistrés</p>
+			{% for index, match in tournoi.getGameMatches %}
+				<div class="matchs">
+					<span title="{{ match.nomMatch }}" class="match-title">MATCH #{{ index + 1 }}<br>
+						{{ match.nomMatch }}</span>
+					<span class="match-date-debut">Date de début :
+						{{ match.dateDebut | format_datetime('short', 'short', locale='fr') }}</span>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	{# ---------------------- #}
+	{# Contenu Enregistrement #}
+	<div class="tr-join-status">
+		<div class="tr-status">
+			{% if tournoi.nbJoueurs < tournoi.nbJoueursMax %}
+				<h4>ENREGISTREMENT OUVERT</h4>
+			{% else %}
+				<h4>ENREGISTREMENT FERMEE</h4>
+			{% endif %}
+			<p id="nbJoueurs">{{ tournoi.participantTournois | length }}
+				/
+				{{ tournoi.nbJoueursMax }}
+				Joueurs
+								enregistrés</p>
 			<a style="font-size: 25px; position:absolute; right:10px; color:white;" href="#ancre">
 				<i class="fa-regular fa-circle-up"></i>
 			</a>
-	</div>
-	<div class="btn-join-tr">
-		<span id="rejoindre-tr">REJOINDRE</span>
-		{% if app.user %}
-		{% if app.user.id != tournoi.organisateur.id %}
-			{% if not isAlreadyParticipate and tournoi.nbJoueurs < tournoi.nbJoueursMax %}
-				<form action="{{ path('tournoi_participer', {'id': tournoi.id}) }}" method="POST">
-					<button type="submit">Participer</button>
-				</form>
-			{% elseif not isAlreadyParticipate and tournoi.nbJoueurs >= tournoi.nbJoueursMax %}
-				<button id="btnParticiper" disabled>Participer</button>
+		</div>
+		<div class="btn-join-tr">
+			<span id="rejoindre-tr">REJOINDRE</span>
+			{% if app.user %}
+				{% if app.user.id != tournoi.organisateur.id %}
+					{% if not isAlreadyParticipate and tournoi.nbJoueurs < tournoi.nbJoueursMax %}
+						<form action="{{ path('tournoi_participer', {'id': tournoi.id}) }}" method="POST">
+							<button type="submit">Participer</button>
+						</form>
+					{% elseif not isAlreadyParticipate and tournoi.nbJoueurs >= tournoi.nbJoueursMax %}
+						<button id="btnParticiper" disabled>Participer</button>
+					{% endif %}
+					{% if isAlreadyParticipate %}
+						<form action="{{ path('tournoi_quitter', {'id': tournoi.id}) }}" method="POST">
+							<button type="submit">Quitter</button>
+						</form>
+					{% endif %}
+				{% else %}
+					<form action="{{ path('app_tournoi_edit', {'id': tournoi.id}) }}" method="POST">
+						<button type="submit">Éditer le tournoi</button>
+					</form>
+				{% endif %}
 			{% endif %}
-			{% if isAlreadyParticipate %}
-				<form action="{{ path('tournoi_quitter', {'id': tournoi.id}) }}" method="POST">
-					<button type="submit">Quitter</button>
-				</form>
-			{% endif %}
-		{% else %}
-			<form action="{{ path('app_tournoi_edit', {'id': tournoi.id}) }}" method="POST">
-				<button type="submit">Éditer le tournoi</button>
-			</form>
-		{% endif %}
-	{% endif %}
+		</div>
 	</div>
-</div>
 
 {% endblock %}
-

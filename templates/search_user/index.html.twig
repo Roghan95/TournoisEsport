@@ -1,90 +1,93 @@
 {% extends 'base2.html.twig' %}
 
 {% block meta %}
-    <meta name="description" content="Rechercher les utilisateurs">
+	<meta name="description" content="Rechercher les utilisateurs">
 {% endblock %}
 
-{% block title %}Rechercher les utilisateurs{% endblock %}
+{% block title %}Rechercher les utilisateurs
+{% endblock %}
 
 {% block stylesheets %}
-{{ parent() }}
-<link rel="stylesheet" href="{{ asset('css/security.css') }}">
-<link rel="stylesheet" href="{{ asset('css/profil.css') }}">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/security.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/profil.css') }}">
 {% endblock %}
 
 {% block body %}
-<div class="recherche-wrapper">
-    <h1>Rechercher un utilisateur</h1>
+	<div class="recherche-wrapper">
+		<h1>Rechercher un utilisateur</h1>
 
-    <form action="{{ path('app_search_user') }}" method="get">
-        <input type="text" name="search" id="search" placeholder="Rechercher un utilisateur">
-        <input class="btn" type="submit" value="Rechercher">
-    </form>
+		<form action="{{ path('app_search_user') }}" method="get">
+			<input type="text" name="search" id="search" placeholder="Rechercher un utilisateur">
+			<input class="btn" type="submit" value="Rechercher">
+		</form>
 
-    {% if users is not empty %}
-    {% for user in users %}
-    <div class="user-profil-item">
-        <div class="user-container">
-            <a class="profil-link" href="{{ path('app_user_profil', {'id' : user.id}) }}">
-                {% if user.photo %}
-                <img class="logo-jeu" src="{{ vich_uploader_asset(user, 'photoFile') }}" alt="Photo de profil">
-                {% elseif app.user %}
-                <img class="logo-jeu" src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
-                {% endif %}
+		{% if users is not empty %}
+			{% for user in users %}
+				<div class="user-profil-item">
+					<div class="user-container">
+						<a class="profil-link" href="{{ path('app_user_profil', {'id' : user.id}) }}">
+							{% if user.photo %}
+								<img class="logo-jeu" src="{{ vich_uploader_asset(user, 'photoFile') }}" alt="Photo de profil">
+							{% elseif app.user %}
+								<img class="logo-jeu" src="{{ asset('img/defaultProfile.png') }}" alt="Photo de profil">
+							{% endif %}
 
-                <div class="user-content">
-                    <p class="user-content-header">
-                        {{ user.pseudo }}·
-                    </p>
-                </div>
-            </a>
-        </div>
+							<div class="user-content">
+								<p class="user-content-header">
+									{{ user.pseudo }}·
+								</p>
+							</div>
+						</a>
+					</div>
 
-        {% if app.user %}
-        <div class="action-btn">
-            {% if equipes is not empty %}
+					{% if app.user %}
+						<div class="action-btn">
+							{% if equipes is not empty %}
 
-            <div>
-                <a href="#" onclick="document.getElementById('inviteForm-{{ user.id }}').style.display='block'">Inviter
-                    dans mon équipe</a>
-                <div id="inviteForm-{{ user.id }}" style="display:none;">
-                    <form action="{{ path('invite_user') }}" method="post">
-                        <input type="hidden" name="userId" value="{{ user.id }}">
-                        <select name="teamId">
-                            {% for equipe in equipes %}
-                            <option value="{{ equipe.id }}">{{ equipe.nomEquipe }}</option>
-                            {% endfor %}
-                        </select>
-                        <input type="submit" value="Inviter">
-                    </form>
+								<div>
+									<a href="#" onclick="document.getElementById('inviteForm-{{ user.id }}').style.display='block'">Inviter
+										                    dans mon équipe</a>
+									<div id="inviteForm-{{ user.id }}" style="display:none;">
+										<form action="{{ path('invite_user') }}" method="post">
+											<input type="hidden" name="userId" value="{{ user.id }}">
+											<select name="teamId">
+												{% for equipe in equipes %}
+													<option value="{{ equipe.id }}">{{ equipe.nomEquipe }}</option>
+												{% endfor %}
+											</select>
+											<input type="submit" value="Inviter">
+										</form>
 
-                    {# <form action="{{ path('accept', {'id'}) }}" method="post">
+										{# <form action="{{ path('accept', {'id'}) }}" method="post">
+										
+										                        <input type="submit" value="accepter">
+										                    </form>
+										
+										                    <form action="{{ path('decline', {'id': notification.id}) }}" method="post">
+										                        <input type="submit" value="Refuser">
+										                    </form> #}
+									</div>
+								</div>
+							{% endif %}
+							<div>
+								<a href="#" id="follow-user" data-user-id={{user.id}}>Follow</a>
+							</div>
+						</div>
 
-                        <input type="submit" value="accepter">
-                    </form>
+					{% endif %}
 
-                    <form action="{{ path('decline', {'id': notification.id}) }}" method="post">
-                        <input type="submit" value="Refuser">
-                    </form> #}
-                </div>
-            </div>
-            {% endif %}
-            <div><a href="#" id="follow-user" data-user-id={{user.id}}>Follow</a></div>
-        </div>
-
-        {% endif %}
-
-        {# <div class="action-btn">
-            <div><a href="#" id="invite-user" data-user-id={{user.id}}>Inviter dans mon équipe</a></div>
-            <div><a href="#" id="follow-user" data-user-id={{user.id}}>Follow</a></div>
-        </div> #}
-    </div>
-    {% endfor %}
-    {% else %}
-    {% endif %}
-</div>
+					{# <div class="action-btn">
+					            <div><a href="#" id="invite-user" data-user-id={{user.id}}>Inviter dans mon équipe</a></div>
+					            <div><a href="#" id="follow-user" data-user-id={{user.id}}>Follow</a></div>
+					        </div> #}
+				</div>
+			{% endfor %}
+			{% else %}
+		{% endif %}
+	</div>
 {% endblock %}
 
 {% block javascripts %}
-<script src="{{ asset('js/profil.js') }}"></script>
+	<script src="{{ asset('js/profil.js') }}"></script>
 {% endblock %}

@@ -14,9 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class NotificationController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $em, private NotificationRepository $notificationRepo)
-    {
-    }
+    public function __construct(private EntityManagerInterface $em, private NotificationRepository $notificationRepo) {}
 
     #[Route('/notifications', name: 'app_notification')]
     public function index(Request $request): Response
@@ -34,7 +32,7 @@ class NotificationController extends AbstractController
         $profilType->handleRequest($request);
 
         if ($profilType->isSubmitted() && $profilType->isValid()) {
-                $this->em->flush();
+            $this->em->flush();
         }
 
         return $this->render('notification/index.html.twig', [
@@ -65,24 +63,24 @@ class NotificationController extends AbstractController
         return $this->redirectToRoute('app_notification');
     }
 
-        // // Fonction permettant d'afficher le formulaire de modification de photo de profil dans la vue param_acc.html.twig
-        // #[Route('/notifications/notif', name: 'app_notification')]
-        // public function profilNotif(Request $request): Response
-        // {
-        //     $user = $this->getUser();
-    
-        //     if(!$user) {
-        //         return $this->redirectToRoute('app_login');
-        //         $this->addFlash('error', 'Vous devez être connecté pour accéder à cette page');
-        //     }
-    
-        //     if ($profilType->isSubmitted() && $profilType->isValid()) {
-        //         $this->em->flush();
-        //     }
-    
-        //     // Rend la vue avec le formulaire ProfilType
-        //     return $this->render('notification/index.html.twig', [
-        //         'profilType' => $profilType->createView(),
-        //     ]);
-        // }
+    // // Fonction permettant d'afficher le formulaire de modification de photo de profil dans la vue param_acc.html.twig
+    // #[Route('/notifications/notif', name: 'app_notification')]
+    // public function profilNotif(Request $request): Response
+    // {
+    //     $user = $this->getUser();
+
+    //     if(!$user) {
+    //         return $this->redirectToRoute('app_login');
+    //         $this->addFlash('error', 'Vous devez être connecté pour accéder à cette page');
+    //     }
+
+    //     if ($profilType->isSubmitted() && $profilType->isValid()) {
+    //         $this->em->flush();
+    //     }
+
+    //     // Rend la vue avec le formulaire ProfilType
+    //     return $this->render('notification/index.html.twig', [
+    //         'profilType' => $profilType->createView(),
+    //     ]);
+    // }
 }

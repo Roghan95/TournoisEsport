@@ -59,7 +59,7 @@ class AppFixtures extends Fixture
             // Ajoutez d'autres propriétés de tournoi selon vos besoins
             $manager->persist($tournoi);
 
-             // Génération de données fictives pour GameMatch
+            // Génération de données fictives pour GameMatch
             for ($j = 0; $j < 5; $j++) {
                 $gameMatch = new GameMatch();
                 $gameMatch->setStatut($faker->boolean);
@@ -68,7 +68,6 @@ class AppFixtures extends Fixture
                 // Ajoutez d'autres propriétés de gameMatch selon vos besoins
                 $manager->persist($gameMatch);
             }
-
         }
 
         // Génération de données fictives pour Room
@@ -90,15 +89,15 @@ class AppFixtures extends Fixture
                 do {
                     $destinataireIndex = $faker->numberBetween(0, count($usersList) - 1);
                 } while ($destinataireIndex === $i);
-        
+
                 $message->setDestinataire($usersList[$destinataireIndex]);
 
                 $manager->persist($message);
             }
         }
 
-       
-        
+
+
 
         $manager->flush();
     }

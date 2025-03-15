@@ -10,9 +10,7 @@ use App\Repository\JeuRepository;
 
 class JeuController extends AbstractController
 {
-    public function __construct(private JeuRepository $jeuRepository)
-    {
-    }
+    public function __construct(private JeuRepository $jeuRepository) {}
 
     #[Route('/jeu', name: 'app_jeu')]
     public function index(): Response

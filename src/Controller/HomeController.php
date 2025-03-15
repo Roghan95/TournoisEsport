@@ -69,7 +69,7 @@ class HomeController extends AbstractController
 
                     // On retire le jeu sélectionné du tableau $jeux pour éviter de le traiter à nouveau
                     unset($jeux[$key]);
-        
+
                     // On arrête la boucle car on a trouvé le jeu recherché
                     break;
                 }

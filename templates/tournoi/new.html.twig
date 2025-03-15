@@ -1,18 +1,18 @@
 {% extends 'base2.html.twig' %}
 
 {% block meta %}
-    <meta name="description" content="Organiser un tournoi.">
+	<meta name="description" content="Organiser un tournoi.">
 {% endblock %}
 
 {% block title %}Organiser un tournoi
 {% endblock %}
 
 {% block body %}
-    {# <h1 class="title-create-tr">Organiser un tournoi</h1> #}
-{{ include("tournoi/_form.html.twig") }}
+	{# <h1 class="title-create-tr">Organiser un tournoi</h1> #}
+	{{ include("tournoi/_form.html.twig") }}
 {% endblock %}
 
 {% block javascripts %}
-<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
-<script src="{{ asset('js/tinymce.js') }}"></script>
+	<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+	<script src="{{ asset('js/tinymce.js') }}"></script>
 {% endblock %}

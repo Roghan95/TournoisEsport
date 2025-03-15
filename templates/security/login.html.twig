@@ -1,6 +1,6 @@
 {% extends 'base2.html.twig' %}
 {% block meta %}
-	<meta name="description" content="Connexion" />
+	<meta name="description" content="Connexion"/>
 {% endblock %}
 {% block title %}Se connecter
 {% endblock %}
@@ -10,31 +10,31 @@
 {% endblock %}
 
 {% block body %}
-<div class="login-form-container">
-	<form method="post" class="login-form">
-		{% if app.user %}
-			<div class="mb-3">
-				Tu est connecté en tant que
-				{{ app.user.userIdentifier }},
-				<a href="{{ path('app_logout') }}">Se déconnecter</a>
-			</div>
-		{% endif %}
+	<div class="login-form-container">
+		<form method="post" class="login-form">
+			{% if app.user %}
+				<div class="mb-3">
+					Tu est connecté en tant que
+					{{ app.user.userIdentifier }},
+					<a href="{{ path('app_logout') }}">Se déconnecter</a>
+				</div>
+			{% endif %}
 
-		<h1 class="h1-register">Connexion</h1>
-		<label for="inputEmail">Email :</label>
+			<h1 class="h1-register">Connexion</h1>
+			<label for="inputEmail">Email :</label>
 			<input placeholder="exemple@exemple.com" type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-		<label for="inputPassword">Mot de passe :</label>
+			<label for="inputPassword">Mot de passe :</label>
 			<input placeholder="••••••••" type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 			<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-		<button class="btn-lg" type="submit">START</button>
-	<div class="btn-register btn-login">
-		<p>Pas de compte ?
-			<a href="{{ path('app_register') }}">Inscrivez-vous !</a>
-		</p>
-		<p style="font-size:12px;">Mot de passe oublié ?
-			<a href="{{ path('app_forgot_password_request') }}">Réinitialisez-le</a>!
-		</p>
+			<button class="btn-lg" type="submit">START</button>
+			<div class="btn-register btn-login">
+				<p>Pas de compte ?
+					<a href="{{ path('app_register') }}">Inscrivez-vous !</a>
+				</p>
+				<p style="font-size:12px;">Mot de passe oublié ?
+					<a href="{{ path('app_forgot_password_request') }}">Réinitialisez-le</a>!
+				</p>
+			</div>
+		</form>
 	</div>
-	</form>
-</div>
 {% endblock %}

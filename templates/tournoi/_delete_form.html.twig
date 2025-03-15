@@ -1,12 +1,12 @@
 {% block meta %}
-    <meta name="description" content="Supprimer un tournoi">
+	<meta name="description" content="Supprimer un tournoi">
 {% endblock %}
 
 {% if app.user and app.user.id == tournoi.organisateur.id %}
-    <form method="post" action="{{ path('app_tournoi_delete', {'id': tournoi.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloir supprimer?');">
-        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tournoi.id) }}">
-        <button class="btn">Supprimer</button>
-    </form>
+	<form method="post" action="{{ path('app_tournoi_delete', {'id': tournoi.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloir supprimer?');">
+		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tournoi.id) }}">
+		<button class="btn">Supprimer</button>
+	</form>
 {% endif %}
 
 {# Edit tournoi #}

@@ -16,9 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ChatController extends AbstractController
 {
-    public function __construct(private MessageRepository $messageRepo, private RoomRepository $roomRepo, private EntityManagerInterface $em)
-    {
-    }
+    public function __construct(private MessageRepository $messageRepo, private RoomRepository $roomRepo, private EntityManagerInterface $em) {}
 
     #[Route('/chat', name: 'app_chat')]
     public function index(Request $request): Response

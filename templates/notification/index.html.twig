@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block meta %}
-    <meta name="description" content="Vos notifications">
+	<meta name="description" content="Vos notifications">
 {% endblock %}
 
 {% block title %}
-    Vos notifications
+	Vos notifications
 {% endblock %}
 
 {% block sidebar %}
@@ -14,21 +14,21 @@
 
 {% block body %}
 
-<div id="notifs-wrapper">
-<h1>Les notifications</h1>
+	<div id="notifs-wrapper">
+		<h1>Les notifications</h1>
 
-    {% for notif in notifications %}
-        <div class="notifs">
-            <span>{{ notif.texte }}</p>
-            <span>{{ notif.createdAt|date('d/m/Y H:i') }}</p>
-            <form action="{{ path('accept_invitation', {'id': notif.id}) }}" method="post">    
-                <input type="submit" value="Accepter">
-            </form>
-            <form action="{{ path('decline_invitation', {'id': notif.id}) }}" method="post">    
-                <input type="submit" value="Refuser">
-            </form>
-        </div>
-    {% endfor %}
-</div>
+		{% for notif in notifications %}
+			<div class="notifs">
+				<span>{{ notif.texte }}</p>
+				<span>{{ notif.createdAt|date('d/m/Y H:i') }}</p>
+				<form action="{{ path('accept_invitation', {'id': notif.id}) }}" method="post">
+					<input type="submit" value="Accepter">
+				</form>
+				<form action="{{ path('decline_invitation', {'id': notif.id}) }}" method="post">
+					<input type="submit" value="Refuser">
+				</form>
+			</div>
+		{% endfor %}
+	</div>
 
 {% endblock %}

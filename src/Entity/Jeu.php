@@ -53,7 +53,7 @@ class Jeu
         }
     }
 
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,11 +63,11 @@ class Jeu
     {
         return $this->nomJeu;
     }
-    
+
     public function setNomJeu(string $nomJeu): static
     {
         $this->nomJeu = $nomJeu;
-        
+
         return $this;
     }
 
@@ -87,19 +87,19 @@ class Jeu
         }
     }
 
-    
+
     public function getLogo(): ?string
     {
         return $this->logo;
     }
-    
+
     public function setLogo(string $logo): static
     {
         $this->logo = $logo;
-        
+
         return $this;
     }
-    
+
     /**
      * @return Collection<int, Tournoi>
      */
@@ -107,17 +107,17 @@ class Jeu
     {
         return $this->tournois;
     }
-    
+
     public function addTournoi(Tournoi $tournoi): static
     {
         if (!$this->tournois->contains($tournoi)) {
             $this->tournois->add($tournoi);
             $tournoi->setJeu($this);
         }
-        
+
         return $this;
     }
-    
+
     public function removeTournoi(Tournoi $tournoi): static
     {
         if ($this->tournois->removeElement($tournoi)) {
@@ -126,7 +126,7 @@ class Jeu
                 $tournoi->setJeu(null);
             }
         }
-        
+
         return $this;
     }
 
